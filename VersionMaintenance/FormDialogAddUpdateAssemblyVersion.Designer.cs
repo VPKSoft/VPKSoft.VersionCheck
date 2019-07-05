@@ -254,7 +254,7 @@
             this.MinimizeBox = false;
             this.Name = "FormDialogAddUpdateAssemblyVersion";
             this.ShowInTaskbar = false;
-            this.Text = "FormDialogAddUpdateAssemblyVersion";
+            this.Text = "Add or update assembly version";
             this.tlpMain.ResumeLayout(false);
             this.tlpMain.PerformLayout();
             this.tlpReleaseDateTime.ResumeLayout(false);

@@ -84,6 +84,7 @@ namespace VersionMaintenance
                 var dt1 = form.dtpReleaseDate.Value;
                 var dt2 = form.dtpReleaseTime.Value;
                 info.IsDirectDownload = form.cbDirectDownload.Checked;
+                info.DownloadLink = form.tbDownloadLink.Text;
                 info.ReleaseDate = new DateTime(dt1.Year, dt1.Month, dt1.Day, dt2.Hour, dt2.Minute, dt2.Second, DateTimeKind.Utc);
                 return info;
             }
