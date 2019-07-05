@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VPKSoft.VersionCheck", "VPKSoft.VersionCheck\VPKSoft.VersionCheck.csproj", "{0C0FD7A4-C360-4700-870A-5DC08CEDEBA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionMaintenance", "VersionMaintenance\VersionMaintenance.csproj", "{6D06B180-1AFD-4AF0-825E-8D797BA4AE7E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C0FD7A4-C360-4700-870A-5DC08CEDEBA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C0FD7A4-C360-4700-870A-5DC08CEDEBA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C0FD7A4-C360-4700-870A-5DC08CEDEBA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C0FD7A4-C360-4700-870A-5DC08CEDEBA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D06B180-1AFD-4AF0-825E-8D797BA4AE7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D06B180-1AFD-4AF0-825E-8D797BA4AE7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D06B180-1AFD-4AF0-825E-8D797BA4AE7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D06B180-1AFD-4AF0-825E-8D797BA4AE7E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2494579D-0E1D-4242-94A7-ADAB8EA23310}
+	EndGlobalSection
+EndGlobal
