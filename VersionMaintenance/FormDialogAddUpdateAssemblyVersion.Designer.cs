@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDialogAddUpdateAssemblyVersion));
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.lbSoftwareName = new System.Windows.Forms.Label();
@@ -45,6 +46,8 @@
             this.tbMetaData = new System.Windows.Forms.TextBox();
             this.btOK = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
+            this.ttMain = new System.Windows.Forms.ToolTip(this.components);
+            this.btToUTC = new System.Windows.Forms.Button();
             this.tlpMain.SuspendLayout();
             this.tlpReleaseDateTime.SuspendLayout();
             this.SuspendLayout();
@@ -140,28 +143,33 @@
             // lbReleaseDateTime
             // 
             this.lbReleaseDateTime.AutoSize = true;
+            this.lbReleaseDateTime.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbReleaseDateTime.Location = new System.Drawing.Point(3, 78);
             this.lbReleaseDateTime.Name = "lbReleaseDateTime";
             this.lbReleaseDateTime.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.lbReleaseDateTime.Size = new System.Drawing.Size(116, 19);
+            this.lbReleaseDateTime.Size = new System.Drawing.Size(147, 19);
             this.lbReleaseDateTime.TabIndex = 6;
-            this.lbReleaseDateTime.Text = "Release date and time:";
+            this.lbReleaseDateTime.Text = "Release date and time (UTC):";
+            this.ttMain.SetToolTip(this.lbReleaseDateTime, "Set to the current UTC time");
+            this.lbReleaseDateTime.Click += new System.EventHandler(this.LbReleaseDateTime_Click);
             // 
             // tlpReleaseDateTime
             // 
             this.tlpReleaseDateTime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tlpReleaseDateTime.AutoSize = true;
-            this.tlpReleaseDateTime.ColumnCount = 2;
-            this.tlpReleaseDateTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpReleaseDateTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpReleaseDateTime.ColumnCount = 3;
+            this.tlpReleaseDateTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tlpReleaseDateTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tlpReleaseDateTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tlpReleaseDateTime.Controls.Add(this.dtpReleaseDate, 0, 0);
             this.tlpReleaseDateTime.Controls.Add(this.dtpReleaseTime, 1, 0);
+            this.tlpReleaseDateTime.Controls.Add(this.btToUTC, 2, 0);
             this.tlpReleaseDateTime.Location = new System.Drawing.Point(163, 81);
             this.tlpReleaseDateTime.Name = "tlpReleaseDateTime";
             this.tlpReleaseDateTime.RowCount = 1;
             this.tlpReleaseDateTime.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpReleaseDateTime.Size = new System.Drawing.Size(498, 26);
+            this.tlpReleaseDateTime.Size = new System.Drawing.Size(498, 29);
             this.tlpReleaseDateTime.TabIndex = 8;
             // 
             // dtpReleaseDate
@@ -170,7 +178,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpReleaseDate.Location = new System.Drawing.Point(3, 3);
             this.dtpReleaseDate.Name = "dtpReleaseDate";
-            this.dtpReleaseDate.Size = new System.Drawing.Size(243, 20);
+            this.dtpReleaseDate.Size = new System.Drawing.Size(193, 20);
             this.dtpReleaseDate.TabIndex = 7;
             // 
             // dtpReleaseTime
@@ -178,15 +186,16 @@
             this.dtpReleaseTime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpReleaseTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpReleaseTime.Location = new System.Drawing.Point(252, 3);
+            this.dtpReleaseTime.Location = new System.Drawing.Point(202, 3);
             this.dtpReleaseTime.Name = "dtpReleaseTime";
-            this.dtpReleaseTime.Size = new System.Drawing.Size(243, 20);
+            this.dtpReleaseTime.ShowUpDown = true;
+            this.dtpReleaseTime.Size = new System.Drawing.Size(193, 20);
             this.dtpReleaseTime.TabIndex = 8;
             // 
             // cbDirectDownload
             // 
             this.cbDirectDownload.AutoSize = true;
-            this.cbDirectDownload.Location = new System.Drawing.Point(3, 113);
+            this.cbDirectDownload.Location = new System.Drawing.Point(3, 116);
             this.cbDirectDownload.Name = "cbDirectDownload";
             this.cbDirectDownload.Size = new System.Drawing.Size(103, 17);
             this.cbDirectDownload.TabIndex = 9;
@@ -196,7 +205,7 @@
             // lbMetaData
             // 
             this.lbMetaData.AutoSize = true;
-            this.lbMetaData.Location = new System.Drawing.Point(3, 133);
+            this.lbMetaData.Location = new System.Drawing.Point(3, 136);
             this.lbMetaData.Name = "lbMetaData";
             this.lbMetaData.Padding = new System.Windows.Forms.Padding(0, 6, 0, 0);
             this.lbMetaData.Size = new System.Drawing.Size(154, 19);
@@ -209,11 +218,11 @@
             this.tbMetaData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbMetaData.Location = new System.Drawing.Point(163, 136);
+            this.tbMetaData.Location = new System.Drawing.Point(163, 139);
             this.tbMetaData.Multiline = true;
             this.tbMetaData.Name = "tbMetaData";
             this.tbMetaData.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbMetaData.Size = new System.Drawing.Size(498, 200);
+            this.tbMetaData.Size = new System.Drawing.Size(498, 197);
             this.tbMetaData.TabIndex = 11;
             this.tbMetaData.WordWrap = false;
             // 
@@ -238,6 +247,18 @@
             this.btCancel.TabIndex = 2;
             this.btCancel.Text = "Cancel";
             this.btCancel.UseVisualStyleBackColor = true;
+            // 
+            // btToUTC
+            // 
+            this.btToUTC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btToUTC.Location = new System.Drawing.Point(401, 3);
+            this.btToUTC.Name = "btToUTC";
+            this.btToUTC.Size = new System.Drawing.Size(94, 23);
+            this.btToUTC.TabIndex = 9;
+            this.btToUTC.Text = "To UTC";
+            this.btToUTC.UseVisualStyleBackColor = true;
+            this.btToUTC.Click += new System.EventHandler(this.BtToUTC_Click);
             // 
             // FormDialogAddUpdateAssemblyVersion
             // 
@@ -280,5 +301,7 @@
         private System.Windows.Forms.TextBox tbMetaData;
         private System.Windows.Forms.Button btOK;
         private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.Button btToUTC;
+        private System.Windows.Forms.ToolTip ttMain;
     }
 }

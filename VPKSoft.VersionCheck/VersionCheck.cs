@@ -229,7 +229,7 @@ namespace VPKSoft.VersionCheck
             {
                 try
                 {
-                    Version version = new Version(VersionNumber[0] + "." + VersionNumber[1] + "." + VersionNumber[2] + "." + VersionNumber[3]);
+                    Version version = new Version(SoftwareVersion);
                     return version.CompareTo(new Version(versionStr)) > 0;
                 }
                 catch (Exception ex)
@@ -279,8 +279,8 @@ namespace VPKSoft.VersionCheck
 
                 try
                 {
-                    DateTime dt = DateTime.ParseExact(vr.ReleaseDate, "yyyy-MM-dd HH':'mm':'ss", CultureInfo.InvariantCulture);
-                    ReleaseDate = dt.ToUniversalTime();
+                    DateTime dt = DateTime.ParseExact(vr.ReleaseDate, "yyyy-MM-dd HH':'mm':'ss", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                    ReleaseDate = dt;
                 }
                 catch (Exception ex)
                 {

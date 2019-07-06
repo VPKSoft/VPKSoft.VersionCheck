@@ -25,7 +25,6 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
 using System;
-using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck;
@@ -89,6 +88,22 @@ namespace VersionMaintenance
             }
 
             return null;
+        }
+
+        private void BtToUTC_Click(object sender, EventArgs e)
+        {
+            DateTime dt = new DateTime(dtpReleaseDate.Value.Year, dtpReleaseDate.Value.Month, dtpReleaseDate.Value.Day,
+                dtpReleaseTime.Value.Hour, dtpReleaseTime.Value.Minute, 0);
+            dtpReleaseDate.Value = dt.ToUniversalTime();
+            dtpReleaseTime.Value = dt.ToUniversalTime();
+        }
+
+        private void LbReleaseDateTime_Click(object sender, EventArgs e)
+        {
+            DateTime dt = DateTime.UtcNow;
+            dt = dt.AddSeconds(-dt.Second);
+            dtpReleaseDate.Value = dt;
+            dtpReleaseTime.Value = dt;
         }
     }
 }

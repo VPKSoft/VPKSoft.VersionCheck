@@ -25,13 +25,9 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace VPKSoft.VersionCheck
@@ -55,11 +51,52 @@ namespace VPKSoft.VersionCheck
             Click += SimpleLinkLabel_Click;
         }
 
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the download dialog to download binaries on binaries.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if to use download dialog to download binaries; otherwise, <c>false</c>.</value>
+        [Description("Gets or sets a value indicating whether to use the download dialog to download binaries on binaries.")]
+        [Category("Behaviour")]
+        [Browsable(true)]
+        public bool UseDownloadDialogOnBinaries { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the temporary path for downloading files into.
+        /// </summary>
+        [Description("Gets or sets the temporary path for downloading files into.")]
+        [Category("Behaviour")]
+        [Browsable(true)]
+        public string TempPath => Path.GetTempPath();
+
+        // a user clicked the link..
         void SimpleLinkLabel_Click(object sender, EventArgs e)
         {
             try
             {
-                System.Diagnostics.Process.Start(LinkUrl);
+                if (!UseDownloadDialogOnBinaries)
+                {
+                    System.Diagnostics.Process.Start(LinkUrl);
+                }
+                else
+                {
+                    if (VersionCheck.DownloadFile(LinkUrl, TempPath))
+                    {
+                        System.Diagnostics.Process.Start(Path.Combine(TempPath, Path.GetFileName(new Uri(LinkUrl).LocalPath)));
+                    }
+                    else
+                    {
+                        try
+                        {
+                            File.Delete(Path.Combine(TempPath, Path.GetFileName(new Uri(LinkUrl).LocalPath)));
+                        }
+                        catch
+                        {
+                            // ignored..
+                        }
+                    }
+                }
             }
             catch
             {
@@ -67,20 +104,23 @@ namespace VPKSoft.VersionCheck
             }
         }
 
+        /// <summary>
+        /// Gets or sets the link URL of control.
+        /// </summary>
         [Category("Behavior")]
+        [Browsable(false)]
         public string LinkUrl { get; set; }
 
+        /// <summary>
+        /// Gets or sets the cursor that is displayed when the mouse pointer is over the control.
+        /// </summary>
+        [Description("Gets or sets the cursor that is displayed when the mouse pointer is over the control.")]
+        [Category("Appearance")]
         [Browsable(false)]
         public override Cursor Cursor
         {
-            get
-            {
-                return base.Cursor;
-            }
-            set
-            {
-                base.Cursor = value;
-            }
+            get => base.Cursor;
+            set => base.Cursor = value;
         }
     }
 }
