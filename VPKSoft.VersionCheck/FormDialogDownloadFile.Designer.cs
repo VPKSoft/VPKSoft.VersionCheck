@@ -39,8 +39,8 @@
             this.lbDownloadFileNameDescription = new System.Windows.Forms.Label();
             this.lbDownloadFileNameValue = new System.Windows.Forms.Label();
             this.tlpCenterButton = new System.Windows.Forms.TableLayoutPanel();
-            this.btCancel = new System.Windows.Forms.Button();
             this.pnMain = new System.Windows.Forms.Panel();
+            this.btCancel = new System.Windows.Forms.Button();
             this.tlpDownloadStatistics.SuspendLayout();
             this.tlpCenterButton.SuspendLayout();
             this.pnMain.SuspendLayout();
@@ -183,16 +183,6 @@
             this.tlpCenterButton.Size = new System.Drawing.Size(466, 29);
             this.tlpCenterButton.TabIndex = 2;
             // 
-            // btCancel
-            // 
-            this.btCancel.Location = new System.Drawing.Point(195, 3);
-            this.btCancel.Name = "btCancel";
-            this.btCancel.Size = new System.Drawing.Size(75, 23);
-            this.btCancel.TabIndex = 0;
-            this.btCancel.Text = "Cancel";
-            this.btCancel.UseVisualStyleBackColor = true;
-            this.btCancel.Click += new System.EventHandler(this.BtCancel_Click);
-            // 
             // pnMain
             // 
             this.pnMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -206,6 +196,16 @@
             this.pnMain.Name = "pnMain";
             this.pnMain.Size = new System.Drawing.Size(487, 120);
             this.pnMain.TabIndex = 3;
+            // 
+            // btCancel
+            // 
+            this.btCancel.Location = new System.Drawing.Point(195, 3);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(75, 23);
+            this.btCancel.TabIndex = 0;
+            this.btCancel.Text = "Cancel";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.BtCancel_Click);
             // 
             // FormDialogDownloadFile
             // 

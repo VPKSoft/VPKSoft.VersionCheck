@@ -229,5 +229,11 @@ namespace VersionMaintenance
                 }
             }
         }
+
+        private void ToolStripButton1_Click(object sender, EventArgs e)
+        {
+            var info = VersionCheck.GetVersion("AboutTest");
+            MessageBox.Show(info.DownloadLink);
+        }
     }
 }

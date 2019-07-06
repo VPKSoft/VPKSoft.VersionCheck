@@ -207,8 +207,9 @@ namespace VPKSoft.VersionCheck
             {
                 try
                 {
-                    Version version = new Version(VersionNumber[0] + "." + VersionNumber[1] + "." + VersionNumber[2] + "." + VersionNumber[3]);
-                    return version.CompareTo(assembly.GetName().Version) > 0;
+                    Version version = new Version(SoftwareVersion);
+                    Version versionAssembly = assembly.GetName().Version;
+                    return version.CompareTo(versionAssembly) > 0;
                 }
                 catch (Exception ex)
                 {
@@ -371,6 +372,13 @@ namespace VPKSoft.VersionCheck
         {
             try
             {
+                // See: https://docs.microsoft.com/en-us/dotnet/api/system.net.servicepointmanager.expect100continue?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev15.query%3FappId%3DDev15IDEF1%26l%3DEN-US%26k%3Dk(System.Net.ServicePointManager.Expect100Continue);k(TargetFrameworkMoniker-.NETFramework,Version%3Dv4.5);k(DevLang-csharp)%26rd%3Dtrue%26f%3D255%26MSPPError%3D-2147217396&view=netframework-4.8
+                ServicePointManager.Expect100Continue = true;
+
+                // set all the security protocols..
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 |
+                                                       SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
                 request.Timeout = TimeOutMs;
 

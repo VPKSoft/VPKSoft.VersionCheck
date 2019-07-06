@@ -26,23 +26,28 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace VersionMaintenance
+namespace AboutTest
 {
-    static class Program
+    public partial class FormMain : Form
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        public FormMain()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+            InitializeComponent();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new VPKSoft.VersionCheck.FormAbout(this, Assembly.GetEntryAssembly(), "LGPL",
+                "http://www.gnu.org/licenses/gpl-3.0.txt", "https://www.vpksoft.net/versions/version.php", 3000);
         }
     }
 }
