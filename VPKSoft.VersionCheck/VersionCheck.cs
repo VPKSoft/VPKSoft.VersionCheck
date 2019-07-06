@@ -279,7 +279,7 @@ namespace VPKSoft.VersionCheck
                 try
                 {
                     DateTime dt = DateTime.ParseExact(vr.ReleaseDate, "yyyy-MM-dd HH':'mm':'ss", CultureInfo.InvariantCulture);
-                    ReleaseDate = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0, DateTimeKind.Utc);
+                    ReleaseDate = dt.ToUniversalTime();
                 }
                 catch (Exception ex)
                 {

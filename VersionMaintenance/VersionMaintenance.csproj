@@ -130,6 +130,7 @@
     <None Include="Resources\database-key.png" />
     <None Include="Resources\view-refresh-7.png" />
     <None Include="Resources\run-build-install.png" />
+    <None Include="Resources\application-x-ms-dos-executable.png" />
     <Content Include="ServerSideBase\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

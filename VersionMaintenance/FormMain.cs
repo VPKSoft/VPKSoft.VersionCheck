@@ -95,7 +95,6 @@ namespace VersionMaintenance
         {
             if (odAssembly.ShowDialog() == DialogResult.OK)
             {
-                // TODO::Generalize this with a dialog!!
                 Assembly assembly = Assembly.LoadFile(odAssembly.FileName);
                 var info = FormDialogAddUpdateAssemblyVersion.ShowDialog(odAssembly.FileName, assembly);
                 if (info != null)
@@ -210,6 +209,23 @@ namespace VersionMaintenance
                     }
 
                     Process.Start("explorer.exe", fbdDirectory.SelectedPath);
+                }
+            }
+        }
+
+        // get the version of this assembly is slightly different..
+        private void MnuThisAssemblyVersion_Click(object sender, EventArgs e)
+        {
+            // ..just use the entry assembly..
+            Assembly assembly = Assembly.GetEntryAssembly();
+            if (assembly != null)
+            {
+                var info = FormDialogAddUpdateAssemblyVersion.ShowDialog(assembly.Location, assembly);
+                if (info != null)
+                {
+                    VersionCheck.UpdateVersion(assembly, info.DownloadLink, info.IsDirectDownload, info.ReleaseDate,
+                        info.MetaData);
+                    ListVersions(); 
                 }
             }
         }

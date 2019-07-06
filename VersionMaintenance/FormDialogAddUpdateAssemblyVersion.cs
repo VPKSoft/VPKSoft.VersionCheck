@@ -63,7 +63,6 @@ namespace VersionMaintenance
             else
             {
                 info.SoftwareVersion = assembly.GetName().Version.ToString();
-                info.ReleaseDate = new FileInfo(fileName).LastWriteTimeUtc;
             }
 
             var form = new FormDialogAddUpdateAssemblyVersion
