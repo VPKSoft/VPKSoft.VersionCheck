@@ -26,6 +26,7 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Text;
 using System.IO;
@@ -33,6 +34,7 @@ using System.Net;
 using System.Web.Script.Serialization;
 using System.Reflection;
 using System.Web;
+using System.Windows.Forms;
 
 namespace VPKSoft.VersionCheck
 {
@@ -69,6 +71,21 @@ namespace VPKSoft.VersionCheck
             get => FormDialogDownloadFile.LocalizedDownloadPercentageText;
             set => FormDialogDownloadFile.LocalizedDownloadPercentageText = value;
         }
+
+        /// <summary>
+        /// Gets or sets the image for the about dialog. The default size is 310x70 pixels and the image is centered on the picture box.
+        /// </summary>
+        public static Image AboutDialogImage { get; set; } = Properties.Resources.VPKSoftLogo_App;
+
+        /// <summary>
+        /// Gets or sets the publisher web site URL which is navigated to when the user clicks the <see cref="AboutDialogImage"/>.
+        /// </summary>
+        public static string AboutDialogPublisherWebSiteUrl { get; set; } = "http://www.vpksoft.net";
+
+        /// <summary>
+        /// Gets or set the image size mode for the about dialog.
+        /// </summary>
+        public static PictureBoxSizeMode AboutDialogImageSizeMode { get; set; } = PictureBoxSizeMode.CenterImage;
 
         /// <summary>
         /// The localized short text for megabytes (MB) for the download dialog. The default is: 'MB'.

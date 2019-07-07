@@ -57,6 +57,10 @@ namespace VersionMaintenance
             tstbAPIKey.Text = settings.ApiKey;
             nudTimeOutMS.Value = settings.TimeOutMs;
 
+            // the application dead-locks if the "self-assembly" check is made in the debug mode..
+            mnuThisAssemblyVersion.Enabled = !Debugger.IsAttached;
+
+
             ListVersions();
         }
 
@@ -228,12 +232,6 @@ namespace VersionMaintenance
                     ListVersions(); 
                 }
             }
-        }
-
-        private void ToolStripButton1_Click(object sender, EventArgs e)
-        {
-            var info = VersionCheck.GetVersion("AboutTest");
-            MessageBox.Show(info.DownloadLink);
         }
     }
 }

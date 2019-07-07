@@ -34,12 +34,31 @@ using System.Collections;
 
 namespace VPKSoft.VersionCheck
 {
+    /// <summary>
+    /// A simple about dialog form.
+    /// Implements the <see cref="System.Windows.Forms.Form" />
+    /// </summary>
+    /// <seealso cref="System.Windows.Forms.Form" />
     public partial class FormAbout: Form
     {
-        private Assembly aboutAssembly;
-        private VersionCheck.VersionInfo info = null;
-        private string na = string.Empty, download = string.Empty;
+        // the assembly which about information to show..
+        private readonly Assembly aboutAssembly;
 
+        // the version information gotten from the assembly..
+        private VersionCheck.VersionInfo info;
+
+        // not available (N/A) localized text..
+        private string na = string.Empty;
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormAbout"/> class using the <see cref="Assembly.GetEntryAssembly()"/> method.
+        /// </summary>
+        /// <param name="parent">The parent <see cref="Form"/> for this dialog.</param>
+        /// <param name="license">The license name (e.g. GPL or MIT).</param>
+        /// <param name="licenseUrl">The license URL.</param>
+        /// <param name="checkUrl">The check URL.</param>
+        /// <param name="timeOut">The time out for the web requests.</param>
         public FormAbout(Form parent, string license, string licenseUrl, string checkUrl, int timeOut = 1500)
         {
             Owner = parent;
@@ -50,9 +69,20 @@ namespace VPKSoft.VersionCheck
             sllLinkLicense.LinkUrl = licenseUrl;
             VersionCheck.CheckUri = checkUrl;
             VersionCheck.TimeOutMs = timeOut;
+            pbLogo.SizeMode = VersionCheck.AboutDialogImageSizeMode;
+            pbLogo.Image = VersionCheck.AboutDialogImage;
             ShowDialog();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormAbout"/> class.
+        /// </summary>
+        /// <param name="parent">The parent <see cref="Form"/> for this dialog.</param>
+        /// <param name="aboutAssembly">The about assembly which information to use with the dialog.</param>
+        /// <param name="license">The license name (e.g. GPL or MIT).</param>
+        /// <param name="licenseUrl">The license URL.</param>
+        /// <param name="checkUrl">The check URL.</param>
+        /// <param name="timeOut">The time out for the web requests.</param>
         public FormAbout(Form parent, Assembly aboutAssembly, string license, string licenseUrl, string checkUrl, int timeOut = 1500)
         {
             Owner = parent;
@@ -61,8 +91,10 @@ namespace VPKSoft.VersionCheck
             MainInit();
             sllLinkLicense.Text = license;
             sllLinkLicense.LinkUrl = licenseUrl;
-            VPKSoft.VersionCheck.VersionCheck.CheckUri = checkUrl;
+            VersionCheck.CheckUri = checkUrl;
             VersionCheck.TimeOutMs = timeOut;
+            pbLogo.SizeMode = VersionCheck.AboutDialogImageSizeMode;
+            pbLogo.Image = VersionCheck.AboutDialogImage;
             ShowDialog();
         }
 
@@ -71,6 +103,9 @@ namespace VPKSoft.VersionCheck
         /// </summary>
         public static string OverrideCultureString { get; set; } = CultureInfo.CurrentCulture.ToString();
 
+        /// <summary>
+        /// This method is called by the constructors. Localizes the dialog and sets the assembly information fields contents.
+        /// </summary>
         private void MainInit()
         {
             try // about dialog shouldn't crash the application
@@ -121,7 +156,7 @@ namespace VPKSoft.VersionCheck
                     }
                     catch
                     {
-
+                        // ignored..
                     }
 
                     foreach (string str in langStrings)
@@ -132,7 +167,7 @@ namespace VPKSoft.VersionCheck
                         }
                         catch
                         {
-
+                            // ignored..
                         }
                     }
 
@@ -165,10 +200,6 @@ namespace VPKSoft.VersionCheck
                         {
                             na = langPair.Value;
                         }
-                        else if (langPair.Key == "CheckDownload")
-                        {
-                            download = langPair.Value;
-                        }
                         else if (langPair.Key == "Description")
                         {
                             lbBoxDescriptionText.Text = langPair.Value;
@@ -198,7 +229,7 @@ namespace VPKSoft.VersionCheck
             }
             catch
             {
-                // do nothing
+                // do nothing..
             }
             lbProductName.Text = AssemblyProduct;
             lbVersion.Text = AssemblyVersion;
@@ -211,7 +242,9 @@ namespace VPKSoft.VersionCheck
         }
 
         #region Assembly Attribute Accessors
-
+        /// <summary>
+        /// Gets the assembly title.
+        /// </summary>
         public string AssemblyTitle
         {
             get
@@ -229,8 +262,14 @@ namespace VPKSoft.VersionCheck
             }
         }
 
+        /// <summary>
+        /// Gets the assembly version.
+        /// </summary>
         public string AssemblyVersion => aboutAssembly.GetName().Version.ToString();
 
+        /// <summary>
+        /// Gets the assembly description.
+        /// </summary>
         public string AssemblyDescription
         {
             get
@@ -244,6 +283,9 @@ namespace VPKSoft.VersionCheck
             }
         }
 
+        /// <summary>
+        /// Gets the assembly product.
+        /// </summary>
         public string AssemblyProduct
         {
             get
@@ -257,6 +299,9 @@ namespace VPKSoft.VersionCheck
             }
         }
 
+        /// <summary>
+        /// Gets the assembly copyright.
+        /// </summary>
         public string AssemblyCopyright
         {
             get
@@ -270,6 +315,9 @@ namespace VPKSoft.VersionCheck
             }
         }
 
+        /// <summary>
+        /// Gets the assembly company.
+        /// </summary>
         public string AssemblyCompany
         {
             get
@@ -286,23 +334,32 @@ namespace VPKSoft.VersionCheck
 
         private void pbLogo_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.vpksoft.net");
+            try
+            {
+                System.Diagnostics.Process.Start(VersionCheck.AboutDialogPublisherWebSiteUrl);
+            }
+            catch
+            {
+                // ignored..
+            }
         }
 
         private void sslLinkVersion_Click(object sender, EventArgs e)
         {
             info = VersionCheck.GetVersion(aboutAssembly);
 
-//            info = VersionCheck.VersionCheck.GetVersion("VPKSoft.Utils", VersionCheck.VersionCheck.VersionType.Binary);
             if (info != null && info.IsLargerVersion(aboutAssembly))
             {
                 sllLinkVersion.LinkUrl = info.DownloadLink;
                 sllLinkVersion.Text = info.SoftwareVersion;
-                sllLinkVersion.Click -= sslLinkVersion_Click;
+
+                // unsubscribe the click event; its not needed to user to create a DDoS attack..
+                sllLinkVersion.Click -= sslLinkVersion_Click; 
             }            
             else
             {
                 sllLinkVersion.Text = na;
+                // unsubscribe the click event; its not needed to user to create a DDoS attack..
                 sllLinkVersion.Click -= sslLinkVersion_Click;
             }
         }

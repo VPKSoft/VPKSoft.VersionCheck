@@ -84,10 +84,6 @@
     <Content Include="VPKSoft.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VPKSoft.About\VPKSoft.About.csproj">
-      <Project>{96248c22-a8ad-452e-821f-a3802c2aea46}</Project>
-      <Name>VPKSoft.About</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VPKSoft.VersionCheck\VPKSoft.VersionCheck.csproj">
       <Project>{0c0fd7a4-c360-4700-870a-5dc08cedeba3}</Project>
       <Name>VPKSoft.VersionCheck</Name>

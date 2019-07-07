@@ -61,7 +61,6 @@
             this.lbTimeOutMS = new System.Windows.Forms.Label();
             this.nudTimeOutMS = new System.Windows.Forms.NumericUpDown();
             this.fbdDirectory = new Ookii.Dialogs.WinForms.VistaFolderBrowserDialog();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.gvSoftwareVersions)).BeginInit();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
@@ -229,8 +228,7 @@
             this.toolStripSeparator2,
             this.tslAPIKey,
             this.tstbAPIKey,
-            this.tbGenerateAPIKey,
-            this.toolStripButton1});
+            this.tbGenerateAPIKey});
             this.tsMain.Location = new System.Drawing.Point(0, 24);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(934, 25);
@@ -351,16 +349,6 @@
             this.fbdDirectory.Description = "Select folder for generating files";
             this.fbdDirectory.UseDescriptionForTitle = true;
             // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -421,7 +409,6 @@
         private System.Windows.Forms.ToolStripMenuItem mnuGenerateFiles;
         private Ookii.Dialogs.WinForms.VistaFolderBrowserDialog fbdDirectory;
         private System.Windows.Forms.ToolStripMenuItem mnuThisAssemblyVersion;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }
 
