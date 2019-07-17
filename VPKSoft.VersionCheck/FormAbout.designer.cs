@@ -42,8 +42,8 @@
             this.lbBoxDescriptionText = new System.Windows.Forms.Label();
             this.tbBoxDescription = new System.Windows.Forms.TextBox();
             this.lbLicenseText = new System.Windows.Forms.Label();
-            this.sllLinkLicense = new VPKSoft.VersionCheck.SimpleLinkLabel();
             this.lbCheckVersionText = new System.Windows.Forms.Label();
+            this.lbLinkLicense = new System.Windows.Forms.Label();
             this.btOK = new System.Windows.Forms.Button();
             this.tlpProductInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
@@ -70,8 +70,8 @@
             this.tlpProductInfo.Controls.Add(this.lbBoxDescriptionText, 0, 4);
             this.tlpProductInfo.Controls.Add(this.tbBoxDescription, 1, 4);
             this.tlpProductInfo.Controls.Add(this.lbLicenseText, 0, 5);
-            this.tlpProductInfo.Controls.Add(this.sllLinkLicense, 1, 5);
             this.tlpProductInfo.Controls.Add(this.lbCheckVersionText, 0, 6);
+            this.tlpProductInfo.Controls.Add(this.lbLinkLicense, 1, 5);
             this.tlpProductInfo.Location = new System.Drawing.Point(12, 12);
             this.tlpProductInfo.Name = "tlpProductInfo";
             this.tlpProductInfo.RowCount = 8;
@@ -98,6 +98,7 @@
             this.sllLinkVersion.Size = new System.Drawing.Size(74, 13);
             this.sllLinkVersion.TabIndex = 15;
             this.sllLinkVersion.Text = "click to check";
+            this.sllLinkVersion.UseDownloadDialogOnBinaries = true;
             this.sllLinkVersion.Click += new System.EventHandler(this.sslLinkVersion_Click);
             // 
             // lbVersionText
@@ -221,19 +222,6 @@
             this.lbLicenseText.TabIndex = 11;
             this.lbLicenseText.Text = "License:";
             // 
-            // sllLinkLicense
-            // 
-            this.sllLinkLicense.AutoSize = true;
-            this.sllLinkLicense.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.sllLinkLicense.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline);
-            this.sllLinkLicense.ForeColor = System.Drawing.Color.Navy;
-            this.sllLinkLicense.LinkUrl = null;
-            this.sllLinkLicense.Location = new System.Drawing.Point(164, 99);
-            this.sllLinkLicense.Name = "sllLinkLicense";
-            this.sllLinkLicense.Size = new System.Drawing.Size(10, 13);
-            this.sllLinkLicense.TabIndex = 12;
-            this.sllLinkLicense.Text = "-";
-            // 
             // lbCheckVersionText
             // 
             this.lbCheckVersionText.AutoSize = true;
@@ -242,6 +230,19 @@
             this.lbCheckVersionText.Size = new System.Drawing.Size(78, 13);
             this.lbCheckVersionText.TabIndex = 13;
             this.lbCheckVersionText.Text = "Check version:";
+            // 
+            // lbLinkLicense
+            // 
+            this.lbLinkLicense.AutoSize = true;
+            this.lbLinkLicense.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbLinkLicense.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbLinkLicense.ForeColor = System.Drawing.Color.Navy;
+            this.lbLinkLicense.Location = new System.Drawing.Point(164, 99);
+            this.lbLinkLicense.Name = "lbLinkLicense";
+            this.lbLinkLicense.Size = new System.Drawing.Size(10, 13);
+            this.lbLinkLicense.TabIndex = 16;
+            this.lbLinkLicense.Text = "-";
+            this.lbLinkLicense.Click += new System.EventHandler(this.LbLinkLicense_Click);
             // 
             // btOK
             // 
@@ -298,9 +299,8 @@
         private System.Windows.Forms.Button btOK;
         private System.Windows.Forms.TextBox tbBoxDescription;
         private System.Windows.Forms.Label lbLicenseText;
-        private SimpleLinkLabel sllLinkLicense;
         private System.Windows.Forms.Label lbCheckVersionText;
         private SimpleLinkLabel sllLinkVersion;
-
+        private System.Windows.Forms.Label lbLinkLicense;
     }
 }

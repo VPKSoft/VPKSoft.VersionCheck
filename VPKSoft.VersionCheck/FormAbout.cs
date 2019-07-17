@@ -65,8 +65,8 @@ namespace VPKSoft.VersionCheck
             aboutAssembly = Assembly.GetEntryAssembly();
             InitializeComponent();
             MainInit();
-            sllLinkLicense.Text = license;
-            sllLinkLicense.LinkUrl = licenseUrl;
+            lbLinkLicense.Text = license;
+            lbLinkLicense.Tag = licenseUrl;
             VersionCheck.CheckUri = checkUrl;
             VersionCheck.TimeOutMs = timeOut;
             pbLogo.SizeMode = VersionCheck.AboutDialogImageSizeMode;
@@ -89,8 +89,8 @@ namespace VPKSoft.VersionCheck
             this.aboutAssembly = aboutAssembly;
             InitializeComponent();
             MainInit();
-            sllLinkLicense.Text = license;
-            sllLinkLicense.LinkUrl = licenseUrl;
+            lbLinkLicense.Text = license;
+            lbLinkLicense.Tag = licenseUrl;
             VersionCheck.CheckUri = checkUrl;
             VersionCheck.TimeOutMs = timeOut;
             pbLogo.SizeMode = VersionCheck.AboutDialogImageSizeMode;
@@ -361,6 +361,19 @@ namespace VPKSoft.VersionCheck
                 sllLinkVersion.Text = na;
                 // unsubscribe the click event; its not needed to user to create a DDoS attack..
                 sllLinkVersion.Click -= sslLinkVersion_Click;
+            }
+        }
+
+        private void LbLinkLicense_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var label = (Label) sender;
+                System.Diagnostics.Process.Start(label.Tag.ToString());
+            }
+            catch
+            {
+                // ignored..
             }
         }
     }
