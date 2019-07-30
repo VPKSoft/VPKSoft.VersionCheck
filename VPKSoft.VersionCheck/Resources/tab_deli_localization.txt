@@ -1,0 +1,19 @@
+This is the simple tab-delimited localization file.
+As you can see only the "[]" tags and tab delimited key-value pairs matter for the localization.
+The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
+[en-US]
+txtNewVersionTitle	A new version of the '{0}' software is available!
+txtCurrentVersion	Current version:
+txtNewVersion	New version:
+txtReleaseDateTime	Release date/time:
+txtReleaseChanges	Release changes:
+txtUpdateSoftware	Update the software
+txtCancel	Cancel
+[fi-FI]
+txtNewVersionTitle	Uusi versio ohjelmasta '{0}' on saatavilla!
+txtCurrentVersion	Nykyinen versio:
+txtNewVersion	Uusi versio:
+txtReleaseDateTime	Julkaisuaika ja päiväys:
+txtReleaseChanges	Versiomuutokset:
+txtUpdateSoftware	Päivitä ohjelmisto
+txtCancel	Peruuta

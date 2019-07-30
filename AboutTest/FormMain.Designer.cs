@@ -32,6 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCheckNewVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,10 +57,19 @@
             // 
             // mnuAbout
             // 
+            this.mnuAbout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuCheckNewVersion});
             this.mnuAbout.Name = "mnuAbout";
             this.mnuAbout.Size = new System.Drawing.Size(52, 20);
             this.mnuAbout.Text = "About";
             this.mnuAbout.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // mnuCheckNewVersion
+            // 
+            this.mnuCheckNewVersion.Name = "mnuCheckNewVersion";
+            this.mnuCheckNewVersion.Size = new System.Drawing.Size(200, 22);
+            this.mnuCheckNewVersion.Text = "Check for a new version";
+            this.mnuCheckNewVersion.Click += new System.EventHandler(this.MnuCheckNewVersion_Click);
             // 
             // FormMain
             // 
@@ -84,6 +94,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem mnuAbout;
+        private System.Windows.Forms.ToolStripMenuItem mnuCheckNewVersion;
     }
 }
 

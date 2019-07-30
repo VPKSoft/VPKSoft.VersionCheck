@@ -71,6 +71,25 @@ namespace VPKSoft.VersionCheck.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is the simple tab-delimited localization file.
+        ///As you can see only the &quot;[]&quot; tags and tab delimited key-value pairs matter for the localization.
+        ///The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
+        ///[en-US]
+        ///txtNewVersionTitle	A new version of the &apos;{0}&apos; software is available!
+        ///txtCurrentVersion	Current version:
+        ///txtNewVersion	New version:
+        ///txtReleaseDateTime	Release date/time:
+        ///txtReleaseChanges	Release changes:
+        ///txtUpdateSoftware	Update the software
+        ///txtCancel	C [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string tab_deli_localization {
+            get {
+                return ResourceManager.GetString("tab_deli_localization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Text=About - {0}
         ///OK=OK
         ///Description=Description:

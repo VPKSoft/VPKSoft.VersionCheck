@@ -27,6 +27,7 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Reflection;
 using System.Windows.Forms;
+using VPKSoft.VersionCheck;
 
 namespace AboutTest
 {
@@ -43,6 +44,12 @@ namespace AboutTest
             // ReSharper disable once StringLiteralTypo
             new VPKSoft.VersionCheck.FormAbout(this, Assembly.GetEntryAssembly(), "LGPL",
                 "http://www.gnu.org/licenses/gpl-3.0.txt", "https://www.vpksoft.net/versions/version.php", 3000);
+        }
+
+        private void MnuCheckNewVersion_Click(object sender, EventArgs e)
+        {
+            FormCheckVersion.CheckForNewVersion("https://www.vpksoft.net/versions/version.php",
+                Assembly.GetEntryAssembly(), "fi-FI");
         }
     }
 }
