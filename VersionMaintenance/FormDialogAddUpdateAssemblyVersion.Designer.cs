@@ -41,13 +41,13 @@
             this.tlpReleaseDateTime = new System.Windows.Forms.TableLayoutPanel();
             this.dtpReleaseDate = new System.Windows.Forms.DateTimePicker();
             this.dtpReleaseTime = new System.Windows.Forms.DateTimePicker();
+            this.btToUTC = new System.Windows.Forms.Button();
             this.cbDirectDownload = new System.Windows.Forms.CheckBox();
             this.lbMetaData = new System.Windows.Forms.Label();
             this.tbMetaData = new System.Windows.Forms.TextBox();
             this.btOK = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
-            this.btToUTC = new System.Windows.Forms.Button();
             this.tlpMain.SuspendLayout();
             this.tlpReleaseDateTime.SuspendLayout();
             this.SuspendLayout();
@@ -192,6 +192,18 @@
             this.dtpReleaseTime.Size = new System.Drawing.Size(193, 20);
             this.dtpReleaseTime.TabIndex = 8;
             // 
+            // btToUTC
+            // 
+            this.btToUTC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btToUTC.Location = new System.Drawing.Point(401, 3);
+            this.btToUTC.Name = "btToUTC";
+            this.btToUTC.Size = new System.Drawing.Size(94, 23);
+            this.btToUTC.TabIndex = 9;
+            this.btToUTC.Text = "To UTC";
+            this.btToUTC.UseVisualStyleBackColor = true;
+            this.btToUTC.Click += new System.EventHandler(this.BtToUTC_Click);
+            // 
             // cbDirectDownload
             // 
             this.cbDirectDownload.AutoSize = true;
@@ -247,18 +259,6 @@
             this.btCancel.TabIndex = 2;
             this.btCancel.Text = "Cancel";
             this.btCancel.UseVisualStyleBackColor = true;
-            // 
-            // btToUTC
-            // 
-            this.btToUTC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btToUTC.Location = new System.Drawing.Point(401, 3);
-            this.btToUTC.Name = "btToUTC";
-            this.btToUTC.Size = new System.Drawing.Size(94, 23);
-            this.btToUTC.TabIndex = 9;
-            this.btToUTC.Text = "To UTC";
-            this.btToUTC.UseVisualStyleBackColor = true;
-            this.btToUTC.Click += new System.EventHandler(this.BtToUTC_Click);
             // 
             // FormDialogAddUpdateAssemblyVersion
             // 
