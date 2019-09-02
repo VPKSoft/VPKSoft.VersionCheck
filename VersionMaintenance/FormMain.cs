@@ -90,7 +90,8 @@ namespace VersionMaintenance
                     versionInfo.DownloadLink,
                     versionInfo.ReleaseDate,
                     versionInfo.IsDirectDownload,
-                    versionInfo.MetaData);
+                    versionInfo.MetaData,
+                    versionInfo.DownloadCount);
             }
         }
 

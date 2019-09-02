@@ -30,13 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.gvSoftwareVersions = new System.Windows.Forms.DataGridView();
-            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colApp = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDownloadLink = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colReleaseDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDirectDownload = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colMetaData = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.msMain = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAddUpdateAssembly = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,6 +54,14 @@
             this.lbTimeOutMS = new System.Windows.Forms.Label();
             this.nudTimeOutMS = new System.Windows.Forms.NumericUpDown();
             this.fbdDirectory = new Ookii.Dialogs.WinForms.VistaFolderBrowserDialog();
+            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colApp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDownloadLink = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colReleaseDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDirectDownload = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colMetaData = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDownloadCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvSoftwareVersions)).BeginInit();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
@@ -82,56 +83,14 @@
             this.colDownloadLink,
             this.colReleaseDate,
             this.colDirectDownload,
-            this.colMetaData});
+            this.colMetaData,
+            this.colDownloadCount});
             this.gvSoftwareVersions.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.gvSoftwareVersions.GridColor = System.Drawing.Color.Black;
             this.gvSoftwareVersions.Location = new System.Drawing.Point(12, 52);
             this.gvSoftwareVersions.Name = "gvSoftwareVersions";
             this.gvSoftwareVersions.Size = new System.Drawing.Size(910, 333);
             this.gvSoftwareVersions.TabIndex = 3;
-            // 
-            // colID
-            // 
-            this.colID.HeaderText = "ID";
-            this.colID.Name = "colID";
-            this.colID.Visible = false;
-            // 
-            // colApp
-            // 
-            this.colApp.HeaderText = "Application";
-            this.colApp.Name = "colApp";
-            this.colApp.ReadOnly = true;
-            // 
-            // colVersion
-            // 
-            this.colVersion.HeaderText = "Version";
-            this.colVersion.Name = "colVersion";
-            this.colVersion.ReadOnly = true;
-            // 
-            // colDownloadLink
-            // 
-            this.colDownloadLink.HeaderText = "Download link";
-            this.colDownloadLink.Name = "colDownloadLink";
-            this.colDownloadLink.ReadOnly = true;
-            // 
-            // colReleaseDate
-            // 
-            this.colReleaseDate.HeaderText = "Release date";
-            this.colReleaseDate.Name = "colReleaseDate";
-            this.colReleaseDate.ReadOnly = true;
-            // 
-            // colDirectDownload
-            // 
-            this.colDirectDownload.HeaderText = "Direct download";
-            this.colDirectDownload.Name = "colDirectDownload";
-            this.colDirectDownload.ReadOnly = true;
-            // 
-            // colMetaData
-            // 
-            this.colMetaData.HeaderText = "Additional release information";
-            this.colMetaData.Name = "colMetaData";
-            this.colMetaData.ReadOnly = true;
-            this.colMetaData.Width = 200;
             // 
             // msMain
             // 
@@ -349,6 +308,56 @@
             this.fbdDirectory.Description = "Select folder for generating files";
             this.fbdDirectory.UseDescriptionForTitle = true;
             // 
+            // colID
+            // 
+            this.colID.HeaderText = "ID";
+            this.colID.Name = "colID";
+            this.colID.Visible = false;
+            // 
+            // colApp
+            // 
+            this.colApp.HeaderText = "Application";
+            this.colApp.Name = "colApp";
+            this.colApp.ReadOnly = true;
+            // 
+            // colVersion
+            // 
+            this.colVersion.HeaderText = "Version";
+            this.colVersion.Name = "colVersion";
+            this.colVersion.ReadOnly = true;
+            // 
+            // colDownloadLink
+            // 
+            this.colDownloadLink.HeaderText = "Download link";
+            this.colDownloadLink.Name = "colDownloadLink";
+            this.colDownloadLink.ReadOnly = true;
+            // 
+            // colReleaseDate
+            // 
+            this.colReleaseDate.HeaderText = "Release date";
+            this.colReleaseDate.Name = "colReleaseDate";
+            this.colReleaseDate.ReadOnly = true;
+            // 
+            // colDirectDownload
+            // 
+            this.colDirectDownload.HeaderText = "Direct download";
+            this.colDirectDownload.Name = "colDirectDownload";
+            this.colDirectDownload.ReadOnly = true;
+            // 
+            // colMetaData
+            // 
+            this.colMetaData.HeaderText = "Additional release information";
+            this.colMetaData.Name = "colMetaData";
+            this.colMetaData.ReadOnly = true;
+            this.colMetaData.Width = 200;
+            // 
+            // colDownloadCount
+            // 
+            this.colDownloadCount.HeaderText = "Downloads";
+            this.colDownloadCount.Name = "colDownloadCount";
+            this.colDownloadCount.ReadOnly = true;
+            this.colDownloadCount.Width = 70;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -396,6 +405,12 @@
         private System.Windows.Forms.ToolStripButton tbGenerateAPIKey;
         private System.Windows.Forms.ToolStripMenuItem mnuDeleteSelectedEntry;
         private System.Windows.Forms.ToolStripMenuItem mnuGenerateAPIKey;
+        private System.Windows.Forms.Label lbTimeOutMS;
+        private System.Windows.Forms.NumericUpDown nudTimeOutMS;
+        private System.Windows.Forms.ToolStripMenuItem mnuTools;
+        private System.Windows.Forms.ToolStripMenuItem mnuGenerateFiles;
+        private Ookii.Dialogs.WinForms.VistaFolderBrowserDialog fbdDirectory;
+        private System.Windows.Forms.ToolStripMenuItem mnuThisAssemblyVersion;
         private System.Windows.Forms.DataGridViewTextBoxColumn colID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colApp;
         private System.Windows.Forms.DataGridViewTextBoxColumn colVersion;
@@ -403,12 +418,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colReleaseDate;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colDirectDownload;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMetaData;
-        private System.Windows.Forms.Label lbTimeOutMS;
-        private System.Windows.Forms.NumericUpDown nudTimeOutMS;
-        private System.Windows.Forms.ToolStripMenuItem mnuTools;
-        private System.Windows.Forms.ToolStripMenuItem mnuGenerateFiles;
-        private Ookii.Dialogs.WinForms.VistaFolderBrowserDialog fbdDirectory;
-        private System.Windows.Forms.ToolStripMenuItem mnuThisAssemblyVersion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDownloadCount;
     }
 }
 

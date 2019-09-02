@@ -41,7 +41,8 @@
 				"DownloadLink" => "",
 				"ReleaseDate" => "0000-00-00 00:00:00",
 				"IsDirectDownload" => "False",
-				"MetaData" => ""
+				"MetaData" => "",
+				"DownloadCount" => "0"
 				);
 					
 			$software_name = $_POST["Query_Version"];
@@ -49,7 +50,12 @@
 			// create a database connection..
 			$version_db = new PDO("sqlite:version.sqlite");		
 			
-			$select = "SELECT * FROM VERSIONS WHERE SOFTWARENAME = :name ";
+			$select = 
+				"SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT\r\n" .
+				"FROM\r\n" .
+				"VERSIONS V\r\n" .
+				"  LEFT OUTER JOIN DLCOUNT D ON (D.ID = V.ID)\r\n" .
+				"WHERE V.SOFTWARENAME = :name ";
 			
 			$stmt = $version_db->prepare($select);
 			
@@ -65,12 +71,53 @@
 				$return_value["ReleaseDate"] = $entry["RELEASEDATE"];
 				$return_value["IsDirectDownload"] = $entry["ISDIRECT_DOWNLOAD"];			
 				$return_value["MetaData"] = $entry["METADATA"];			
+				$return_value["DownloadCount"] = $entry["DLCOUNT"];			
 				break; // only one entry with the same name should exist..
 			}
 				
 			$version_db = null; // release the database connection..
 			$stmt = null;			
 			echo json_encode($return_value);
+		}
+		catch (Exception $e) // just exit with an error..
+		{
+			exit(1);
+		}
+		exit(0); // no error..
+	}
+	// update the download count for a given software name..
+	else if (isset($_POST["Increase_DownloadCount"]))
+	{
+		try
+		{
+			 $name = $_POST["Increase_DownloadCount"];
+
+			// create a database connection..
+			$version_db = new PDO("sqlite:version.sqlite");		
+
+			$sentence = // conditional insert..
+				"INSERT INTO DLCOUNT\r\n" .
+				"(ID, SOFTWARENAME)\r\n" .
+				"SELECT (SELECT ID FROM VERSIONS WHERE SOFTWARENAME = :name), :name\r\n" .
+				"WHERE NOT EXISTS(SELECT * FROM DLCOUNT WHERE SOFTWARENAME = :name)\r\n";
+
+			$stmt = $version_db->prepare($sentence);
+			$stmt->execute(array(":name" => $name));
+			$stmp = null;
+
+			$sentence = // the update goes after with no conditions..
+				"UPDATE DLCOUNT\r\n" .
+				"SET\r\n" .
+				"DLCOUNT = (SELECT DLCOUNT + 1 FROM DLCOUNT WHERE SOFTWARENAME = :name)\r\n" .
+				"WHERE SOFTWARENAME = :name\r\n";
+
+			$stmt = $version_db->prepare($sentence);
+			$stmt->execute(array(":name" => $name));
+			$stmp = null;
+
+			$sentence = null;
+			$stmt = null;
+			$version_db = null; // release the database connection..
 		}
 		catch (Exception $e) // just exit with an error..
 		{
@@ -201,12 +248,16 @@
 			// initialize an empty array..
 			$result = array();
 			
-			$select = "SELECT * FROM VERSIONS";
-			
+			$select = 
+				"SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT\r\n" .
+				"FROM\r\n" .
+				"VERSIONS V\r\n" .
+				"  LEFT OUTER JOIN DLCOUNT D ON (D.ID = V.ID)";
+				
 			$stmt = $version_db->prepare($select);
 			
 			$stmt->execute();
-			$r = $stmt->fetchAll();
+			$r = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 			
 			foreach ($r as $row => $entry)
 			{
@@ -217,7 +268,8 @@
 					"DownloadLink" => "",
 					"ReleaseDate" => "0000-00-00 00:00:00",
 					"IsDirectDownload" => "False",
-					"MetaData" => ""
+					"MetaData" => "",
+					"DownloadCount" => "0"
 					);			
 				
 				$array_result["ID"] = $entry["ID"];
@@ -227,12 +279,11 @@
 				$array_result["ReleaseDate"] = $entry["RELEASEDATE"];
 				$array_result["IsDirectDownload"] = $entry["ISDIRECT_DOWNLOAD"];		
 				$array_result["MetaData"] = $entry["METADATA"];			
-				
+				$array_result["DownloadCount"] = $entry["DLCOUNT"];							
 				array_push($result, $array_result);
 			}
 			$version_db = null; // release the database connection..
 			$stmt = null;
-			$version_db = null; // release the database connection..			
 			echo json_encode($result);
 		}
 		catch (Exception $e) // just exit with an error..

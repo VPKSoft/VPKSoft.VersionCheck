@@ -103,8 +103,11 @@ namespace VPKSoft.VersionCheck
                             {
                                 try
                                 {
+                                    VersionCheck.IncreaseDownloadCount(version.SoftwareName);
+
                                     Process.Start(Path.Combine(tempPath,
                                         Path.GetFileName(new Uri(version.DownloadLink).LocalPath)));
+
                                     return true;
                                 }
                                 catch

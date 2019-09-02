@@ -28,6 +28,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace VPKSoft.VersionCheck
@@ -63,6 +64,23 @@ namespace VPKSoft.VersionCheck
         public bool UseDownloadDialogOnBinaries { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets the name of the software of this about dialog.
+        /// </summary>
+        [Description("Gets or sets the name of the software of this link label.")]
+        [Category("Behaviour")]
+        [Browsable(true)]
+        public string SoftwareName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Sets the software name from assembly to the <see cref="SoftwareName"/> property value.
+        /// </summary>
+        /// <param name="assembly">The assembly to use.</param>
+        public void SetSoftwareNameFromAssembly(Assembly assembly)
+        {
+            SoftwareName = assembly.GetName().Name;
+        }
+
+        /// <summary>
         /// Gets or sets the temporary path for downloading files into.
         /// </summary>
         [Description("Gets or sets the temporary path for downloading files into.")]
@@ -83,6 +101,8 @@ namespace VPKSoft.VersionCheck
                 {
                     if (VersionCheck.DownloadFile(LinkUrl, TempPath))
                     {
+                        VersionCheck.IncreaseDownloadCount(SoftwareName);
+
                         System.Diagnostics.Process.Start(Path.Combine(TempPath, Path.GetFileName(new Uri(LinkUrl).LocalPath)));
                     }
                     else

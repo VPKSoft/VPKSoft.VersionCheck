@@ -67,6 +67,11 @@ namespace VPKSoft.VersionCheck
             MainInit();
             lbLinkLicense.Text = license;
             lbLinkLicense.Tag = licenseUrl;
+            if (aboutAssembly != null)
+            {
+                sllLinkVersion.SoftwareName = aboutAssembly.GetName().Name;
+            }
+
             VersionCheck.CheckUri = checkUrl;
             VersionCheck.TimeOutMs = timeOut;
             pbLogo.SizeMode = VersionCheck.AboutDialogImageSizeMode;
@@ -91,6 +96,7 @@ namespace VPKSoft.VersionCheck
             MainInit();
             lbLinkLicense.Text = license;
             lbLinkLicense.Tag = licenseUrl;
+            sllLinkVersion.SoftwareName = aboutAssembly.GetName().Name;
             VersionCheck.CheckUri = checkUrl;
             VersionCheck.TimeOutMs = timeOut;
             pbLogo.SizeMode = VersionCheck.AboutDialogImageSizeMode;

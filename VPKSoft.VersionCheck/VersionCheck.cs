@@ -146,6 +146,11 @@ namespace VPKSoft.VersionCheck
             /// An additional meta data for the entry.
             /// </summary>
             public string MetaData;
+
+            /// <summary>
+            /// Gets or sets the download count of the software via the update system.
+            /// </summary>
+            public string DownloadCount { get; set; }
         }
 
         /// <summary>
@@ -213,6 +218,11 @@ namespace VPKSoft.VersionCheck
             /// An additional meta data for the entry.
             /// </summary>
             public string MetaData { get; set; }
+
+            /// <summary>
+            /// Gets or sets the download count of the software via the update system.
+            /// </summary>
+            public int DownloadCount { get; set; }
 
             /// <summary>
             /// Checks if the given Assembly version is smaller than the VersionNumber property.
@@ -316,6 +326,17 @@ namespace VPKSoft.VersionCheck
                     // log the exception..
                     ExceptionAction?.Invoke(ex);
                     ID = -1;
+                }
+
+                try
+                {
+                    DownloadCount = int.Parse(vr.DownloadCount);
+                }
+                catch (Exception ex)
+                {
+                    // log the exception..
+                    ExceptionAction?.Invoke(ex);
+                    DownloadCount = 0;
                 }
 
                 try
@@ -540,6 +561,56 @@ namespace VPKSoft.VersionCheck
                 ExceptionAction?.Invoke(ex);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Increases the download count of a given application name.
+        /// </summary>
+        /// <param name="applicationName">Name of the application which download count to increase.</param>
+        /// <returns><c>true</c> if operation was successful, <c>false</c> otherwise.</returns>
+        public static bool IncreaseDownloadCount(string applicationName)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
+                request.Timeout = TimeOutMs;
+
+                request.Method = "POST";
+
+                var recordData = applicationName;
+
+                recordData = HttpUtility.UrlEncode(recordData);
+
+                byte[] data =
+                    Encoding.UTF8.GetBytes("Increase_DownloadCount=" + recordData);
+
+                request.ContentLength = data.Length;
+                request.ContentType = "application/x-www-form-urlencoded";
+
+                using (Stream rs = request.GetRequestStream())
+                {
+                    rs.Write(data, 0, data.Length);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Increases the download count of the software.
+        /// </summary>
+        /// <param name="assembly">The assembly to get the software data from.</param>
+        /// <returns><c>true</c> if operation was successful, <c>false</c> otherwise.</returns>
+        public static bool IncreaseDownloadCount(Assembly assembly)
+        {
+            return IncreaseDownloadCount(assembly.GetName().Name);
         }
 
         /// <summary>
