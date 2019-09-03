@@ -10,7 +10,7 @@
     <iconUrl>https://www.vpksoft.net/site/VPKSoft.ico</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Added semi-automatic dialog to check, download or cancel an update to a new version. Updated the assembly to .NET Framework 4.7.</releaseNotes>
+    <releaseNotes>Added a download counter for the API and for the database.</releaseNotes>
     <copyright>Copyright ® VPKSoft 2019</copyright>
     <tags>version check .NET assembly download</tags>
     <license type="expression">LGPL-3.0-or-later</license>

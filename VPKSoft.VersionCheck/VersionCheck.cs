@@ -602,6 +602,43 @@ namespace VPKSoft.VersionCheck
             }
         }
 
+        /// <summary>
+        /// Updates the database structure to the newest version.
+        /// </summary>
+        /// <returns><c>true</c> if operation was successful, <c>false</c> otherwise.</returns>
+        public static bool UpdateDatabase()
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
+                request.Timeout = TimeOutMs;
+
+                request.Method = "POST";
+
+                var recordData = ApiKey;
+
+                recordData = HttpUtility.UrlEncode(recordData);
+
+                byte[] data =
+                    Encoding.UTF8.GetBytes("Update_Database=" + recordData);
+
+                request.ContentLength = data.Length;
+                request.ContentType = "application/x-www-form-urlencoded";
+
+                using (Stream rs = request.GetRequestStream())
+                {
+                    rs.Write(data, 0, data.Length);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return false;
+            }
+        }
 
         /// <summary>
         /// Increases the download count of the software.

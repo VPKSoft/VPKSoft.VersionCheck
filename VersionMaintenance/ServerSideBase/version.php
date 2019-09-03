@@ -90,7 +90,7 @@
 	{
 		try
 		{
-			 $name = $_POST["Increase_DownloadCount"];
+			$name = $_POST["Increase_DownloadCount"];
 
 			// create a database connection..
 			$version_db = new PDO("sqlite:version.sqlite");		
@@ -117,6 +117,41 @@
 
 			$sentence = null;
 			$stmt = null;
+			$version_db = null; // release the database connection..
+		}
+		catch (Exception $e) // just exit with an error..
+		{
+			exit(1);
+		}
+		exit(0); // no error..
+	}
+	// updates the database to the latest version..
+	elseif (isset($_POST["Update_Database"])) 
+	{
+		try
+		{
+			$secret_file = $_POST["Update_Database"];
+
+			// validate the right to manipulate the version database..
+			if (!file_exists($secret_file))
+			{
+				// ..no rights..
+				exit(3);
+			}
+
+			$sentence =
+				"CREATE TABLE IF NOT EXISTS DLCOUNT(\r\n" .
+				"ID INTEGER PRIMARY KEY NOT NULL,\r\n" .
+				"SOFTWARENAME TEXT NOT NULL,\r\n" .
+				"DLCOUNT INTEGER NOT NULL DEFAULT 0);\r\n";
+
+			// create a database connection..
+			$version_db = new PDO("sqlite:version.sqlite");		
+
+			$version_db->exec($sentence);
+			$sentence = null;
+			$stmt = null;
+
 			$version_db = null; // release the database connection..
 		}
 		catch (Exception $e) // just exit with an error..

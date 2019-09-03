@@ -57,6 +57,9 @@ namespace VersionMaintenance
             tstbAPIKey.Text = settings.ApiKey;
             nudTimeOutMS.Value = settings.TimeOutMs;
 
+            // update the database to the newest version..
+            VersionCheck.UpdateDatabase();
+
             // the application dead-locks if the "self-assembly" check is made in the debug mode..
             mnuThisAssemblyVersion.Enabled = !Debugger.IsAttached;
 
