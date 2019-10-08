@@ -42,24 +42,78 @@
 				"ReleaseDate" => "0000-00-00 00:00:00",
 				"IsDirectDownload" => "False",
 				"MetaData" => "",
-				"DownloadCount" => "0"
+				"DownloadCount" => "0",
+				"MetaDataLocalized" => ""
 				);
+
+			$array_result = explode(";", $_POST["Query_Version"]);
 					
-			$software_name = $_POST["Query_Version"];
-			
+			$software_name = $array_result[0];
+			$sofware_lang = "en-US"; // default to English (United States)..
+
+			if (sizeof($software_data) == 2) // to support the previous version, do a range check..
+			{
+				// an invalid POST value was given..
+				$sofware_lang = $array_result[1];
+			}
+
 			// create a database connection..
 			$version_db = new PDO("sqlite:version.sqlite");		
-			
+
+			// to support previous version check if a table exists..
+			$select =
+				"SELECT CASE WHEN EXISTS (SELECT * FROM SQLITE_MASTER WHERE TYPE = :table AND NAME = 'CHANGEHISTORY') THEN 1 ELSE 0 END AS TABLE_EXISTS;";
+
+			$stmt = $version_db->prepare($select);			
+			$stmt->execute(array(":table" => "table"));
+
+			$r = $stmt->fetchAll();
+			$table_exists = false;
+			foreach ($r as $row => $entry)
+			{
+				$table_exists = $entry["TABLE_EXISTS"] == 1;
+				break;
+			}
+			$stmt = null;
+
+			$lang_split = explode("-", $sofware_lang);
+					
 			$select = 
-				"SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT\r\n" .
+				"SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT,\r\n" .
+				"--localization via some SQL magic..\r\n" .
+				"IFNULL(IFNULL(H1.METADATA, H2.METADATA), V.METADATA) AS METADATANEW\r\n" .
 				"FROM\r\n" .
 				"VERSIONS V\r\n" .
 				"  LEFT OUTER JOIN DLCOUNT D ON (D.ID = V.ID)\r\n" .
-				"WHERE V.SOFTWARENAME = :name ";
+				"  LEFT OUTER JOIN CHANGEHISTORY H1 ON (H1.ID = V.ID AND H1.CULTUREMAIN = :en AND\r\n" .
+				"    IFNULL(H1.CULTURESPECIFIC, :us) = :us AND V.VERSIONSTRING = H1.VERSIONSTRING)\r\n" .
+				"  LEFT OUTER JOIN CHANGEHISTORY H2 ON (H2.ID = V.ID AND H2.CULTUREMAIN = :lang1 AND\r\n" .
+				"    IFNULL(H2.CULTURESPECIFIC, :lang2) = :lang2 AND V.VERSIONSTRING = H2.VERSIONSTRING)\r\n" .
+				"WHERE V.SOFTWARENAME = :name";
+
+			if (!$table_exists)
+			{
+				$select = 
+					"SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT,\r\n" .
+					"V.METADATA AS METADATANEW\r\n" .
+					"FROM\r\n" .
+					"VERSIONS V\r\n" .
+					"  LEFT OUTER JOIN DLCOUNT D ON (D.ID = V.ID)\r\n" .
+					"WHERE V.SOFTWARENAME = :name";			
+			}
 			
 			$stmt = $version_db->prepare($select);
 			
-			$stmt->execute(array(":name" => $software_name));
+			if ($table_exists)
+			{
+				// the default culture is en-US..
+				$stmt->execute(array(":name" => $software_name, ":lang1" => $lang_split[0], ":lang2" => $lang_split[1], ":en" => "en", ":us" => "US"));
+			}
+			else 
+			{
+				$stmt->execute(array(":name" => $software_name));
+			}
+ 
 			$r = $stmt->fetchAll();
 			
 			foreach ($r as $row => $entry)
@@ -72,6 +126,11 @@
 				$return_value["IsDirectDownload"] = $entry["ISDIRECT_DOWNLOAD"];			
 				$return_value["MetaData"] = $entry["METADATA"];			
 				$return_value["DownloadCount"] = $entry["DLCOUNT"];			
+				if ($table_exists)
+				{
+					$return_value["MetaDataLocalized"] = $entry["METADATANEW"];			
+				}
+				
 				break; // only one entry with the same name should exist..
 			}
 				
@@ -139,16 +198,40 @@
 				exit(3);
 			}
 
+			// create a database connection..
+			$version_db = new PDO("sqlite:version.sqlite");		
+
+			$sentence = 
+				"CREATE TABLE IF NOT EXISTS VERSIONS(\r\n" .
+				"ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\r\n" .
+				"SOFTWARENAME TEXT NOT NULL,\r\n" .
+				"VERSIONSTRING TEXT NOT NULL,\r\n" .
+				"DOWNLOADLINK TEXT NOT NULL,\r\n" .
+				"RELEASEDATE TEXT NOT NULL,\r\n" .
+				"ISDIRECT_DOWNLOAD TEXT NULL, -- True / False\r\n" .
+				"METADATA TEXT NULL);\r\n";
+
+			$version_db->exec($sentence);
+
 			$sentence =
 				"CREATE TABLE IF NOT EXISTS DLCOUNT(\r\n" .
 				"ID INTEGER PRIMARY KEY NOT NULL,\r\n" .
 				"SOFTWARENAME TEXT NOT NULL,\r\n" .
 				"DLCOUNT INTEGER NOT NULL DEFAULT 0);\r\n";
 
-			// create a database connection..
-			$version_db = new PDO("sqlite:version.sqlite");		
+			$version_db->exec($sentence);
+
+			$sentence =
+				"CREATE TABLE IF NOT EXISTS CHANGEHISTORY(\r\n" .
+				"ID INTEGER PRIMARY KEY NOT NULL,\r\n" .
+				"SOFTWARENAME TEXT NOT NULL,\r\n" .
+				"VERSIONSTRING TEXT NOT NULL,\r\n" .
+				"CULTUREMAIN TEXT NOT NULL,\r\n" .
+				"CULTURESPECIFIC TEXT NULL,\r\n" .
+				"METADATA TEXT NOT NULL);\r\n";
 
 			$version_db->exec($sentence);
+
 			$sentence = null;
 			$stmt = null;
 
@@ -228,6 +311,86 @@
 			exit(1);
 		}
 		exit(0); // no error..
+	}
+	else if (isset($_POST["AddVersionChanges"]))
+	{
+		try
+		{
+			// the format is SOFTWARENAME;APIKEY
+			$software_data = explode(";", $_POST["AddVersionChanges"]);		
+
+			if (sizeof($software_data) != 6)
+			{
+				// an invalid POST value was given..
+				exit(2);
+			}	
+
+			// get the data..
+			$id = $software_data[0];
+			$software_name = $software_data[1];
+			$secret_file = $software_data[2];		
+
+			// validate the right to manipulate the version database..
+			if (!file_exists($secret_file))
+			{
+				// ..no rights..
+				exit(3);
+			}
+
+			$culture = $software_data[3];			
+			$version = $software_data[4];
+			$meta = $software_data[5];
+
+			$culture_parts = explode("-", $culture);
+			$culture_main = $culture_parts[0];
+			$culture_specific = "''";
+
+			if (sizeof($culture_parts) == 2)
+			{
+				$culture_specific = $culture_parts[0];
+			}
+
+			// create a database connection..		
+			$version_db = new PDO("sqlite:version.sqlite");		
+			
+			$sentence = // conditional insert..
+				"INSERT INTO CHANGEHISTORY\r\n" .
+				"(ID, SOFTWARENAME, VERSIONSTRING, CULTUREMAIN, CULTURESPECIFIC, METADATA)\r\n" .
+				"SELECT :id, :softwarename, :versionstring, :culturemain, :culturespecific, :meta\r\n" .
+				"WHERE NOT EXISTS(SELECT * FROM CHANGEHISTORY WHERE ID = :id AND SOFTWARENAME = :softwarename\r\n AND" . 
+				"CULTUREMAIN = :culturemain AND ISNULL(CULTURESPECIFIC, :culturespecific) = :culturespecific);\r\n";
+
+			$stmt = $version_db->prepare($sentence);
+			$stmt->execute(array(":id" => $name, ":softwarename" => $software_name, ":versionstring" => $version,
+				":meta" => $meta, ":culturemain" => $culture_main, ":culturespecific" => $culture_specific));
+
+			$stmp = null;
+
+			$sentence = // the update goes after with no conditions..
+				"UPDATE CHANGEHISTORY\r\n" .
+				"SET\r\n" .
+				"SOFTWARENAME = :softwarename,\r\n" .
+				"METADATA = :meta\r\n" .
+				"WHERE\r\n" .
+				"CULTUREMAIN = :culturemain AND\r\n" .
+				"VERSIONSTRING = :versionstring AND\r\n" .
+				"ID = :id AND\r\n" .
+				"ISNULL(CULTURESPECIFIC, :culturespecific) = :culturespecific);\r\n";
+
+			$stmt = $version_db->prepare($sentence);
+			$stmt->execute(array(":id" => $name, ":softwarename" => $software_name, ":versionstring" => $version,
+				":meta" => $meta, ":culturemain" => $culture_main, ":culturespecific" => $culture_specific));
+
+			$stmp = null;
+			$sentence = null;
+			$stmt = null;
+			$version_db = null; // release the database connection..
+		}
+		catch (Exception $e) // just exit with an error..
+		{
+			exit(1);
+		}
+		exit(0); // no error.
 	}
 	// a request was made to delete a version from the database..
 	elseif (isset($_POST["Delete_Version"]))

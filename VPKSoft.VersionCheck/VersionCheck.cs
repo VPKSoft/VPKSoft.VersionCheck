@@ -143,7 +143,7 @@ namespace VPKSoft.VersionCheck
             public string IsDirectDownload;
 
             /// <summary>
-            /// An additional meta data for the entry.
+            /// Gets or set an additional meta data for the entry.
             /// </summary>
             public string MetaData;
 
@@ -151,6 +151,11 @@ namespace VPKSoft.VersionCheck
             /// Gets or sets the download count of the software via the update system.
             /// </summary>
             public string DownloadCount { get; set; }
+
+            /// <summary>
+            /// Gets or set an additional localized meta data for the entry.
+            /// </summary>
+            public string MetaDataLocalized { get; set; }
         }
 
         /// <summary>

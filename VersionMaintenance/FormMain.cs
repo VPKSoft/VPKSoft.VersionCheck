@@ -27,6 +27,7 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
