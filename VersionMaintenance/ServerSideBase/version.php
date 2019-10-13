@@ -62,10 +62,10 @@
 
 			// to support previous version check if a table exists..
 			$select =
-				"SELECT CASE WHEN EXISTS (SELECT * FROM SQLITE_MASTER WHERE TYPE = :table AND NAME = 'CHANGEHISTORY') THEN 1 ELSE 0 END AS TABLE_EXISTS;";
+				"SELECT CASE WHEN EXISTS (SELECT * FROM SQLITE_MASTER WHERE TYPE = 'table' AND NAME = :table) THEN 1 ELSE 0 END AS TABLE_EXISTS;";
 
 			$stmt = $version_db->prepare($select);			
-			$stmt->execute(array(":table" => "table"));
+			$stmt->execute(array(":table" => "CHANGEHISTORY"));
 
 			$r = $stmt->fetchAll();
 			$table_exists = false;
