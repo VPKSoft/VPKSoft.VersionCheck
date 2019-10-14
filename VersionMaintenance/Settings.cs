@@ -154,22 +154,31 @@ namespace VersionMaintenance
         /// Gets or sets the API key used with the version management interface.
         /// </summary>
         [Setting("settings/apiKey", typeof(string))]
-        // ReSharper disable once UnusedMember.Global
         public string ApiKey { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the API key used for testing purposes.
+        /// </summary>
+        [Setting("settings/apiKeyTest", typeof(string))]
+        public string ApiKeyTest { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the time out in milliseconds with the HTTP(S) communication.
         /// </summary>
         [Setting("settings/timeOutMS", typeof(int))]
-        // ReSharper disable once UnusedMember.Global
         public int TimeOutMs { get; set; } = 1500;
 
         /// <summary>
         /// Gets or sets the check URI; where the version.php file is located.
         /// </summary>
         [Setting("settings/checkUri", typeof(string))]
-        // ReSharper disable once UnusedMember.Global
         public string CheckUri { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the check URI; where the version.php file is located for test purposes.
+        /// </summary>
+        [Setting("settings/checkUriTest", typeof(string))]
+        public string CheckUriTest { get; set; } = string.Empty;
         #endregion
 
         /// <summary>

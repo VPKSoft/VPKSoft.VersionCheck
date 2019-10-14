@@ -30,6 +30,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Text;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Web.Script.Serialization;
 using System.Reflection;
@@ -104,6 +105,86 @@ namespace VPKSoft.VersionCheck
         {
             get => FormDialogDownloadFile.LocalizedDownloadSpeedMBs;
             set => FormDialogDownloadFile.LocalizedDownloadSpeedMBs = value;
+        }
+
+        /// <summary>
+        /// Enumeration of the http(s) POST method values.
+        /// </summary>
+        internal enum PostMethod
+        {
+            /// <summary>
+            /// The Query_Version POST method.
+            /// </summary>
+            QueryVersion,
+
+            /// <summary>
+            /// The GetSoftwareList POST method.
+            /// </summary>
+            GetSoftwareList,
+
+            /// <summary>
+            /// The Update_Database POST method.
+            /// </summary>
+            UpdateDatabase,
+
+            /// <summary>
+            /// The Increase_DownloadCount POST method.
+            /// </summary>
+            IncreaseDownloadCount,
+
+            /// <summary>
+            /// The UpdateInsert_Version POST method.
+            /// </summary>
+            UpdateInsertVersion,
+
+            /// <summary>
+            /// The Delete_Version POST method.
+            /// </summary>
+            DeleteVersion,
+
+            /// <summary>
+            /// The AddVersionChanges POST method.
+            /// </summary>
+            AddVersionChanges,
+        }
+
+        /// <summary>
+        /// Gets or sets the post methods with their combined <see cref="PostMethod"/> enumeration value.
+        /// </summary>
+        internal static List<KeyValuePair<PostMethod, string>> PostMethods { get; set; } =
+            new List<KeyValuePair<PostMethod, string>>(new[]
+                {
+                    new KeyValuePair<PostMethod, string>(PostMethod.QueryVersion, "Query_Version"),
+                    new KeyValuePair<PostMethod, string>(PostMethod.GetSoftwareList, "GetSoftwareList"),
+                    new KeyValuePair<PostMethod, string>(PostMethod.UpdateDatabase, "Update_Database"),
+                    new KeyValuePair<PostMethod, string>(PostMethod.IncreaseDownloadCount, "Increase_DownloadCount"),
+                    new KeyValuePair<PostMethod, string>(PostMethod.UpdateInsertVersion, "UpdateInsert_Version"),
+                    new KeyValuePair<PostMethod, string>(PostMethod.DeleteVersion, "Delete_Version"),
+                    new KeyValuePair<PostMethod, string>(PostMethod.AddVersionChanges, "AddVersionChanges"),
+                }
+            );
+
+        /// <summary>
+        /// A response value for an API call that is not expected to return anything.
+        /// </summary>
+        public class GeneralResponse
+        {
+            /// <summary>
+            /// A string describing the response; can be anything.
+            /// </summary>
+            /// <value>The message.</value>
+            public string Message { get; set; }
+
+            /// <summary>
+            /// Gets or sets the error code; 0 means no error.
+            /// </summary>
+            /// <value>The error code.</value>
+            public int ErrorCode { get; set; }
+
+            /// <summary>
+            /// Gets or sets a value indicating whether an error occurred with the API call.
+            /// </summary>
+            public bool Error { get; set; }
         }
 
         /// <summary>
@@ -415,56 +496,78 @@ namespace VPKSoft.VersionCheck
         {
             try
             {
-                // See: https://docs.microsoft.com/en-us/dotnet/api/system.net.servicepointmanager.expect100continue?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev15.query%3FappId%3DDev15IDEF1%26l%3DEN-US%26k%3Dk(System.Net.ServicePointManager.Expect100Continue);k(TargetFrameworkMoniker-.NETFramework,Version%3Dv4.5);k(DevLang-csharp)%26rd%3Dtrue%26f%3D255%26MSPPError%3D-2147217396&view=netframework-4.8
-                ServicePointManager.Expect100Continue = true;
+                WebResponse webResponse = GetResponse(PostMethod.QueryVersion, false, programName);
 
-                // set all the security protocols..
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 |
-                                                       SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+                var result =  SerializeResponse<VersionInfo>(webResponse);
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
-                request.Timeout = TimeOutMs;
-
-                request.Method = "POST";
-
-                byte[] data = Encoding.UTF8.GetBytes("Query_Version=" + HttpUtility.UrlEncode(programName));
-                request.ContentLength = data.Length;
-                request.ContentType = "application/x-www-form-urlencoded";
-
-                using (Stream rs = request.GetRequestStream())
-                {
-                    rs.Write(data, 0, data.Length);
-                }
-
-                JavaScriptSerializer js = new JavaScriptSerializer();
-
-                WebResponse result = request.GetResponse();
-
-                using (Stream s = result.GetResponseStream())
-                {
-                    if (s != null)
-                    {
-                        using (StreamReader sr = new StreamReader(s, Encoding.UTF8))
-                        {
-                            string json = sr.ReadToEnd();
-                            VersionResponse vr = (VersionResponse) js.Deserialize(json, typeof(VersionResponse));
-                            if (vr.SoftwareName == "unknown")
-                            {
-                                return null;
-                            }
-
-                            return new VersionInfo(vr);
-                        }
-                    }
-                }
-
-                return null;
+                return result;
             }
             catch (Exception ex)
             {
                 // log the exception..
                 ExceptionAction?.Invoke(ex);
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Deletes the software entry from the remote database with a given name.
+        /// </summary>
+        /// <param name="applicationName">Name of the program to remove from the database.</param>
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse DeleteSoftwareEntry(string applicationName)
+        {
+            try
+            {
+                WebResponse webResponse = 
+                    GetResponse(PostMethod.DeleteVersion, 
+                        false, 
+                        applicationName, ApiKey);
+
+                var result = SerializeResponse<GeneralResponse>(webResponse);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
+            }
+        }
+
+        /// <summary>
+        /// Adds the version changes as a localized text to a given <paramref name="culture"/>.
+        /// </summary>
+        /// <param name="assembly">The assembly of which changes to add.</param>
+        /// <param name="softwareId">The software identifier.</param>
+        /// <param name="culture">The culture of the software change text.</param>
+        /// <param name="metaDataTextLocalized">The localized change history.</param>
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse AddVersionChanges(Assembly assembly, int softwareId,
+            CultureInfo culture, string metaDataTextLocalized)
+        {
+            try
+            {
+                WebResponse webResponse =
+                    GetResponse(
+                        PostMethod.AddVersionChanges,
+                        true,
+                        softwareId.ToString(),
+                        assembly.GetName().Name,
+                        assembly.GetName().Version.ToString(),
+                        metaDataTextLocalized,
+                        culture.Name);
+
+                var result = SerializeResponse<GeneralResponse>(webResponse);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
             }
         }
 
@@ -472,49 +575,10 @@ namespace VPKSoft.VersionCheck
         /// Deletes the software entry from the remote database with a name gotten from the <paramref name="assembly"/>.
         /// </summary>
         /// <param name="assembly">The assembly of which name to use.</param>
-        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public static bool DeleteSoftwareEntry(Assembly assembly)
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse DeleteSoftwareEntry(Assembly assembly)
         {
             return DeleteSoftwareEntry(assembly.GetName().Name);
-        }
-
-        /// <summary>
-        /// Deletes the software entry from the remote database with a given name.
-        /// </summary>
-        /// <param name="programName">Name of the program to remove from the database.</param>
-        /// <returns><c>true</c> if the operation was successful, <c>false</c> otherwise.</returns>
-        public static bool DeleteSoftwareEntry(string programName)
-        {
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
-                request.Timeout = TimeOutMs;
-
-                request.Method = "POST";
-
-                var recordData = programName + ";" + ApiKey;
-
-                recordData = HttpUtility.UrlEncode(recordData);
-
-                byte[] data =
-                    Encoding.UTF8.GetBytes("Delete_Version=" + recordData);
-
-                request.ContentLength = data.Length;
-                request.ContentType = "application/x-www-form-urlencoded";
-
-                using (Stream rs = request.GetRequestStream())
-                {
-                    rs.Write(data, 0, data.Length);
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionAction?.Invoke(ex);
-                return false;
-            }
         }
 
         /// <summary>
@@ -524,47 +588,35 @@ namespace VPKSoft.VersionCheck
         /// <param name="downloadLink">The download link for the software.</param>
         /// <param name="isDirectDownload">if set to <c>true</c> the <paramref name="downloadLink"/> is a link to a binary file or to an installer executable.</param>
         /// <param name="releaseDateTime">The release date and time of the software.</param>
-        /// <param name="metaDataText">The meta data text. I.e. version changes with the software.</param>
-        /// <returns><c>true</c> if operation was successful, <c>false</c> otherwise.</returns>
-        public static bool UpdateVersion(Assembly assembly, string downloadLink, bool isDirectDownload,
+        /// <param name="metaDataText">The meta data text. I.e. version changes with the software.</param>Delete_Version
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse UpdateVersion(Assembly assembly, string downloadLink, bool isDirectDownload,
             DateTime releaseDateTime, string metaDataText = "")
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
-                request.Timeout = TimeOutMs;
+                WebResponse webResponse =
+                    GetResponse(
+                        PostMethod.UpdateInsertVersion,
+                        false,
+                        assembly.GetName().Name,
+                        assembly.GetName().Version.ToString(),
+                        downloadLink,
+                        releaseDateTime.ToString("yyyy-MM-dd HH':'mm':'ss", CultureInfo.InvariantCulture),
+                        isDirectDownload.ToString(),
+                        metaDataText,
+                        ApiKey);
 
-                request.Method = "POST";
 
-                var recordData =
-                    assembly.GetName().Name + ";" +
-                    assembly.GetName().Version + ";" +
-                    downloadLink + ";" +
-                    releaseDateTime.ToString("yyyy-MM-dd HH':'mm':'ss", CultureInfo.InvariantCulture) + ";" +
-                    isDirectDownload + ";" +
-                    metaDataText + ";" +
-                    ApiKey;
+                var result = SerializeResponse<GeneralResponse>(webResponse);
 
-                recordData = HttpUtility.UrlEncode(recordData);
-
-                byte[] data =
-                    Encoding.UTF8.GetBytes("UpdateInsert_Version=" + recordData);
-
-                request.ContentLength = data.Length;
-                request.ContentType = "application/x-www-form-urlencoded";
-
-                using (Stream rs = request.GetRequestStream())
-                {
-                    rs.Write(data, 0, data.Length);
-                }
-
-                return true;
+                return result;
             }
             catch (Exception ex)
             {
                 // log the exception..
                 ExceptionAction?.Invoke(ex);
-                return false;
+                return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
             }
         }
 
@@ -572,76 +624,22 @@ namespace VPKSoft.VersionCheck
         /// Increases the download count of a given application name.
         /// </summary>
         /// <param name="applicationName">Name of the application which download count to increase.</param>
-        /// <returns><c>true</c> if operation was successful, <c>false</c> otherwise.</returns>
-        public static bool IncreaseDownloadCount(string applicationName)
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse IncreaseDownloadCount(string applicationName)
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
-                request.Timeout = TimeOutMs;
+                WebResponse webResponse = GetResponse(PostMethod.IncreaseDownloadCount, false, applicationName);
 
-                request.Method = "POST";
+                var result = SerializeResponse<GeneralResponse>(webResponse);
 
-                var recordData = applicationName;
-
-                recordData = HttpUtility.UrlEncode(recordData);
-
-                byte[] data =
-                    Encoding.UTF8.GetBytes("Increase_DownloadCount=" + recordData);
-
-                request.ContentLength = data.Length;
-                request.ContentType = "application/x-www-form-urlencoded";
-
-                using (Stream rs = request.GetRequestStream())
-                {
-                    rs.Write(data, 0, data.Length);
-                }
-
-                return true;
+                return result;
             }
             catch (Exception ex)
             {
                 // log the exception..
                 ExceptionAction?.Invoke(ex);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Updates the database structure to the newest version.
-        /// </summary>
-        /// <returns><c>true</c> if operation was successful, <c>false</c> otherwise.</returns>
-        public static bool UpdateDatabase()
-        {
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
-                request.Timeout = TimeOutMs;
-
-                request.Method = "POST";
-
-                var recordData = ApiKey;
-
-                recordData = HttpUtility.UrlEncode(recordData);
-
-                byte[] data =
-                    Encoding.UTF8.GetBytes("Update_Database=" + recordData);
-
-                request.ContentLength = data.Length;
-                request.ContentType = "application/x-www-form-urlencoded";
-
-                using (Stream rs = request.GetRequestStream())
-                {
-                    rs.Write(data, 0, data.Length);
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // log the exception..
-                ExceptionAction?.Invoke(ex);
-                return false;
+                return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
             }
         }
 
@@ -649,10 +647,122 @@ namespace VPKSoft.VersionCheck
         /// Increases the download count of the software.
         /// </summary>
         /// <param name="assembly">The assembly to get the software data from.</param>
-        /// <returns><c>true</c> if operation was successful, <c>false</c> otherwise.</returns>
-        public static bool IncreaseDownloadCount(Assembly assembly)
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse IncreaseDownloadCount(Assembly assembly)
         {
             return IncreaseDownloadCount(assembly.GetName().Name);
+        }
+
+        /// <summary>
+        /// Updates the database structure to the newest version.
+        /// </summary>
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse UpdateDatabase()
+        {
+            try
+            {
+                WebResponse webResponse = GetResponse(PostMethod.UpdateDatabase, true);
+
+                var result = SerializeResponse<GeneralResponse>(webResponse);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
+            }
+        }
+
+        internal static WebResponse GetResponse(PostMethod postMethod, bool apiKeyRequired, params string[] arguments)
+        {
+            // See: https://docs.microsoft.com/en-us/dotnet/api/system.net.servicepointmanager.expect100continue?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev15.query%3FappId%3DDev15IDEF1%26l%3DEN-US%26k%3Dk(System.Net.ServicePointManager.Expect100Continue);k(TargetFrameworkMoniker-.NETFramework,Version%3Dv4.5);k(DevLang-csharp)%26rd%3Dtrue%26f%3D255%26MSPPError%3D-2147217396&view=netframework-4.8
+            ServicePointManager.Expect100Continue = true;
+
+            // set all the security protocols..
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 |
+                                                   SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
+            request.Timeout = TimeOutMs;
+
+            request.Method = "POST";
+
+            var recordData = apiKeyRequired ? ApiKey : string.Empty;
+
+            if (arguments != null && arguments.Length > 0)
+            {
+                recordData += (recordData == string.Empty ? "" : ";") + string.Join(";", arguments);
+            }
+
+            // no empty values because dev doesn't know or wishes to test whether
+            // PHP: isset($_POST["xxx"]) is true when empty data is given..
+            if (recordData == string.Empty)
+            {
+                recordData = "1";
+            }
+
+            recordData = HttpUtility.UrlEncode(recordData);
+
+            recordData = PostMethods.FirstOrDefault(f => f.Key == postMethod).Value + "=" + recordData;
+
+            byte[] data =
+                Encoding.UTF8.GetBytes(recordData);
+
+            request.ContentLength = data.Length;
+            request.ContentType = "application/x-www-form-urlencoded";
+
+            using (Stream rs = request.GetRequestStream())
+            {
+                rs.Write(data, 0, data.Length);
+            }
+
+            return request.GetResponse();
+        }
+
+        /// <summary>
+        /// Serializes a see <see cref="WebResponse"/> response stream <see cref="Stream"/> to a class of type of <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the response.</typeparam>
+        /// <param name="response">The <see cref="WebResponse"/> class instance to serialize into an object.</param>
+        /// <returns>An object of type of <typeparamref name="T"/> serialized from the response stream if successful; otherwise default(T).</returns>
+        internal static T SerializeResponse<T>(WebResponse response)
+        {
+            try
+            {
+                using (Stream stream = response.GetResponseStream())
+                {
+                    if (stream != null && stream.CanRead)
+                    {
+                        using (StreamReader sr = new StreamReader(stream, Encoding.UTF8))
+                        {
+                            JavaScriptSerializer js = new JavaScriptSerializer();
+                            string json = sr.ReadToEnd();
+                            T result = (T) js.Deserialize(json, typeof(T));
+
+                            if (result != null && result.GetType() == typeof(VersionResponse)) // special case with this one..
+                            {
+                                if (result is VersionResponse versionResponse &&
+                                    versionResponse.SoftwareName == "unknown") 
+                                {
+                                    return default;
+                                }
+                            }
+
+                            return result;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return default;
+            }
+
+            return default;
         }
 
         /// <summary>
@@ -667,37 +777,9 @@ namespace VPKSoft.VersionCheck
         {
             try
             {
-                List<VersionInfo> result = new List<VersionInfo>();
+                WebResponse webResponse = GetResponse(PostMethod.GetSoftwareList, true, CultureInfo.CurrentCulture.Name);
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
-                request.Timeout = TimeOutMs;
-
-                request.Method = "POST";
-
-                byte[] data = Encoding.UTF8.GetBytes("GetSoftwareList=1");
-                request.ContentLength = data.Length;
-                request.ContentType = "application/x-www-form-urlencoded";
-
-                using (Stream rs = request.GetRequestStream())
-                {
-                    rs.Write(data, 0, data.Length);
-                }
-
-                JavaScriptSerializer js = new JavaScriptSerializer();
-
-                WebResponse response = request.GetResponse();
-
-                using (Stream s = response.GetResponseStream())
-                {
-                    if (s != null)
-                    {
-                        using (StreamReader sr = new StreamReader(s, Encoding.UTF8))
-                        {
-                            string json = sr.ReadToEnd();
-                            result = (List<VersionInfo>) js.Deserialize(json, typeof(List<VersionInfo>));
-                        }
-                    }
-                }
+                var result =  SerializeResponse<List<VersionInfo>>(webResponse);
 
                 return result;
             }

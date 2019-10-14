@@ -50,12 +50,21 @@ namespace VersionMaintenance
             InitializeComponent();
             settings = new Settings();
 
-            VersionCheck.ApiKey = settings.ApiKey; // a random string and a random file on the server...
-            VersionCheck.CheckUri = settings.CheckUri;
+
+            if (Debugger.IsAttached) // different settings when debugging..
+            {
+                VersionCheck.ApiKey = settings.ApiKeyTest; // a random string and a random file on the server...
+                VersionCheck.CheckUri = settings.CheckUriTest;
+            }
+            else
+            {
+                VersionCheck.ApiKey = settings.ApiKey; // a random string and a random file on the server...
+                VersionCheck.CheckUri = settings.CheckUri;
+            }
             VersionCheck.TimeOutMs = settings.TimeOutMs;
 
-            tstbLocationURI.Text = settings.CheckUri;
-            tstbAPIKey.Text = settings.ApiKey;
+            tstbLocationURI.Text = VersionCheck.CheckUri;
+            tstbAPIKey.Text = VersionCheck.ApiKey;
             nudTimeOutMS.Value = settings.TimeOutMs;
 
             // update the database to the newest version..
@@ -169,8 +178,17 @@ namespace VersionMaintenance
             using (settings)
             {
                 // save the settings..
-                settings.CheckUri = tstbLocationURI.Text;
-                settings.ApiKey = tstbAPIKey.Text;
+                if (Debugger.IsAttached)
+                {
+                    settings.CheckUriTest = tstbLocationURI.Text;
+                    settings.ApiKeyTest = tstbAPIKey.Text;
+                }
+                else
+                {
+                    settings.CheckUri = tstbLocationURI.Text;
+                    settings.ApiKey = tstbAPIKey.Text;
+                }
+
                 settings.TimeOutMs = (int)nudTimeOutMS.Value;
                 // ..and dispose of class instance..
             }
@@ -236,6 +254,21 @@ namespace VersionMaintenance
                         info.MetaData);
                     ListVersions(); 
                 }
+            }
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            if (odAssembly.ShowDialog() == DialogResult.OK)
+            {
+                string data =
+                    string.Join(Environment.NewLine,
+                        "Testisovellus VPKSoft.About luokkakirjastolle.",
+                        "* Hienoja uusia ominaisuuksia",
+                        "* Bugikorjauksia");
+
+                Assembly assembly = Assembly.LoadFile(odAssembly.FileName);
+                VersionCheck.AddVersionChanges(assembly, 13, CultureInfo.GetCultureInfo("fi-FI"), data);
             }
         }
     }

@@ -28,24 +28,14 @@
 	// 1: A general error
 	// 2: Invalid-size array was given
 	// 3: Access denied
+    
+    include "functions.php";
 
 	// the version query for a software name..
 	if (isset($_POST["Query_Version"]))
 	{
 		try 
 		{
-			$return_value = array(
-				"ID" => "-1",
-				"SoftwareName" => "unknown",
-				"SoftwareVersion" => "0.0.0.0",
-				"DownloadLink" => "",
-				"ReleaseDate" => "0000-00-00 00:00:00",
-				"IsDirectDownload" => "False",
-				"MetaData" => "",
-				"DownloadCount" => "0",
-				"MetaDataLocalized" => ""
-				);
-
 			$array_result = explode(";", $_POST["Query_Version"]);
 					
 			$software_name = $array_result[0];
@@ -58,23 +48,10 @@
 			}
 
 			// create a database connection..
-			$version_db = new PDO("sqlite:version.sqlite");		
+			$version_db = CreateDBConnection();
 
-			// to support previous version check if a table exists..
-			$select =
-				"SELECT CASE WHEN EXISTS (SELECT * FROM SQLITE_MASTER WHERE TYPE = 'table' AND NAME = :table) THEN 1 ELSE 0 END AS TABLE_EXISTS;";
-
-			$stmt = $version_db->prepare($select);			
-			$stmt->execute(array(":table" => "CHANGEHISTORY"));
-
-			$r = $stmt->fetchAll();
-			$table_exists = false;
-			foreach ($r as $row => $entry)
-			{
-				$table_exists = $entry["TABLE_EXISTS"] == 1;
-				break;
-			}
-			$stmt = null;
+            // the version of the database might have changed, so do check if a new table exists..
+            $table_exists = TableExists($version_db, "CHANGEHISTORY");
 
 			$lang_split = explode("-", $sofware_lang);
 					
@@ -85,9 +62,9 @@
 				"FROM\r\n" .
 				"VERSIONS V\r\n" .
 				"  LEFT OUTER JOIN DLCOUNT D ON (D.ID = V.ID)\r\n" .
-				"  LEFT OUTER JOIN CHANGEHISTORY H1 ON (H1.ID = V.ID AND H1.CULTUREMAIN = :en AND\r\n" .
+				"  LEFT OUTER JOIN CHANGEHISTORY H1 ON (H1.APP_ID = V.ID AND H1.CULTUREMAIN = :en AND\r\n" .
 				"    IFNULL(H1.CULTURESPECIFIC, :us) = :us AND V.VERSIONSTRING = H1.VERSIONSTRING)\r\n" .
-				"  LEFT OUTER JOIN CHANGEHISTORY H2 ON (H2.ID = V.ID AND H2.CULTUREMAIN = :lang1 AND\r\n" .
+				"  LEFT OUTER JOIN CHANGEHISTORY H2 ON (H2.APP_ID = V.ID AND H2.CULTUREMAIN = :lang1 AND\r\n" .
 				"    IFNULL(H2.CULTURESPECIFIC, :lang2) = :lang2 AND V.VERSIONSTRING = H2.VERSIONSTRING)\r\n" .
 				"WHERE V.SOFTWARENAME = :name";
 
@@ -116,33 +93,37 @@
  
 			$r = $stmt->fetchAll();
 			
+            $return_value = CreateSoftwareEntryResult(true);
+            
 			foreach ($r as $row => $entry)
 			{
-				$return_value["SoftwareName"] = $software_name;
-				$return_value["ID"] = $entry["ID"];
-				$return_value["SoftwareVersion"] = $entry["VERSIONSTRING"];
-				$return_value["DownloadLink"] = $entry["DOWNLOADLINK"];
-				$return_value["ReleaseDate"] = $entry["RELEASEDATE"];
-				$return_value["IsDirectDownload"] = $entry["ISDIRECT_DOWNLOAD"];			
-				$return_value["MetaData"] = $entry["METADATA"];			
-				$return_value["DownloadCount"] = $entry["DLCOUNT"];			
-				if ($table_exists)
-				{
-					$return_value["MetaDataLocalized"] = $entry["METADATANEW"];			
-				}
+                $return_value = 
+                    CreateSoftwareEntryResult
+                        (
+                            true,
+                            $entry["ID"],
+                            $software_name,
+                            $entry["VERSIONSTRING"],
+                            $entry["DOWNLOADLINK"],
+                            $entry["RELEASEDATE"],
+                            $entry["ISDIRECT_DOWNLOAD"],
+                            $entry["METADATA"],
+                            $entry["DLCOUNT"],
+                            $table_exists ? $entry["METADATANEW"] : "");
 				
 				break; // only one entry with the same name should exist..
 			}
 				
 			$version_db = null; // release the database connection..
 			$stmt = null;			
-			echo json_encode($return_value);
+			echo $return_value;
+            return;
 		}
 		catch (Exception $e) // just exit with an error..
 		{
-			exit(1);
+            echo CreateSoftwareEntryResult(true, "2", $e->getMessage());
+            return;
 		}
-		exit(0); // no error..
 	}
 	// update the download count for a given software name..
 	else if (isset($_POST["Increase_DownloadCount"]))
@@ -152,7 +133,7 @@
 			$name = $_POST["Increase_DownloadCount"];
 
 			// create a database connection..
-			$version_db = new PDO("sqlite:version.sqlite");		
+			$version_db = CreateDBConnection();
 
 			$sentence = // conditional insert..
 				"INSERT INTO DLCOUNT\r\n" .
@@ -177,29 +158,46 @@
 			$sentence = null;
 			$stmt = null;
 			$version_db = null; // release the database connection..
+            echo CreateGeneralResult();
+            return;
 		}
 		catch (Exception $e) // just exit with an error..
 		{
-			exit(1);
-		}
-		exit(0); // no error..
+            echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+            return;
+        }
 	}
 	// updates the database to the latest version..
 	elseif (isset($_POST["Update_Database"])) 
 	{
 		try
 		{
-			$secret_file = $_POST["Update_Database"];
-
 			// validate the right to manipulate the version database..
-			if (!file_exists($secret_file))
+            if (!APIKeyCorrect($_POST["Update_Database"]))
+            {
+                echo CreateGeneralResult("Fail: Invalid API key!", "3", "True");
+                return;
+            }
+            
+			if (!file_exists("version.sqlite"))
 			{
-				// ..no rights..
-				exit(3);
+                try
+                {
+                    if (!rename("empty.sqlite", "version.sqlite"))
+                    {
+                        echo CreateGeneralResult("Fail: File rename!", "1", "True");
+                        return;
+                    }
+                }
+                catch(Exception $e)
+                {
+                    echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+                    return;
+                }
 			}
 
 			// create a database connection..
-			$version_db = new PDO("sqlite:version.sqlite");		
+			$version_db = CreateDBConnection();
 
 			$sentence = 
 				"CREATE TABLE IF NOT EXISTS VERSIONS(\r\n" .
@@ -223,7 +221,8 @@
 
 			$sentence =
 				"CREATE TABLE IF NOT EXISTS CHANGEHISTORY(\r\n" .
-				"ID INTEGER PRIMARY KEY NOT NULL,\r\n" .
+				"ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\r\n" .
+                "APP_ID INTEGER NOT NULL,\r\n" .
 				"SOFTWARENAME TEXT NOT NULL,\r\n" .
 				"VERSIONSTRING TEXT NOT NULL,\r\n" .
 				"CULTUREMAIN TEXT NOT NULL,\r\n" .
@@ -236,12 +235,14 @@
 			$stmt = null;
 
 			$version_db = null; // release the database connection..
+            echo CreateGeneralResult();
+            return;
 		}
 		catch (Exception $e) // just exit with an error..
 		{
-			exit(1);
+            echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+			return;
 		}
-		exit(0); // no error..
 	}
 	// update or add of a software is requested..
 	elseif (isset($_POST["UpdateInsert_Version"]))
@@ -254,9 +255,19 @@
 			if (sizeof($software_data) != 7)
 			{
 				// an invalid POST value was given..
-				exit(2);
+                echo CreateGeneralResult("Fail: Invalid POST value!", "4", "True");
+                return;
 			}		
+            
+			$secret_file = $software_data[6];
 
+			// validate the right to manipulate the version database..
+            if (!APIKeyCorrect($secret_file))
+            {
+                echo CreateGeneralResult("Fail: Invalid API key!", "3", "True");
+                return;
+            }
+            
 			// get the data..
 			$name = $software_data[0];
 			$version = $software_data[1];
@@ -264,18 +275,9 @@
 			$release_date = $software_data[3];
 			$direct = $software_data[4];
 			$meta = $software_data[5];
-			$secret_file = $software_data[6];
-
-					
-			// validate the right to manipulate the version database..
-			if (!file_exists($secret_file))
-			{
-				// ..no rights..
-				exit(3);
-			}
-							
+            
 			// create a database connection..		
-			$version_db = new PDO("sqlite:version.sqlite");		
+			$version_db = CreateDBConnection();
 			
 			$sentence = // conditional insert..
 				"INSERT INTO VERSIONS\r\n" .
@@ -305,41 +307,43 @@
 			$sentence = null;
 			$stmt = null;
 			$version_db = null; // release the database connection..
+            echo CreateGeneralResult();
+            return;            
 		}
 		catch (Exception $e) // just exit with an error..
 		{
-			exit(1);
+            echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+			return;
 		}
-		exit(0); // no error..
 	}
 	else if (isset($_POST["AddVersionChanges"]))
 	{
 		try
 		{
-			// the format is SOFTWARENAME;APIKEY
+			// the format is APIKEY;ID;SOFTWARENAME;VERSIONSTRING;METADATA;CULTURE
 			$software_data = explode(";", $_POST["AddVersionChanges"]);		
 
 			if (sizeof($software_data) != 6)
 			{
-				// an invalid POST value was given..
-				exit(2);
+                echo CreateGeneralResult("Fail: Invalid POST value!", "4", "True");
+                return;
 			}	
 
 			// get the data..
-			$id = $software_data[0];
-			$software_name = $software_data[1];
-			$secret_file = $software_data[2];		
+			$secret_file = $software_data[0];		
+			$id = $software_data[1];
+			$software_name = $software_data[2];
 
 			// validate the right to manipulate the version database..
-			if (!file_exists($secret_file))
-			{
-				// ..no rights..
-				exit(3);
-			}
+            if (!APIKeyCorrect($secret_file))
+            {
+                echo CreateGeneralResult("Fail: Invalid API key!", "3", "True");
+                return;
+            }
 
-			$culture = $software_data[3];			
-			$version = $software_data[4];
-			$meta = $software_data[5];
+			$version = $software_data[3];
+			$meta = $software_data[4];
+			$culture = $software_data[5];			
 
 			$culture_parts = explode("-", $culture);
 			$culture_main = $culture_parts[0];
@@ -347,21 +351,22 @@
 
 			if (sizeof($culture_parts) == 2)
 			{
-				$culture_specific = $culture_parts[0];
+				$culture_specific = $culture_parts[1];
 			}
 
 			// create a database connection..		
-			$version_db = new PDO("sqlite:version.sqlite");		
+			$version_db = CreateDBConnection();
 			
 			$sentence = // conditional insert..
 				"INSERT INTO CHANGEHISTORY\r\n" .
-				"(ID, SOFTWARENAME, VERSIONSTRING, CULTUREMAIN, CULTURESPECIFIC, METADATA)\r\n" .
+				"(APP_ID, SOFTWARENAME, VERSIONSTRING, CULTUREMAIN, CULTURESPECIFIC, METADATA)\r\n" .
 				"SELECT :id, :softwarename, :versionstring, :culturemain, :culturespecific, :meta\r\n" .
-				"WHERE NOT EXISTS(SELECT * FROM CHANGEHISTORY WHERE ID = :id AND SOFTWARENAME = :softwarename\r\n AND" . 
-				"CULTUREMAIN = :culturemain AND ISNULL(CULTURESPECIFIC, :culturespecific) = :culturespecific);\r\n";
+				"WHERE NOT EXISTS(SELECT * FROM CHANGEHISTORY WHERE APP_ID = :id AND SOFTWARENAME = :softwarename AND\r\n" . 
+				"CULTUREMAIN = :culturemain AND IFNULL(CULTURESPECIFIC, :culturespecific) = :culturespecific AND VERSIONSTRING = :versionstring) AND\r\n" .
+				"EXISTS(SELECT * FROM VERSIONS WHERE ID = :id);\r\n";
 
 			$stmt = $version_db->prepare($sentence);
-			$stmt->execute(array(":id" => $name, ":softwarename" => $software_name, ":versionstring" => $version,
+			$stmt->execute(array(":id" => $id, ":softwarename" => $software_name, ":versionstring" => $version,
 				":meta" => $meta, ":culturemain" => $culture_main, ":culturespecific" => $culture_specific));
 
 			$stmp = null;
@@ -374,23 +379,25 @@
 				"WHERE\r\n" .
 				"CULTUREMAIN = :culturemain AND\r\n" .
 				"VERSIONSTRING = :versionstring AND\r\n" .
-				"ID = :id AND\r\n" .
-				"ISNULL(CULTURESPECIFIC, :culturespecific) = :culturespecific);\r\n";
+				"APP_ID = :id AND\r\n" .
+				"IFNULL(CULTURESPECIFIC, :culturespecific) = :culturespecific;\r\n";
 
 			$stmt = $version_db->prepare($sentence);
-			$stmt->execute(array(":id" => $name, ":softwarename" => $software_name, ":versionstring" => $version,
+			$stmt->execute(array(":id" => $id, ":softwarename" => $software_name, ":versionstring" => $version,
 				":meta" => $meta, ":culturemain" => $culture_main, ":culturespecific" => $culture_specific));
 
 			$stmp = null;
 			$sentence = null;
 			$stmt = null;
 			$version_db = null; // release the database connection..
+            echo CreateGeneralResult();
+			return;
 		}
 		catch (Exception $e) // just exit with an error..
 		{
-			exit(1);
+            echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+			return;
 		}
-		exit(0); // no error.
 	}
 	// a request was made to delete a version from the database..
 	elseif (isset($_POST["Delete_Version"]))
@@ -402,8 +409,8 @@
 
 			if (sizeof($software_data) != 2)
 			{
-				// an invalid POST value was given..
-				exit(2);
+                echo CreateGeneralResult("Fail: Invalid POST value!", "4", "True");
+                return;
 			}	
 			
 			// get the data..
@@ -411,14 +418,14 @@
 			$secret_file = $software_data[1];		
 			
 			// validate the right to manipulate the version database..
-			if (!file_exists($secret_file))
-			{
-				// ..no rights..
-				exit(3);
-			}
+            if (!APIKeyCorrect($secret_file))
+            {
+                echo CreateGeneralResult("Fail: Invalid API key!", "3", "True");
+                return;
+            }
 					
 			// create a database connection..
-			$version_db = new PDO("sqlite:version.sqlite");		
+			$version_db = CreateDBConnection();
 			
 			$sentence = "DELETE FROM VERSIONS WHERE SOFTWARENAME = :name ";
 			
@@ -428,66 +435,119 @@
 			$sentence = null;
 			$stmt = null;
 			$version_db = null; // release the database connection..
+            echo CreateGeneralResult();
+			return;
 		}
 		catch (Exception $e) // just exit with an error..
 		{
-			exit(1);
+            echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+			return;
 		}
-		exit(0); // no error.
 	}
 	// get the list of software entries in the database..
 	elseif (isset($_POST["GetSoftwareList"]))
 	{
 		try 
-		{
-			// create a database connection..
-			$version_db = new PDO("sqlite:version.sqlite");		
-			
+		{		
 			// initialize an empty array..
 			$result = array();
+            
+			// the format is APIKEY;language-region; i.e: fi-FI..
+			$software_data = explode(";", $_POST["GetSoftwareList"]);                
+         
+			// validate the right to access the version database..
+            if (!APIKeyCorrect($software_data[0]))
+            {
+                array_push($result, CreateSoftwareEntryResult(false, "-1", "Fail: Invalid API key!", "3"));
+                echo json_encode($result);
+                return;
+            }            
+                     
+			// create a database connection..
+			$version_db = CreateDBConnection();            
 			
+			$sofware_lang = "en-US"; // default to English (United States)..
+            
+        
+			if (sizeof($software_data) == 2) // to support the previous version, do a range check..
+			{
+				// an invalid POST value was given..
+				$sofware_lang = $array_result[1];
+			}            
+            
+            $lang_split = explode("-", $sofware_lang);
+  
+            // the version of the database might have changed, so do check if a new table exists..
+            $table_exists = TableExists($version_db, "CHANGEHISTORY");           
+            
 			$select = 
-				"SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT\r\n" .
+				"SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT,\r\n" .
+				"--localization via some SQL magic..\r\n" .
+				"IFNULL(IFNULL(H1.METADATA, H2.METADATA), V.METADATA) AS METADATANEW\r\n" .                    
 				"FROM\r\n" .
 				"VERSIONS V\r\n" .
+				"  LEFT OUTER JOIN CHANGEHISTORY H1 ON (H1.ID = V.ID AND H1.CULTUREMAIN = :en AND\r\n" .
+				"    IFNULL(H1.CULTURESPECIFIC, :us) = :us AND V.VERSIONSTRING = H1.VERSIONSTRING)\r\n" .
+				"  LEFT OUTER JOIN CHANGEHISTORY H2 ON (H2.ID = V.ID AND H2.CULTUREMAIN = :lang1 AND\r\n" .
+				"    IFNULL(H2.CULTURESPECIFIC, :lang2) = :lang2 AND V.VERSIONSTRING = H2.VERSIONSTRING)\r\n" .
 				"  LEFT OUTER JOIN DLCOUNT D ON (D.ID = V.ID)";
-				
-			$stmt = $version_db->prepare($select);
+            		
+            if (!$table_exists)
+            {
+                $select = 
+					"SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT,\r\n" .
+					"V.METADATA AS METADATANEW\r\n" .
+					"FROM\r\n" .
+					"VERSIONS V\r\n" .
+					"  LEFT OUTER JOIN DLCOUNT D ON (D.ID = V.ID)\r\n";		
+            }
+    		
+            $stmt = $version_db->prepare($select);
+            
+			if ($table_exists)
+			{
+				// the default culture is en-US..
+				$stmt->execute(array(":lang1" => $lang_split[0], ":lang2" => $lang_split[1], ":en" => "en", ":us" => "US"));
+			}
+			else 
+			{                
+        		$stmt->execute();                
+			}
+            
 			
-			$stmt->execute();
 			$r = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 			
 			foreach ($r as $row => $entry)
 			{
-				$array_result = array(
-					"ID" => "-1",
-					"SoftwareName" => "unknown",
-					"SoftwareVersion" => "0.0.0.0",
-					"DownloadLink" => "",
-					"ReleaseDate" => "0000-00-00 00:00:00",
-					"IsDirectDownload" => "False",
-					"MetaData" => "",
-					"DownloadCount" => "0"
-					);			
-				
-				$array_result["ID"] = $entry["ID"];
-				$array_result["SoftwareName"] = $entry["SOFTWARENAME"];
-				$array_result["SoftwareVersion"] = $entry["VERSIONSTRING"];
-				$array_result["DownloadLink"] = $entry["DOWNLOADLINK"];
-				$array_result["ReleaseDate"] = $entry["RELEASEDATE"];
-				$array_result["IsDirectDownload"] = $entry["ISDIRECT_DOWNLOAD"];		
-				$array_result["MetaData"] = $entry["METADATA"];			
-				$array_result["DownloadCount"] = $entry["DLCOUNT"];							
+                $array_result = CreateSoftwareEntryResult(
+                    false,
+                    $entry["ID"],
+                    $entry["SOFTWARENAME"],
+                    $entry["VERSIONSTRING"],
+                    $entry["DOWNLOADLINK"],
+                    $entry["RELEASEDATE"],
+                    $entry["ISDIRECT_DOWNLOAD"],
+                    $entry["METADATA"],
+                    $entry["DLCOUNT"],    
+                    $table_exists ? $entry["METADATANEW"] : "");
+                
 				array_push($result, $array_result);
 			}
 			$version_db = null; // release the database connection..
 			$stmt = null;
+            
 			echo json_encode($result);
+            return;
 		}
 		catch (Exception $e) // just exit with an error..
 		{
-			exit(1);
+            array_push($result, CreateSoftwareEntryResult(false, "-1", "Fail: " . $e->getMessage(), "2"));
+			echo json_encode($result);
+            return;
 		}
-		exit(0); // no error.
 	}
+    else
+    {
+        echo CreateGeneralResult("Fail: Unknown method: '" . $_POST[0] . "'.", "4", "True");
+    }
 ?>

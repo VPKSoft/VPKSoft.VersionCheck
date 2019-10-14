@@ -74,6 +74,12 @@
     <Compile Include="FormDialogAddUpdateAssemblyVersion.Designer.cs">
       <DependentUpon>FormDialogAddUpdateAssemblyVersion.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormDialogAddUpdateVersionChangeTextLocalized.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDialogAddUpdateVersionChangeTextLocalized.Designer.cs">
+      <DependentUpon>FormDialogAddUpdateVersionChangeTextLocalized.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     <Compile Include="Settings.cs" />
     <EmbeddedResource Include="FormDialogAddUpdateAssemblyVersion.resx">
       <DependentUpon>FormDialogAddUpdateAssemblyVersion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDialogAddUpdateVersionChangeTextLocalized.resx">
+      <DependentUpon>FormDialogAddUpdateVersionChangeTextLocalized.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
@@ -132,6 +141,8 @@
     <None Include="Resources\run-build-install.png" />
     <None Include="Resources\application-x-ms-dos-executable.png" />
     <Content Include="icon_attribution.txt" />
+    <Content Include="ServerSideBase\empty.sqlite" />
+    <Content Include="ServerSideBase\functions.php" />
     <Content Include="ServerSideBase\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
