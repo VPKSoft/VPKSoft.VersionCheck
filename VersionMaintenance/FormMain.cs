@@ -72,7 +72,7 @@ namespace VersionMaintenance
 
             // the application dead-locks if the "self-assembly" check is made in the debug mode..
             mnuThisAssemblyVersion.Enabled = !Debugger.IsAttached;
-
+            mnuThisAssemblyVersion.Visible = !Debugger.IsAttached;
 
             ListVersions();
         }
@@ -129,6 +129,16 @@ namespace VersionMaintenance
         {
             if (gvSoftwareVersions.CurrentRow != null)
             {
+                // verify that the user wants to delete a software entry from the server's database..
+                if (MessageBox.Show(
+                        $@"Really delete software entry '{gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value}'?",
+                        @"Confirm", MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                {
+                    // ..no so do return..
+                    return;
+                }
+
                 var name = gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value.ToString();
                 VersionCheck.DeleteSoftwareEntry(name);
             }
@@ -143,8 +153,7 @@ namespace VersionMaintenance
         }
 
         // a string containing valid characters for a file name..
-        // ReSharper disable once StringLiteralTypo
-        private readonly string charString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+        private readonly string charString = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
 
         // a random number generator for a new API key..
         private readonly Random random = new Random();
@@ -219,6 +228,29 @@ namespace VersionMaintenance
                     File.Copy(Path.Combine(softwarePath, "ServerSideBase", "version.php"),
                         Path.Combine(fbdDirectory.SelectedPath, "version.php"), true);
 
+                    // ReSharper disable once StringLiteralTypo
+                    File.Copy(Path.Combine(softwarePath, "ServerSideBase", "addupdate_functions.php"),
+                        Path.Combine(fbdDirectory.SelectedPath, "addupdate_functions.php"), true);
+
+                    File.Copy(Path.Combine(softwarePath, "ServerSideBase", "archive_functions.php"),
+                        Path.Combine(fbdDirectory.SelectedPath, "archive_functions.php"), true);
+
+                    File.Copy(Path.Combine(softwarePath, "ServerSideBase", "database_update.php"),
+                        Path.Combine(fbdDirectory.SelectedPath, "database_update.php"), true);
+
+                    File.Copy(Path.Combine(softwarePath, "ServerSideBase", "delete_functions.php"),
+                        Path.Combine(fbdDirectory.SelectedPath, "delete_functions.php"), true);
+
+                    File.Copy(Path.Combine(softwarePath, "ServerSideBase", "query_functions.php"),
+                        Path.Combine(fbdDirectory.SelectedPath, "query_functions.php"), true);
+
+                    // ReSharper disable once StringLiteralTypo
+                    File.Copy(Path.Combine(softwarePath, "ServerSideBase", "empty.sqlite"),
+                        Path.Combine(fbdDirectory.SelectedPath, "empty.sqlite"), true);
+
+                    File.Copy(Path.Combine(softwarePath, "ServerSideBase", "functions.php"),
+                        Path.Combine(fbdDirectory.SelectedPath, "functions.php"), true);
+
                     // create an empty SQLite database..
                     using (SQLiteConnection connection = new SQLiteConnection(
                         "Data Source=" + Path.Combine(fbdDirectory.SelectedPath,
@@ -277,6 +309,16 @@ namespace VersionMaintenance
 
                 Assembly assembly = Assembly.LoadFile(odAssembly.FileName);
                 VersionCheck.AddVersionChanges(assembly, 13, CultureInfo.GetCultureInfo("fr"), data);
+            }
+        }
+
+        private void mnuAddLocalizedData_Click(object sender, EventArgs e)
+        {
+            if (gvSoftwareVersions.CurrentRow != null)
+            {
+                FormDialogAddUpdateVersionChangeTextLocalized.ShowDialog(this,
+                    gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value.ToString(),
+                    gvSoftwareVersions.CurrentRow.Cells[colVersion.Index].Value.ToString());
             }
         }
     }

@@ -56,13 +56,14 @@
             this.tsbUpdateEntry = new System.Windows.Forms.ToolStripButton();
             this.tsbRefreshEntries = new System.Windows.Forms.ToolStripButton();
             this.tbGenerateAPIKey = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.mnuAddUpdateAssembly = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuThisAssemblyVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRefreshDatabaseEntries = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDeleteSelectedEntry = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuGenerateAPIKey = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuGenerateFiles = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.mnuAddLocalizedData = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gvSoftwareVersions)).BeginInit();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
@@ -90,7 +91,7 @@
             this.gvSoftwareVersions.GridColor = System.Drawing.Color.Black;
             this.gvSoftwareVersions.Location = new System.Drawing.Point(12, 52);
             this.gvSoftwareVersions.Name = "gvSoftwareVersions";
-            this.gvSoftwareVersions.Size = new System.Drawing.Size(910, 333);
+            this.gvSoftwareVersions.Size = new System.Drawing.Size(914, 333);
             this.gvSoftwareVersions.TabIndex = 3;
             // 
             // colID
@@ -150,7 +151,7 @@
             this.mnuTools});
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
-            this.msMain.Size = new System.Drawing.Size(934, 24);
+            this.msMain.Size = new System.Drawing.Size(938, 24);
             this.msMain.TabIndex = 4;
             this.msMain.Text = "menuStrip1";
             // 
@@ -161,7 +162,8 @@
             this.mnuThisAssemblyVersion,
             this.mnuRefreshDatabaseEntries,
             this.mnuDeleteSelectedEntry,
-            this.mnuGenerateAPIKey});
+            this.mnuGenerateAPIKey,
+            this.mnuAddLocalizedData});
             this.mnuFile.Name = "mnuFile";
             this.mnuFile.Size = new System.Drawing.Size(37, 20);
             this.mnuFile.Text = "File";
@@ -184,17 +186,17 @@
             this.tsbDeleteSelectedEntry,
             this.tsbUpdateEntry,
             this.tsbRefreshEntries,
+            this.toolStripButton1,
             this.toolStripSeparator1,
             this.tslURIDescribtion,
             this.tstbLocationURI,
             this.toolStripSeparator2,
             this.tslAPIKey,
             this.tstbAPIKey,
-            this.tbGenerateAPIKey,
-            this.toolStripButton1});
+            this.tbGenerateAPIKey});
             this.tsMain.Location = new System.Drawing.Point(0, 24);
             this.tsMain.Name = "tsMain";
-            this.tsMain.Size = new System.Drawing.Size(934, 25);
+            this.tsMain.Size = new System.Drawing.Size(938, 25);
             this.tsMain.TabIndex = 5;
             this.tsMain.Text = "toolStrip1";
             // 
@@ -300,7 +302,8 @@
             this.tsbRefreshEntries.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRefreshEntries.Name = "tsbRefreshEntries";
             this.tsbRefreshEntries.Size = new System.Drawing.Size(23, 22);
-            this.tsbRefreshEntries.Text = "toolStripButton1";
+            this.tsbRefreshEntries.Text = "Refresh database entries";
+            this.tsbRefreshEntries.Click += new System.EventHandler(this.MnuRefreshDatabaseEntries_Click);
             // 
             // tbGenerateAPIKey
             // 
@@ -312,11 +315,21 @@
             this.tbGenerateAPIKey.Text = "Generate API key";
             this.tbGenerateAPIKey.Click += new System.EventHandler(this.TbGenerateAPIKey_Click);
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::VersionMaintenance.Properties.Resources.education_languages;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "Add or update localized version changes";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
             // mnuAddUpdateAssembly
             // 
             this.mnuAddUpdateAssembly.Image = global::VersionMaintenance.Properties.Resources.db_update;
             this.mnuAddUpdateAssembly.Name = "mnuAddUpdateAssembly";
-            this.mnuAddUpdateAssembly.Size = new System.Drawing.Size(201, 22);
+            this.mnuAddUpdateAssembly.Size = new System.Drawing.Size(287, 22);
             this.mnuAddUpdateAssembly.Text = "Add/update assembly";
             this.mnuAddUpdateAssembly.Click += new System.EventHandler(this.MnuAddUpdateAssembly_Click);
             // 
@@ -324,7 +337,7 @@
             // 
             this.mnuThisAssemblyVersion.Image = global::VersionMaintenance.Properties.Resources.application_x_ms_dos_executable;
             this.mnuThisAssemblyVersion.Name = "mnuThisAssemblyVersion";
-            this.mnuThisAssemblyVersion.Size = new System.Drawing.Size(201, 22);
+            this.mnuThisAssemblyVersion.Size = new System.Drawing.Size(287, 22);
             this.mnuThisAssemblyVersion.Text = "This assembly version";
             this.mnuThisAssemblyVersion.Click += new System.EventHandler(this.MnuThisAssemblyVersion_Click);
             // 
@@ -332,7 +345,7 @@
             // 
             this.mnuRefreshDatabaseEntries.Image = global::VersionMaintenance.Properties.Resources.view_refresh_7;
             this.mnuRefreshDatabaseEntries.Name = "mnuRefreshDatabaseEntries";
-            this.mnuRefreshDatabaseEntries.Size = new System.Drawing.Size(201, 22);
+            this.mnuRefreshDatabaseEntries.Size = new System.Drawing.Size(287, 22);
             this.mnuRefreshDatabaseEntries.Text = "Refresh database entries";
             this.mnuRefreshDatabaseEntries.Click += new System.EventHandler(this.MnuRefreshDatabaseEntries_Click);
             // 
@@ -340,7 +353,7 @@
             // 
             this.mnuDeleteSelectedEntry.Image = global::VersionMaintenance.Properties.Resources.edit_delete_6;
             this.mnuDeleteSelectedEntry.Name = "mnuDeleteSelectedEntry";
-            this.mnuDeleteSelectedEntry.Size = new System.Drawing.Size(201, 22);
+            this.mnuDeleteSelectedEntry.Size = new System.Drawing.Size(287, 22);
             this.mnuDeleteSelectedEntry.Text = "Delete selected entry";
             this.mnuDeleteSelectedEntry.Click += new System.EventHandler(this.TsbDeleteSelectedEntry_Click);
             // 
@@ -348,7 +361,7 @@
             // 
             this.mnuGenerateAPIKey.Image = global::VersionMaintenance.Properties.Resources.database_key;
             this.mnuGenerateAPIKey.Name = "mnuGenerateAPIKey";
-            this.mnuGenerateAPIKey.Size = new System.Drawing.Size(201, 22);
+            this.mnuGenerateAPIKey.Size = new System.Drawing.Size(287, 22);
             this.mnuGenerateAPIKey.Text = "Generate API key";
             this.mnuGenerateAPIKey.Click += new System.EventHandler(this.TbGenerateAPIKey_Click);
             // 
@@ -360,21 +373,19 @@
             this.mnuGenerateFiles.Text = "Generate files for a web site";
             this.mnuGenerateFiles.Click += new System.EventHandler(this.MnuGenerateFiles_Click);
             // 
-            // toolStripButton1
+            // mnuAddLocalizedData
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.mnuAddLocalizedData.Image = global::VersionMaintenance.Properties.Resources.education_languages;
+            this.mnuAddLocalizedData.Name = "mnuAddLocalizedData";
+            this.mnuAddLocalizedData.Size = new System.Drawing.Size(287, 22);
+            this.mnuAddLocalizedData.Text = "Add or update localized version changes";
+            this.mnuAddLocalizedData.Click += new System.EventHandler(this.mnuAddLocalizedData_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(934, 423);
+            this.ClientSize = new System.Drawing.Size(938, 423);
             this.Controls.Add(this.nudTimeOutMS);
             this.Controls.Add(this.lbTimeOutMS);
             this.Controls.Add(this.tsMain);
@@ -432,6 +443,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colMetaData;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDownloadCount;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripMenuItem mnuAddLocalizedData;
     }
 }
 

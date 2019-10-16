@@ -141,22 +141,35 @@
     <None Include="Resources\run-build-install.png" />
     <None Include="Resources\application-x-ms-dos-executable.png" />
     <Content Include="icon_attribution.txt" />
-    <Content Include="ServerSideBase\addupdate_functions.php" />
-    <Content Include="ServerSideBase\archive_functions.php" />
-    <Content Include="ServerSideBase\database_update.php" />
-    <Content Include="ServerSideBase\delete_functions.php" />
-    <Content Include="ServerSideBase\empty.sqlite" />
-    <Content Include="ServerSideBase\functions.php" />
+    <None Include="Resources\education-languages.png" />
+    <Content Include="ServerSideBase\addupdate_functions.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ServerSideBase\archive_functions.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ServerSideBase\database_update.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ServerSideBase\delete_functions.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ServerSideBase\empty.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ServerSideBase\functions.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ServerSideBase\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ServerSideBase\query_functions.php" />
+    <Content Include="ServerSideBase\query_functions.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ServerSideBase\version.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ServerSideBase\version.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="ServerSideBase\version.sql" />
     <Content Include="version-icon-10.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
