@@ -31,6 +31,7 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.Resources;
 using System.Collections;
+using VPKSoft.VersionCheck.APIResponseClasses;
 
 namespace VPKSoft.VersionCheck
 {
@@ -45,7 +46,7 @@ namespace VPKSoft.VersionCheck
         private readonly Assembly aboutAssembly;
 
         // the version information gotten from the assembly..
-        private VersionCheck.VersionInfo info;
+        private VersionInfo info;
 
         // not available (N/A) localized text..
         private string na = string.Empty;
@@ -352,7 +353,7 @@ namespace VPKSoft.VersionCheck
 
         private void sslLinkVersion_Click(object sender, EventArgs e)
         {
-            info = VersionCheck.GetVersion(aboutAssembly);
+            info = VersionCheck.GetVersion(aboutAssembly, OverrideCultureString);
 
             if (info != null && info.IsLargerVersion(aboutAssembly))
             {

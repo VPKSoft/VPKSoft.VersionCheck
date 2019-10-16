@@ -49,7 +49,7 @@ namespace AboutTest
         private void MnuCheckNewVersion_Click(object sender, EventArgs e)
         {
             FormCheckVersion.CheckForNewVersion("http://192.168.1.131/admin/ServerSideBase/version.php",
-                Assembly.GetEntryAssembly(), "fi-FI");
+                Assembly.GetEntryAssembly(), "fi");
         }
     }
 }

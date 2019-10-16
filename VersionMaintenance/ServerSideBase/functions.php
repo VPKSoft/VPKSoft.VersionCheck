@@ -35,6 +35,28 @@
         return json_encode($return_value);
     }
 
+    function CreateLocalizedChangeHistoryResult(
+            $id = "-1", 
+            $app_id = "-1", 
+            $softwareName = "unknown", 
+            $softwareVersion = "0.0.0.0", 
+            $culture_main = "na",
+            $culture_specific = "NA",
+			$metaData = "")    
+    {
+        $return_value = array(
+            "ID" => $id,
+            "APP_ID" => $app_id,
+            "SoftwareName" => $softwareName,
+            "SoftwareVersion" => $softwareVersion, 
+            "CultureMain" => $culture_main,
+            "CultureSpecific" => $culture_specific,
+            "MetaData" => $metaData
+            );          
+        
+        return $return_value;
+    }    
+    
     function CreateSoftwareEntryResult(
             $json_echo = true,
             $id = "-1", 

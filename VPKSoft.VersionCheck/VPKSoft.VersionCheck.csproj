@@ -47,6 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIResponseClasses\GeneralResponse.cs" />
+    <Compile Include="APIResponseClasses\LocalizeChangeHistoryResponse.cs" />
+    <Compile Include="APIResponseClasses\VersionInfo.cs" />
+    <Compile Include="APIResponseClasses\VersionResponse.cs" />
+    <Compile Include="Enumerations\PostMethodEnum.cs" />
     <Compile Include="FormAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +117,7 @@
   <ItemGroup>
     <None Include="Resources\tab_deli_localization.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

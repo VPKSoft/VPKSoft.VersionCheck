@@ -28,6 +28,7 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck;
+using VPKSoft.VersionCheck.APIResponseClasses;
 
 namespace VersionMaintenance
 {
@@ -51,13 +52,13 @@ namespace VersionMaintenance
         /// </summary>
         /// <param name="fileName">Name of the file from which to get the base release date from.</param>
         /// <param name="assembly">The assembly to get the information from.</param>
-        /// <returns>An instance to <see cref="VersionCheck.VersionInfo"/> class if the operation was successful; otherwise null.</returns>
-        public static VersionCheck.VersionInfo ShowDialog(string fileName, Assembly assembly)
+        /// <returns>An instance to <see cref="VersionInfo"/> class if the operation was successful; otherwise null.</returns>
+        public static VersionInfo ShowDialog(string fileName, Assembly assembly)
         {
             var info = VersionCheck.GetVersion(assembly);
             if (info == null)
             {
-                info = VersionCheck.VersionInfo.FromAssembly(fileName, assembly);
+                info = VersionInfo.FromAssembly(fileName, assembly);
             }
             else
             {

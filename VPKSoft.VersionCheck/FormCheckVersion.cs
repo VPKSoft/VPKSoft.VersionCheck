@@ -47,7 +47,7 @@ namespace VPKSoft.VersionCheck
             try
             {
                 VersionCheck.CheckUri = versionCheckUri;
-                var version = VersionCheck.GetVersion(assembly);
+                var version = VersionCheck.GetVersion(assembly, localeString);
 
                 // null validation before usage..
                 if (version != null && version.IsLargerVersion(assembly))
@@ -88,6 +88,11 @@ namespace VPKSoft.VersionCheck
                         "Release changes:", localeString);
 
                     checkVersion.tbReleaseNotes.Text = version.MetaData.Replace("* ", "• ").Replace("*", "•");
+
+                    if (!string.IsNullOrEmpty(version.MetaDataLocalized))
+                    {
+                        checkVersion.tbReleaseNotes.Text = version.MetaDataLocalized.Replace("* ", "• ").Replace("*", "•");
+                    }
 
                     checkVersion.btUpdate.Text =
                         localization.GetMessage("txtUpdateSoftware", "Update the software", localeString);

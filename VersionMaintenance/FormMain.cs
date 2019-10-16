@@ -259,6 +259,14 @@ namespace VersionMaintenance
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            var value3 = VersionCheck.ArchiveVersionHistory(1);
+            return;
+            var value2 = VersionCheck.DeleteLocalizedVersionData(4);
+
+            return;
+            var value = VersionCheck.GetVersionDataLocalized(13);
+            return;
+
             if (odAssembly.ShowDialog() == DialogResult.OK)
             {
                 string data =
@@ -268,7 +276,7 @@ namespace VersionMaintenance
                         "* Bugikorjauksia");
 
                 Assembly assembly = Assembly.LoadFile(odAssembly.FileName);
-                VersionCheck.AddVersionChanges(assembly, 13, CultureInfo.GetCultureInfo("fi-FI"), data);
+                VersionCheck.AddVersionChanges(assembly, 13, CultureInfo.GetCultureInfo("fr"), data);
             }
         }
     }
