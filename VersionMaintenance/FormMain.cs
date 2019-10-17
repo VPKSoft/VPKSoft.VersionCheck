@@ -318,7 +318,8 @@ namespace VersionMaintenance
             {
                 FormDialogAddUpdateVersionChangeTextLocalized.ShowDialog(this,
                     gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value.ToString(),
-                    gvSoftwareVersions.CurrentRow.Cells[colVersion.Index].Value.ToString());
+                    gvSoftwareVersions.CurrentRow.Cells[colVersion.Index].Value.ToString(),
+                    Convert.ToInt32(gvSoftwareVersions.CurrentRow.Cells[colID.Index].Value));
             }
         }
     }

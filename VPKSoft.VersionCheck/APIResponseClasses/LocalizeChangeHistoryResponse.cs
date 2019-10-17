@@ -24,6 +24,8 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 */
 #endregion
 
+using System.Globalization;
+
 namespace VPKSoft.VersionCheck.APIResponseClasses
 {
     /// <summary>
@@ -67,5 +69,27 @@ namespace VPKSoft.VersionCheck.APIResponseClasses
         /// A meta data for the entry.
         /// </summary>
         public string MetaData;
+
+        /// <summary>
+        /// Gets the <see cref="Culture"/> of this entry instance based on the <see cref="CultureMain"/> and <see cref="CultureSpecific"/> field values.
+        /// </summary>
+        public CultureInfo Culture
+        {
+            get
+            {
+                try
+                {
+                    string cultureString = CultureMain + (string.IsNullOrEmpty(CultureSpecific)
+                                               ? string.Empty
+                                               : "-" + CultureSpecific);
+
+                    return CultureInfo.CreateSpecificCulture(cultureString);
+                }
+                catch
+                {
+                    return CultureInfo.CurrentCulture;
+                }
+            }
+        }
     }
 }

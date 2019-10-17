@@ -122,14 +122,14 @@ function QueryVersion($postdata)
 
 function GetVersionChanges($postdata)
 {
-    // the format is APIKEY;APP_ID
+    // the format is APIKEY;APP_ID;[OPTIONAL VERSION];[OPTIONAL LANGUAGE/CULTURE]
     // initialize an empty array..
     $result = array();
     try
     {
         $software_data = explode(";", $postdata);                 
 
-        if (sizeof($software_data) != 2)
+        if (sizeof($software_data) < 2)
         {
             array_push($result, CreateLocalizedChangeHistoryResult("-1", "-1", "Fail: Invalid POST value!", "4"));
             echo json_encode($result);
@@ -147,13 +147,19 @@ function GetVersionChanges($postdata)
         // create a database connection..
         $version_db = CreateDBConnection();                        
 
-        $select = 
-            "SELECT * FROM CHANGEHISTORY WHERE APP_ID = :app_id;";
+        $version = $software_data[2];
+                
+        $select = // C# null defaults to an empty string ('')..
+            "SELECT * FROM CHANGEHISTORY WHERE APP_ID = :app_id AND\r\n" .
+            "VERSIONSTRING = IFNULL(NULLIF(:version, ''), VERSIONSTRING) AND\r\n" .
+            "(IFNULL(CULTUREMAIN, NULLIF(:lang1, '')) = NULLIF(:lang1, '') OR NULLIF(:lang1, '') IS NULL AND\r\n" .
+            "IFNULL(CULTURESPECIFIC, NULLIF(:lang2, '')) = NULLIF(:lang2, '') OR NULLIF(:lang2, '') IS NULL)\r\n";
 
+        $lang_split = explode("-", $software_data[3]);
+        
         $stmt = $version_db->prepare($select);
 
-        // the default culture is en-US..
-        $stmt->execute(array(":app_id" => $software_data[1]));
+        $stmt->execute(array(":app_id" => $software_data[1], ":version" => $version, ":lang1" => $lang_split[0], ":lang2" => $lang_split[1]));
 
         $r = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -172,6 +178,7 @@ function GetVersionChanges($postdata)
         }
         $version_db = null; // release the database connection..
         $stmt = null;            
+        
         echo json_encode($result);
         return;            
     }

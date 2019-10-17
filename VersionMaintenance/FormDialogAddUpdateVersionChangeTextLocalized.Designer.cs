@@ -205,6 +205,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add or update localized version changes";
+            this.Shown += new System.EventHandler(this.FormDialogAddUpdateVersionChangeTextLocalized_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

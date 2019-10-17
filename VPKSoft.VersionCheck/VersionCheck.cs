@@ -26,6 +26,7 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.Text;
@@ -227,15 +228,21 @@ namespace VPKSoft.VersionCheck
         /// Gets the localized version data for a an application with a given Id number.
         /// </summary>
         /// <param name="applicationId">The application identifier number.</param>
-        /// <returns>A list of <see cref="LocalizeChangeHistoryResponse"/> class instances containing the localized version history entries for the application.</returns>
-        public static List<LocalizeChangeHistoryResponse> GetVersionDataLocalized(int applicationId)
+        /// <param name="versionString">The optional software version as a string.</param>
+        /// <param name="cultureName">The optional culture name in the format languagecode2-country/regioncode2. languagecode2. The languagecode2 is optional.</param>
+        /// <returns>A list of <see cref="LocalizeChangeHistoryResponse"/> class instances containing the localized version history entries for the application.</returns>/// 
+        [SuppressMessage("ReSharper", "CommentTypo")]
+        public static List<LocalizeChangeHistoryResponse> GetVersionDataLocalized(int applicationId,
+            string versionString = null, string cultureName = null)
         {
             try
             {
                 WebResponse webResponse = 
                     GetResponse(PostMethod.GetVersionChanges, 
                         true, 
-                        applicationId);
+                        applicationId,
+                        versionString,
+                        cultureName); // C# null defaults to an empty string ('') in PHP..
 
                 var result = SerializeResponse<List<LocalizeChangeHistoryResponse>>(webResponse);
 
@@ -312,6 +319,22 @@ namespace VPKSoft.VersionCheck
         public static GeneralResponse AddVersionChanges(Assembly assembly, int softwareId,
             CultureInfo culture, string metaDataTextLocalized)
         {
+            return AddVersionChanges(assembly.GetName().Name, assembly.GetName().Version.ToString(), softwareId,
+                culture, metaDataTextLocalized);
+        }
+
+        /// <summary>
+        /// Adds the version changes as a localized text to a given <paramref name="culture"/>.
+        /// </summary>
+        /// <param name="softwareName">The name of the software.</param>
+        /// <param name="softwareVersion">The software version as a string.</param>
+        /// <param name="softwareId">The software identifier.</param>
+        /// <param name="culture">The culture of the software change text.</param>
+        /// <param name="metaDataTextLocalized">The localized change history.</param>
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse AddVersionChanges(string softwareName, string softwareVersion, int softwareId,
+            CultureInfo culture, string metaDataTextLocalized)
+        {
             try
             {
                 WebResponse webResponse =
@@ -319,8 +342,8 @@ namespace VPKSoft.VersionCheck
                         PostMethod.AddVersionChanges,
                         true,
                         softwareId,
-                        assembly.GetName().Name,
-                        assembly.GetName().Version,
+                        softwareName,
+                        softwareVersion,
                         metaDataTextLocalized,
                         culture.Name);
 
