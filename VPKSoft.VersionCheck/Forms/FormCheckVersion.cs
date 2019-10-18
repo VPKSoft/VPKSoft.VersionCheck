@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace VPKSoft.VersionCheck
+namespace VPKSoft.VersionCheck.Forms
 {
     /// <summary>
     /// A form to query the user whether the user wants to download a new version of the software.

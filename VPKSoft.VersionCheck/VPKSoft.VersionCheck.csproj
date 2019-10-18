@@ -52,22 +52,22 @@
     <Compile Include="APIResponseClasses\VersionInfo.cs" />
     <Compile Include="APIResponseClasses\VersionResponse.cs" />
     <Compile Include="Enumerations\PostMethodEnum.cs" />
-    <Compile Include="FormAbout.cs">
+    <Compile Include="Forms\FormAbout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormAbout.designer.cs">
+    <Compile Include="Forms\FormAbout.designer.cs">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormCheckVersion.cs">
+    <Compile Include="Forms\FormCheckVersion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormCheckVersion.Designer.cs">
+    <Compile Include="Forms\FormCheckVersion.Designer.cs">
       <DependentUpon>FormCheckVersion.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDialogDownloadFile.cs">
+    <Compile Include="Forms\FormDialogDownloadFile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDialogDownloadFile.Designer.cs">
+    <Compile Include="Forms\FormDialogDownloadFile.Designer.cs">
       <DependentUpon>FormDialogDownloadFile.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -94,13 +94,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormAbout.resx">
+    <EmbeddedResource Include="Forms\FormAbout.resx">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormCheckVersion.resx">
+    <EmbeddedResource Include="Forms\FormCheckVersion.resx">
       <DependentUpon>FormCheckVersion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDialogDownloadFile.resx">
+    <EmbeddedResource Include="Forms\FormDialogDownloadFile.resx">
       <DependentUpon>FormDialogDownloadFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,4 +1,4 @@
-﻿namespace VPKSoft.VersionCheck
+﻿namespace VPKSoft.VersionCheck.Forms
 {
     partial class FormAbout
     {

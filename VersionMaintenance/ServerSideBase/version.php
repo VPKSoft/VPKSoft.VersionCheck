@@ -103,6 +103,18 @@
         ArchiveVersionHistory($_POST["ArchiveVersionHistory"]);
         return;
 	}    
+	// archive a version data into the archive database table..
+	elseif (isset($_POST["ArchiveVersionHistoryByApplicationId"]))
+	{
+        ArchiveVersionHistoryByApplicationId($_POST["ArchiveVersionHistoryByApplicationId"]);
+        return;
+	}    
+	// archive a version data into the archive database table..
+	elseif (isset($_POST["DeleteVersionHistoryByApplicationId"]))
+	{
+        DeleteVersionHistoryByApplicationId($_POST["DeleteVersionHistoryByApplicationId"]);
+        return;
+	}           
     else
     {
         // something could done with this but for now silence seems better..

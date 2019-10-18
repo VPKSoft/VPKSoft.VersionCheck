@@ -34,8 +34,7 @@ function ArchiveVersion($postdata)
 
         if (sizeof($software_data) != 3)
         {
-            array_push($result, CreateLocalizedChangeHistoryResult("-1", "-1", "Fail: Invalid POST value!", "4"));
-            echo json_encode($result);
+            echo CreateGeneralResult("Fail: Invalid POST value, required 3 values, got: " . sizeof($software_data) . "!", "4", "True");
             return;
         }	            
 
@@ -85,6 +84,65 @@ function ArchiveVersion($postdata)
     }    
 }
 
+function ArchiveVersionHistoryByApplicationId($postdata)
+{
+    // the format is APIKEY;VERSION_ENTRY_ID;DELETE(1 / 0)..
+    try
+    {
+        $software_data = explode(";", $postdata);
+
+        if (sizeof($software_data) != 3)
+        {
+            echo CreateGeneralResult("Fail: Invalid POST value, required 3 values, got: " . sizeof($software_data) . "!", "4", "True");
+            return;
+        }	            
+
+        // validate the right to access the version database..
+        if (!APIKeyCorrect($software_data[0]))
+        {
+            echo CreateGeneralResult("Fail: Invalid API key!", "3", "True");
+            return;
+        }
+        
+        $id = $software_data[1];
+        $delete = $software_data[2];
+
+        // create a database connection..
+        $version_db = CreateDBConnection();        
+     
+        $sentence = 
+            "INSERT INTO CHANGEHISTORY_ARCHIVE(APP_ID, SOFTWARENAME, VERSIONSTRING,\r\n" .
+            "CULTUREMAIN, CULTURESPECIFIC, METADATA)\r\n" .
+            "SELECT APP_ID, SOFTWARENAME, VERSIONSTRING, CULTUREMAIN, CULTURESPECIFIC, METADATA\r\n" .
+            "FROM\r\n" .
+            "CHANGEHISTORY WHERE APP_ID = :id;\r\n";
+                
+        $stmt = $version_db->prepare($sentence);
+        $stmt->execute(array(":id" => $id));        
+        $stmp = null;
+        
+        if ($delete == "1")
+        {
+            $sentence = 
+                "DELETE FROM CHANGEHISTORY WHERE APP_ID = :id;\r\n";
+            $stmt = $version_db->prepare($sentence);
+            $stmt->execute(array(":id" => $id));        
+            $stmp = null;
+        }
+
+        $sentence = null;
+
+        $version_db = null; // release the database connection..
+        echo CreateGeneralResult();
+        return;        
+    }
+    catch (Exception $e) // just exit with an error..
+    {
+        echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+        return;
+    }            
+}
+
 function ArchiveVersionHistory($postdata)
 {
     // the format is APIKEY;VERSION_ENTRY_ID;DELETE(1 / 0)..
@@ -94,8 +152,7 @@ function ArchiveVersionHistory($postdata)
 
         if (sizeof($software_data) != 3)
         {
-            array_push($result, CreateLocalizedChangeHistoryResult("-1", "-1", "Fail: Invalid POST value!", "4"));
-            echo json_encode($result);
+            echo CreateGeneralResult("Fail: Invalid POST value, required 3 values, got: " . sizeof($software_data) . "!", "4", "True");
             return;
         }	            
 

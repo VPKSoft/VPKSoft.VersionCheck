@@ -39,6 +39,7 @@ using System.Web;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck.APIResponseClasses;
 using VPKSoft.VersionCheck.Enumerations;
+using VPKSoft.VersionCheck.Forms;
 
 namespace VPKSoft.VersionCheck
 {
@@ -127,6 +128,8 @@ namespace VPKSoft.VersionCheck
                     new KeyValuePair<PostMethod, string>(PostMethod.DeleteVersionChange, "DeleteVersionChange"),
                     new KeyValuePair<PostMethod, string>(PostMethod.ArchiveVersion, "ArchiveVersion"),
                     new KeyValuePair<PostMethod, string>(PostMethod.ArchiveVersionHistory, "ArchiveVersionHistory"),
+                    new KeyValuePair<PostMethod, string>(PostMethod.ArchiveVersionHistoryByApplicationId, "ArchiveVersionHistoryByApplicationId"),
+                    new KeyValuePair<PostMethod, string>(PostMethod.DeleteVersionHistoryByApplicationId, "DeleteVersionHistoryByApplicationId"),
                 }
             );
 
@@ -269,6 +272,32 @@ namespace VPKSoft.VersionCheck
                     GetResponse(PostMethod.DeleteVersionChange, 
                         true, 
                         id);
+
+                var result = SerializeResponse<GeneralResponse>(webResponse);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
+            }
+        }
+
+        /// <summary>
+        /// Gets the localized version data for a an application with a given application Id number.
+        /// </summary>
+        /// <param name="applicationId">The application identifier.</param>
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse DeleteVersionHistoryByApplicationId(int applicationId)
+        {
+            try
+            {
+                WebResponse webResponse = 
+                    GetResponse(PostMethod.DeleteVersionHistoryByApplicationId, 
+                        true, 
+                        applicationId);
 
                 var result = SerializeResponse<GeneralResponse>(webResponse);
 
@@ -510,6 +539,45 @@ namespace VPKSoft.VersionCheck
                 ExceptionAction?.Invoke(ex);
                 return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
             }
+        }
+
+
+        /// <summary>
+        /// Archives a version history entries with a given application Id number.
+        /// </summary>
+        /// <param name="applicationId">The application identifier.</param>
+        /// <param name="delete">if set to <c>true</c> the entry is deleted after archiving.</param>
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse ArchiveVersionHistoryByApplicationId(int applicationId, bool delete = false)
+        {
+            try
+            {
+                WebResponse webResponse =
+                    GetResponse(PostMethod.ArchiveVersionHistoryByApplicationId, true, 
+                        applicationId, delete ? "1" : "0");
+
+                var result = SerializeResponse<GeneralResponse>(webResponse);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
+            }
+        }
+
+        /// <summary>
+        /// Archives a version history entries with a given <see cref="VersionInfo"/> class instance describing the application.
+        /// </summary>
+        /// <param name="versionInfo">The version information.</param>
+        /// <param name="delete">if set to <c>true</c> the entry is deleted after archiving.</param>
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse ArchiveVersionHistoryByApplicationId(VersionInfo versionInfo, bool delete = false)
+        {
+            return ArchiveVersionHistoryByApplicationId(versionInfo.ID, delete);
+
         }
 
         /// <summary>

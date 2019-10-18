@@ -25,16 +25,16 @@
 
 include_once "functions.php";
 
-function DeleteVersionChange($postData)
+function DeleteVersionChange($postdata)
 {
     try
     {
         // the format is APIKEY;ID
-        $software_data = explode(";", $postData);		
+        $software_data = explode(";", $postdata);		
 
         if (sizeof($software_data) != 2)
         {
-            echo CreateGeneralResult("Fail: Invalid POST value!", "4", "True");
+            echo CreateGeneralResult("Fail: Invalid POST value, required 2 values, got: " . sizeof($software_data) . "!", "4", "True");            
             return;
         }	
 
@@ -69,6 +69,50 @@ function DeleteVersionChange($postData)
     }    
 }
 
+function DeleteVersionHistoryByApplicationId($postdata)
+{
+    try
+    {
+        // the format is APIKEY;ID
+        $software_data = explode(";", $postdata);		
+
+        if (sizeof($software_data) != 2)
+        {
+            echo CreateGeneralResult("Fail: Invalid POST value, required 2 values, got: " . sizeof($software_data) . "!", "4", "True");
+            return;
+        }	
+
+        // get the data..
+        $secret_file = $software_data[0];		
+        $id = $software_data[1];
+
+        // validate the right to manipulate the version database..
+        if (!APIKeyCorrect($secret_file))
+        {
+            echo CreateGeneralResult("Fail: Invalid API key!", "3", "True");
+            return;
+        }
+
+        // create a database connection..
+        $version_db = CreateDBConnection();
+
+        $sentence = "DELETE FROM CHANGEHISTORY WHERE APP_ID = :id ";            
+        $stmt = $version_db->prepare($sentence);            
+
+        $stmt->execute(array(":id" => $id));
+        $sentence = null;
+        $stmt = null;
+        $version_db = null; // release the database connection..
+        echo CreateGeneralResult();
+        return;            
+    }
+    catch (Exception $e) // just exit with an error..
+    {
+        echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+        return;
+    }    
+}
+
 function DeleteVersion($postdata)
 {
     try 
@@ -78,7 +122,7 @@ function DeleteVersion($postdata)
 
         if (sizeof($software_data) != 2)
         {
-            echo CreateGeneralResult("Fail: Invalid POST value!", "4", "True");
+            echo CreateGeneralResult("Fail: Invalid POST value, required 2 values, got: " . sizeof($software_data) . "!", "4", "True");
             return;
         }	
 

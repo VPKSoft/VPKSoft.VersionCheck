@@ -28,6 +28,7 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck;
+using VPKSoft.VersionCheck.Forms;
 
 namespace AboutTest
 {
@@ -42,7 +43,7 @@ namespace AboutTest
         {
             // ReSharper disable once ObjectCreationAsStatement
             // ReSharper disable once StringLiteralTypo
-            new VPKSoft.VersionCheck.FormAbout(this, Assembly.GetEntryAssembly(), "LGPL",
+            new FormAbout(this, Assembly.GetEntryAssembly(), "LGPL",
                 "http://www.gnu.org/licenses/gpl-3.0.txt", "http://192.168.1.131/admin/ServerSideBase/version.php", 3000);
         }
 

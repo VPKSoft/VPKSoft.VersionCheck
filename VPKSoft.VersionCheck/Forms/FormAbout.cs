@@ -25,15 +25,15 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Windows.Forms;
-using System.Globalization;
-using System.Resources;
 using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
+using System.Resources;
+using System.Windows.Forms;
 using VPKSoft.VersionCheck.APIResponseClasses;
 
-namespace VPKSoft.VersionCheck
+namespace VPKSoft.VersionCheck.Forms
 {
     /// <summary>
     /// A simple about dialog form.

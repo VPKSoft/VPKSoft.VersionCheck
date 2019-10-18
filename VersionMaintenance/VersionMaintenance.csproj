@@ -86,6 +86,12 @@
     <Compile Include="FormDialogs\FormDialogGenerateRandomFilename.Designer.cs">
       <DependentUpon>FormDialogGenerateRandomFilename.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormDialogs\FormDialogQueryDeleteArchiveEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDialogs\FormDialogQueryDeleteArchiveEntry.Designer.cs">
+      <DependentUpon>FormDialogQueryDeleteArchiveEntry.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormDialogs\FormDialogGenerateRandomFilename.resx">
       <DependentUpon>FormDialogGenerateRandomFilename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDialogs\FormDialogQueryDeleteArchiveEntry.resx">
+      <DependentUpon>FormDialogQueryDeleteArchiveEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

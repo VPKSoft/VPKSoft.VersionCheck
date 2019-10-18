@@ -30,7 +30,7 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 
-namespace VPKSoft.VersionCheck
+namespace VPKSoft.VersionCheck.Forms
 {
     /// <summary>
     /// A form to download a file from the internet.

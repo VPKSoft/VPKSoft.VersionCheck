@@ -78,7 +78,7 @@ function UpdateInsertVersion($postdata)
         if (sizeof($software_data) != 7)
         {
             // an invalid POST value was given..
-            echo CreateGeneralResult("Fail: Invalid POST value!", "4", "True");
+            echo CreateGeneralResult("Fail: Invalid POST value, required 7 values, got: " . sizeof($software_data) . "!", "4", "True");
             return;
         }		
 
@@ -149,7 +149,7 @@ function AddVersionChanges($postdata)
 
         if (sizeof($software_data) != 6)
         {
-            echo CreateGeneralResult("Fail: Invalid POST value!", "4", "True");
+            echo CreateGeneralResult("Fail: Invalid POST value, required 6 values, got: " . sizeof($software_data) . "!", "4", "True");            
             return;
         }	
 

@@ -85,5 +85,15 @@ namespace VPKSoft.VersionCheck.Enumerations
         /// The ArchiveVersionHistory POST method.
         /// </summary>
         ArchiveVersionHistory,
+
+        /// <summary>
+        /// The ArchiveVersionHistoryByApplicationId POST method.
+        /// </summary>
+        ArchiveVersionHistoryByApplicationId,
+
+        /// <summary>
+        /// The DeleteVersionHistoryByApplicationId POST method.
+        /// </summary>
+        DeleteVersionHistoryByApplicationId,
     }
 }

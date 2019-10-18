@@ -131,17 +131,36 @@ namespace VersionMaintenance
             if (gvSoftwareVersions.CurrentRow != null)
             {
                 // verify that the user wants to delete a software entry from the server's database..
-                if (MessageBox.Show(
-                        $@"Really delete software entry '{gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value}'?",
-                        @"Confirm", MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.No)
-                {
-                    // ..no so do return..
-                    return;
-                }
+                var result = FormDialogQueryDeleteArchiveEntry.ShowDialog(this,
+                    gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value.ToString());
 
                 var name = gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value.ToString();
-                VersionCheck.DeleteSoftwareEntry(name);
+
+                var id = Convert.ToInt32(gvSoftwareVersions.CurrentRow.Cells[colID.Index].Value);
+
+                if (result.dialogResult == DialogResult.OK)
+                {
+                    if (result.archive)
+                    {
+                        VersionCheck.ArchiveVersion(id, true);
+                    }
+                    else
+                    {
+                        VersionCheck.DeleteSoftwareEntry(gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value
+                            .ToString());
+                    }
+
+                    if (result.archiveHistory)
+                    {
+                        VersionCheck.ArchiveVersionHistoryByApplicationId(id, true);
+                    }
+                    else
+                    {
+                        VersionCheck.DeleteVersionHistoryByApplicationId(id);
+                    }
+
+                    //VersionCheck.DeleteSoftwareEntry(name);
+                }
             }
 
             ListVersions();
