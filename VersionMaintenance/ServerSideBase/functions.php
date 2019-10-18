@@ -24,6 +24,14 @@
 	along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 
+    // a replaceable constant to improve security..
+    define("dbname", "version.sqlite"); 
+
+    function SQLiteDatabase()
+    {
+        return dbname;
+    }
+
     function CreateGeneralResult($message = "Success", $error_code = "0", $error = "False")
     {
         $return_value = array(
@@ -34,7 +42,7 @@
         
         return json_encode($return_value);
     }
-
+       
     function CreateLocalizedChangeHistoryResult(
             $id = "-1", 
             $app_id = "-1", 
@@ -91,7 +99,7 @@
     function CreateDBConnection($set_errors = true)
     {
         // create a database connection..
-		$version_db = new PDO("sqlite:version.sqlite");
+		$version_db = new PDO("sqlite:" . SQLiteDatabase());
         
         // exceptions are wanted..
         if ($set_errors)

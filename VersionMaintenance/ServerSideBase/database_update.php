@@ -41,7 +41,7 @@ function UpdateDatabase($postdata)
         {
             try
             {
-                if (!rename("empty.sqlite", "version.sqlite"))
+                if (!rename("empty.sqlite", SQLiteDatabase()))
                 {
                     echo CreateGeneralResult("Fail: File rename!", "1", "True");
                     return;

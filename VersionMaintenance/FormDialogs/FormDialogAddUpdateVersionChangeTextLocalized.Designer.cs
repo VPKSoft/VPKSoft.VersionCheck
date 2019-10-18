@@ -1,4 +1,4 @@
-﻿namespace VersionMaintenance
+﻿namespace VersionMaintenance.FormDialogs
 {
     partial class FormDialogAddUpdateVersionChangeTextLocalized
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck;
 
-namespace VersionMaintenance
+namespace VersionMaintenance.FormDialogs
 {
     /// <summary>
     /// A dialog to write a version change in a localized format to a given culture.

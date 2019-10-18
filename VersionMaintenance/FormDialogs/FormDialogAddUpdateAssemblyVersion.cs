@@ -30,7 +30,7 @@ using System.Windows.Forms;
 using VPKSoft.VersionCheck;
 using VPKSoft.VersionCheck.APIResponseClasses;
 
-namespace VersionMaintenance
+namespace VersionMaintenance.FormDialogs
 {
     /// <summary>
     /// A form to set assembly parameters for either update or to a new assembly.

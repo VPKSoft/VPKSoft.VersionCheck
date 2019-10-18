@@ -31,6 +31,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using VersionMaintenance.FormDialogs;
 using VPKSoft.VersionCheck;
 
 namespace VersionMaintenance
@@ -153,7 +154,7 @@ namespace VersionMaintenance
         }
 
         // a string containing valid characters for a file name..
-        private readonly string charString = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+        private const string CharString = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
 
         // a random number generator for a new API key..
         private readonly Random random = new Random();
@@ -175,7 +176,7 @@ namespace VersionMaintenance
             string apiKey = string.Empty;
             for (int i = 0; i < 20; i++)
             {
-                apiKey += charString[random.Next(0, charString.Length - 1)];
+                apiKey += CharString[random.Next(0, CharString.Length - 1)];
             }
 
             tstbAPIKey.Text = apiKey;
@@ -211,8 +212,15 @@ namespace VersionMaintenance
 
         private void MnuGenerateFiles_Click(object sender, EventArgs e)
         {
+            bool randomizeDatabaseName =
+                MessageBox.Show(
+                    $@"Randomize the database file name for increased security?",
+                    @"Question", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
+
             if (fbdDirectory.ShowDialog() == DialogResult.OK)
             {
+                // TODO::Randomize the SQLite databse name!
                 var softwarePath = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
                 if (softwarePath != null)
                 {
@@ -220,6 +228,15 @@ namespace VersionMaintenance
                     {
                         // create an empty file..
                     }
+
+                    // ReSharper disable once StringLiteralTypo
+                    var databaseFilename = "version.sqlite";
+
+                    if (randomizeDatabaseName)
+                    {
+                        databaseFilename = FormDialogGenerateRandomFilename.ShowDialogQueryFilename(this);
+                    }
+
 
                     // copy the existing files..
                     File.Copy(Path.Combine(softwarePath, "ServerSideBase", "index.html"),
@@ -248,14 +265,18 @@ namespace VersionMaintenance
                     File.Copy(Path.Combine(softwarePath, "ServerSideBase", "empty.sqlite"),
                         Path.Combine(fbdDirectory.SelectedPath, "empty.sqlite"), true);
 
-                    File.Copy(Path.Combine(softwarePath, "ServerSideBase", "functions.php"),
-                        Path.Combine(fbdDirectory.SelectedPath, "functions.php"), true);
+                    var fileContents = File.ReadAllText(Path.Combine(softwarePath, "ServerSideBase", "functions.php"));
+
+                    fileContents = fileContents.Replace("define(\"dbname\", \"version.sqlite\");",
+                        $"define(\"dbname\", \"{databaseFilename}\");");
+
+                    File.WriteAllText(Path.Combine(fbdDirectory.SelectedPath, "functions.php"), fileContents);
 
                     // create an empty SQLite database..
                     using (SQLiteConnection connection = new SQLiteConnection(
                         "Data Source=" + Path.Combine(fbdDirectory.SelectedPath,
                             // ReSharper disable once StringLiteralTypo
-                            "version.sqlite") + ";Pooling=true;FailIfMissing=false;")) 
+                            databaseFilename) + ";Pooling=true;FailIfMissing=false;")) 
                     {
                         connection.Open();
 
