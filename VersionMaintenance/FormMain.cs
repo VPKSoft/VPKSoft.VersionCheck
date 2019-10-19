@@ -27,7 +27,6 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Data.SQLite;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -52,7 +51,7 @@ namespace VersionMaintenance
             settings = new Settings();
 
 
-            if (Debugger.IsAttached) // different settings when debugging..
+            if (Debugger.IsAttached && !overrideDebugCheck) // different settings when debugging..
             {
                 VersionCheck.ApiKey = settings.ApiKeyTest; // a random string and a random file on the server...
                 VersionCheck.CheckUri = settings.CheckUriTest;
@@ -80,6 +79,8 @@ namespace VersionMaintenance
 
         // settings for this piece of software..
         private readonly Settings settings;
+
+        private static bool overrideDebugCheck = true;
 
         /// <summary>
         /// Lists the versions in a remote SQLite database if one exists and is accessible.
@@ -112,12 +113,37 @@ namespace VersionMaintenance
         // a user wants to add or update a version information entry within the remote database..
         private void MnuAddUpdateAssembly_Click(object sender, EventArgs e)
         {
-            if (odAssembly.ShowDialog() == DialogResult.OK)
+            Assembly assembly = null;
+            if (sender.Equals(mnuAddUpdateAssembly) && odAssembly.ShowDialog() == DialogResult.OK)
             {
-                Assembly assembly = Assembly.LoadFile(odAssembly.FileName);
-                var info = FormDialogAddUpdateAssemblyVersion.ShowDialog(odAssembly.FileName, assembly);
+                assembly = Assembly.LoadFile(odAssembly.FileName);
+            }
+            else if (sender.Equals(mnuThisAssemblyVersion))
+            {
+                // ..just use the entry assembly..
+                assembly = Assembly.GetEntryAssembly();
+            }
+
+            if (assembly != null)
+            {
+                var info = FormDialogAddUpdateAssemblyVersion.ShowDialog(assembly.Location, assembly,
+                    out bool archivePreviousEntry);
+
                 if (info != null)
                 {
+                    if (info.ID != -1)
+                    {
+                        if (archivePreviousEntry)
+                        {
+                            VersionCheck.ArchiveVersion(info.ID);
+                            VersionCheck.ArchiveVersionHistoryByApplicationId(info.ID, true);
+                        }
+                        else
+                        {
+                            VersionCheck.DeleteVersionHistoryByApplicationId(info.ID);
+                        }
+                    }
+
                     VersionCheck.UpdateVersion(assembly, info.DownloadLink, info.IsDirectDownload, info.ReleaseDate,
                         info.MetaData);
                     ListVersions();
@@ -146,8 +172,7 @@ namespace VersionMaintenance
                     }
                     else
                     {
-                        VersionCheck.DeleteSoftwareEntry(gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value
-                            .ToString());
+                        VersionCheck.DeleteSoftwareEntry(name);
                     }
 
                     if (result.archiveHistory)
@@ -207,7 +232,7 @@ namespace VersionMaintenance
             using (settings)
             {
                 // save the settings..
-                if (Debugger.IsAttached)
+                if (Debugger.IsAttached && !overrideDebugCheck)
                 {
                     settings.CheckUriTest = tstbLocationURI.Text;
                     settings.ApiKeyTest = tstbAPIKey.Text;
@@ -239,7 +264,6 @@ namespace VersionMaintenance
 
             if (fbdDirectory.ShowDialog() == DialogResult.OK)
             {
-                // TODO::Randomize the SQLite databse name!
                 var softwarePath = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
                 if (softwarePath != null)
                 {
@@ -309,46 +333,6 @@ namespace VersionMaintenance
 
                     Process.Start("explorer.exe", fbdDirectory.SelectedPath);
                 }
-            }
-        }
-
-        // get the version of this assembly is slightly different..
-        private void MnuThisAssemblyVersion_Click(object sender, EventArgs e)
-        {
-            // ..just use the entry assembly..
-            Assembly assembly = Assembly.GetEntryAssembly();
-            if (assembly != null)
-            {
-                var info = FormDialogAddUpdateAssemblyVersion.ShowDialog(assembly.Location, assembly);
-                if (info != null)
-                {
-                    VersionCheck.UpdateVersion(assembly, info.DownloadLink, info.IsDirectDownload, info.ReleaseDate,
-                        info.MetaData);
-                    ListVersions(); 
-                }
-            }
-        }
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            var value3 = VersionCheck.ArchiveVersionHistory(1);
-            return;
-            var value2 = VersionCheck.DeleteLocalizedVersionData(4);
-
-            return;
-            var value = VersionCheck.GetVersionDataLocalized(13);
-            return;
-
-            if (odAssembly.ShowDialog() == DialogResult.OK)
-            {
-                string data =
-                    string.Join(Environment.NewLine,
-                        "Testisovellus VPKSoft.About luokkakirjastolle.",
-                        "* Hienoja uusia ominaisuuksia",
-                        "* Bugikorjauksia");
-
-                Assembly assembly = Assembly.LoadFile(odAssembly.FileName);
-                VersionCheck.AddVersionChanges(assembly, 13, CultureInfo.GetCultureInfo("fr"), data);
             }
         }
 

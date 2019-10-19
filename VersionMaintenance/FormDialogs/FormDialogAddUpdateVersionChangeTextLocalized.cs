@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck;
+using VPKSoft.VersionCheck.APIResponseClasses;
 
 namespace VersionMaintenance.FormDialogs
 {
@@ -26,6 +27,7 @@ namespace VersionMaintenance.FormDialogs
         {
             var checkbox = (CheckBox) sender;
             cmbLocale.DisplayMember = checkbox.Checked ? "NativeName" : "DisplayName";
+            listLocalizedCultures.DisplayMember = checkbox.Checked ? "CultureNativeName" : "CultureDisplayName";
         }
 
         private void CreateLocaleCombo()
@@ -41,6 +43,19 @@ namespace VersionMaintenance.FormDialogs
             cmbLocale.SelectedItem = CultureInfo.CurrentCulture;
         }
 
+        private void ListLocalizedCultures()
+        {
+            var response = VersionCheck.GetVersionDataLocalized(applicationId, tbVersionValue.Text);
+            var cultures = response.OrderBy(f => cbUseNativeNames.Checked ? f.Culture.NativeName : f.Culture.DisplayName);
+            listLocalizedCultures.DisplayMember = cbUseNativeNames.Checked ? "CultureNativeName" : "CultureDisplayName";
+            listLocalizedCultures.Items.Clear();
+
+            foreach (var culture in cultures)
+            {
+                listLocalizedCultures.Items.Add(culture);
+            }
+        }
+
         private void SaveHistoryChanges(CultureInfo culture)
         {
             if (culture == null)
@@ -50,6 +65,11 @@ namespace VersionMaintenance.FormDialogs
 
             if (culture != null)
             {
+                if (string.IsNullOrWhiteSpace(tbChangesDescription.Text))
+                {
+                    return;
+                }
+
                 VersionCheck.AddVersionChanges(tbSoftwareChangeHistoryName.Text, tbVersionValue.Text, applicationId,
                     previousSelectedCulture, tbChangesDescription.Text);
             }
@@ -66,6 +86,7 @@ namespace VersionMaintenance.FormDialogs
             if (saveEntry)
             {
                 SaveHistoryChanges(previousSelectedCulture);
+                ListLocalizedCultures();
             }
 
             lbCultureISOValue.Text = comboBox.SelectedItem.ToString();
@@ -77,6 +98,15 @@ namespace VersionMaintenance.FormDialogs
                 f.Culture.Equals(previousSelectedCulture));
 
             tbChangesDescription.Text = localizedResult != null ? localizedResult.MetaData : string.Empty;
+
+            ttMain.SetToolTip(pbLocalizedIndicator,
+                string.IsNullOrWhiteSpace(tbChangesDescription.Text)
+                    ? "The selected culture is NOT localized"
+                    : "The selected culture is localized");
+
+            pbLocalizedIndicator.Image = string.IsNullOrWhiteSpace(tbChangesDescription.Text)
+                ? Properties.Resources.No_entry
+                : Properties.Resources.Apply;
         }
 
         /// <summary>
@@ -99,6 +129,7 @@ namespace VersionMaintenance.FormDialogs
             //form.SaveHistoryChanges(CultureInfo.CurrentCulture);
 
             form.CreateLocaleCombo();
+            form.ListLocalizedCultures();
             form.saveEntry = true;
 
             if (form.ShowDialog(owner) == DialogResult.OK)
@@ -130,6 +161,51 @@ namespace VersionMaintenance.FormDialogs
         {
             // verify the user input..
             btOK.Enabled = VerifyChangeHistory(tbChangesDescription);
+        }
+
+        private void FormDialogAddUpdateVersionChangeTextLocalized_KeyDown(object sender, KeyEventArgs e)
+        {
+            var comboBox = cmbLocale;
+            if (e.KeyCode == Keys.Return && comboBox.DroppedDown)
+            {
+                e.SuppressKeyPress = true;
+            }
+            else if (e.Control && !e.Shift && !e.Alt && e.KeyCode == Keys.F)
+            {
+                SearchForCulture();
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void listLocalizedCultures_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var listBox = (ListBox) sender;
+
+            var localizeEntry = (LocalizeChangeHistoryResponse) listBox.SelectedItem;
+
+            cmbLocale.SelectedItem = localizeEntry.Culture;
+        }
+
+        private void pbDeleteSelectedCulture_Click(object sender, EventArgs e)
+        {
+            var localizeEntry = (LocalizeChangeHistoryResponse) listLocalizedCultures.SelectedItem;
+            VersionCheck.DeleteLocalizedVersionData(Convert.ToInt32(localizeEntry.ID));
+            tbChangesDescription.Clear();
+            ListLocalizedCultures();
+        }
+
+        private void SearchForCulture()
+        {
+            var culture = FormDialogFindSelectCulture.ShowDialog(this);
+            if (culture != null)
+            {
+                cmbLocale.SelectedItem = culture;
+            }
+        }
+
+        private void pbSearchForCulture_Click(object sender, EventArgs e)
+        {
+            SearchForCulture();
         }
     }
 }

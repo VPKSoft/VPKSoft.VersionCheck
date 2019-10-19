@@ -27,11 +27,13 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using VPKSoft.VersionCheck.Forms;
 
-namespace VPKSoft.VersionCheck
+namespace VPKSoft.VersionCheck.CustomControls
 {
     /// <summary>
     /// A simplified link label.
@@ -72,6 +74,12 @@ namespace VPKSoft.VersionCheck
         public string SoftwareName { get; set; } = string.Empty;
 
         /// <summary>
+        /// Gets or sets the assembly of which is to be updated.
+        /// </summary>
+        [Browsable(false)]
+        public Assembly AboutAssembly { get; set; } 
+
+        /// <summary>
         /// Sets the software name from assembly to the <see cref="SoftwareName"/> property value.
         /// </summary>
         /// <param name="assembly">The assembly to use.</param>
@@ -99,6 +107,17 @@ namespace VPKSoft.VersionCheck
                 }
                 else
                 {
+                    if (VersionCheck.AboutDialogDisplayDownloadDialog)
+                    {
+                        if (Uri.IsWellFormedUriString(LinkUrl, UriKind.Absolute))
+                        {
+                            FormCheckVersion.CheckForNewVersion(VersionCheck.CheckUri,
+                                AboutAssembly == null ? Assembly.GetEntryAssembly() : AboutAssembly,
+                                CultureInfo.CurrentCulture.Name);
+                        }
+                        return;
+                    }
+
                     if (VersionCheck.DownloadFile(LinkUrl, TempPath))
                     {
                         VersionCheck.IncreaseDownloadCount(SoftwareName);

@@ -32,6 +32,17 @@
         return dbname;
     }
 
+    // a function for SQLite null parameters; ...IFNULL(:value, FIELDNAME) = FIELDNAME...
+    function GetArrayValue($index, $array)
+    {
+        if ($array == null && sizeof($array) < $index)
+        {
+            return "NULL";
+        }
+        
+        return $array[$index];
+    }
+    
     function CreateGeneralResult($message = "Success", $error_code = "0", $error = "False")
     {
         $return_value = array(

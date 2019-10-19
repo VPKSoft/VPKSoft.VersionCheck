@@ -73,6 +73,16 @@ namespace VersionMaintenance.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Apply {
+            get {
+                object obj = ResourceManager.GetObject("Apply", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap database_key {
             get {
                 object obj = ResourceManager.GetObject("database-key", resourceCulture);
@@ -106,6 +116,26 @@ namespace VersionMaintenance.Properties {
         internal static System.Drawing.Bitmap education_languages {
             get {
                 object obj = ResourceManager.GetObject("education-languages", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Find {
+            get {
+                object obj = ResourceManager.GetObject("Find", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap No_entry {
+            get {
+                object obj = ResourceManager.GetObject("No-entry", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

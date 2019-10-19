@@ -1,4 +1,6 @@
-﻿namespace VPKSoft.VersionCheck.Forms
+﻿using VPKSoft.VersionCheck.CustomControls;
+
+namespace VPKSoft.VersionCheck.Forms
 {
     partial class FormAbout
     {
@@ -29,7 +31,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAbout));
             this.tlpProductInfo = new System.Windows.Forms.TableLayoutPanel();
-            this.sllLinkVersion = new VPKSoft.VersionCheck.SimpleLinkLabel();
+            this.sllLinkVersion = new SimpleLinkLabel();
             this.lbVersionText = new System.Windows.Forms.Label();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.lbProductNameText = new System.Windows.Forms.Label();

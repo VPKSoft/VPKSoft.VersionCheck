@@ -92,6 +92,12 @@
     <Compile Include="FormDialogs\FormDialogQueryDeleteArchiveEntry.Designer.cs">
       <DependentUpon>FormDialogQueryDeleteArchiveEntry.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormDialogs\FormDialogFindSelectCulture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDialogs\FormDialogFindSelectCulture.Designer.cs">
+      <DependentUpon>FormDialogFindSelectCulture.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormDialogs\FormDialogAddUpdateVersionChangeTextLocalized.resx">
       <DependentUpon>FormDialogAddUpdateVersionChangeTextLocalized.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDialogs\FormDialogFindSelectCulture.resx">
+      <DependentUpon>FormDialogFindSelectCulture.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDialogs\FormDialogGenerateRandomFilename.resx">
       <DependentUpon>FormDialogGenerateRandomFilename.cs</DependentUpon>
@@ -160,6 +169,9 @@
     <None Include="Resources\application-x-ms-dos-executable.png" />
     <Content Include="icon_attribution.txt" />
     <None Include="Resources\education-languages.png" />
+    <None Include="Resources\Apply.png" />
+    <None Include="Resources\No-entry.png" />
+    <None Include="Resources\Find.png" />
     <Content Include="ServerSideBase\addupdate_functions.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

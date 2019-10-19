@@ -52,7 +52,7 @@ function QueryVersion($postdata)
         $select = 
             "SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT,\r\n" .
             "--localization via some SQL magic..\r\n" .
-            "IFNULL(IFNULL(H1.METADATA, H2.METADATA), V.METADATA) AS METADATANEW\r\n" .
+            "IFNULL(IFNULL(H2.METADATA, H1.METADATA), V.METADATA) AS METADATANEW\r\n" .
             "FROM\r\n" .
             "VERSIONS V\r\n" .
             "  LEFT OUTER JOIN DLCOUNT D ON (D.ID = V.ID)\r\n" .
@@ -61,7 +61,7 @@ function QueryVersion($postdata)
             "  LEFT OUTER JOIN CHANGEHISTORY H2 ON (H2.APP_ID = V.ID AND H2.CULTUREMAIN = :lang1 AND\r\n" .
             "    (IFNULL(H2.CULTURESPECIFIC, :lang2) = :lang2 OR :lang2 IS NULL) AND V.VERSIONSTRING = H2.VERSIONSTRING)\r\n" .
             "WHERE V.SOFTWARENAME = :name";
-
+       
         if (!$table_exists)
         {
             $select = 
@@ -73,6 +73,9 @@ function QueryVersion($postdata)
                 "WHERE V.SOFTWARENAME = :name";			
         }
 
+        //echo $select;
+        //return;        
+        
         $stmt = $version_db->prepare($select);
 
         if ($table_exists)
@@ -228,7 +231,7 @@ function GetSoftwareList($postdata)
         $select = 
             "SELECT V.*, IFNULL(D.DLCOUNT, 0) AS DLCOUNT,\r\n" .
             "--localization via some SQL magic..\r\n" .
-            "IFNULL(IFNULL(H1.METADATA, H2.METADATA), V.METADATA) AS METADATANEW\r\n" .                    
+            "IFNULL(IFNULL(H2.METADATA, H1.METADATA), V.METADATA) AS METADATANEW\r\n" .                    
             "FROM\r\n" .
             "VERSIONS V\r\n" .
             "  LEFT OUTER JOIN CHANGEHISTORY H1 ON (H1.ID = V.ID AND H1.CULTUREMAIN = :en AND\r\n" .

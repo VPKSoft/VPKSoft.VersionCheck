@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDialogAddUpdateVersionChangeTextLocalized));
             this.lbLocale = new System.Windows.Forms.Label();
             this.cmbLocale = new System.Windows.Forms.ComboBox();
@@ -42,6 +43,15 @@
             this.btCancel = new System.Windows.Forms.Button();
             this.lbChangeDescription = new System.Windows.Forms.Label();
             this.tbChangesDescription = new System.Windows.Forms.TextBox();
+            this.lbLocalizedCultures = new System.Windows.Forms.Label();
+            this.listLocalizedCultures = new System.Windows.Forms.ListBox();
+            this.ttMain = new System.Windows.Forms.ToolTip(this.components);
+            this.pbSearchForCulture = new System.Windows.Forms.PictureBox();
+            this.pbDeleteSelectedCulture = new System.Windows.Forms.PictureBox();
+            this.pbLocalizedIndicator = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSearchForCulture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDeleteSelectedCulture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLocalizedIndicator)).BeginInit();
             this.SuspendLayout();
             // 
             // lbLocale
@@ -62,7 +72,7 @@
             this.cmbLocale.FormattingEnabled = true;
             this.cmbLocale.Location = new System.Drawing.Point(82, 64);
             this.cmbLocale.Name = "cmbLocale";
-            this.cmbLocale.Size = new System.Drawing.Size(504, 21);
+            this.cmbLocale.Size = new System.Drawing.Size(485, 21);
             this.cmbLocale.TabIndex = 1;
             this.cmbLocale.SelectedIndexChanged += new System.EventHandler(this.cmbLocale_SelectedIndexChanged);
             // 
@@ -81,7 +91,7 @@
             // 
             this.lbCultureISOValue.AutoSize = true;
             this.lbCultureISOValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbCultureISOValue.ForeColor = System.Drawing.Color.IndianRed;
+            this.lbCultureISOValue.ForeColor = System.Drawing.Color.DarkCyan;
             this.lbCultureISOValue.Location = new System.Drawing.Point(492, 94);
             this.lbCultureISOValue.Name = "lbCultureISOValue";
             this.lbCultureISOValue.Size = new System.Drawing.Size(42, 13);
@@ -108,6 +118,8 @@
             // 
             // tbSoftwareChangeHistoryName
             // 
+            this.tbSoftwareChangeHistoryName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbSoftwareChangeHistoryName.Location = new System.Drawing.Point(174, 12);
             this.tbSoftwareChangeHistoryName.Name = "tbSoftwareChangeHistoryName";
             this.tbSoftwareChangeHistoryName.ReadOnly = true;
@@ -156,7 +168,7 @@
             // lbChangeDescription
             // 
             this.lbChangeDescription.AutoSize = true;
-            this.lbChangeDescription.Location = new System.Drawing.Point(12, 122);
+            this.lbChangeDescription.Location = new System.Drawing.Point(9, 116);
             this.lbChangeDescription.Name = "lbChangeDescription";
             this.lbChangeDescription.Size = new System.Drawing.Size(151, 13);
             this.lbChangeDescription.TabIndex = 11;
@@ -178,13 +190,80 @@
             this.tbChangesDescription.WordWrap = false;
             this.tbChangesDescription.TextChanged += new System.EventHandler(this.tbChangesDescription_TextChanged);
             // 
+            // lbLocalizedCultures
+            // 
+            this.lbLocalizedCultures.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbLocalizedCultures.AutoSize = true;
+            this.lbLocalizedCultures.Location = new System.Drawing.Point(592, 15);
+            this.lbLocalizedCultures.Name = "lbLocalizedCultures";
+            this.lbLocalizedCultures.Size = new System.Drawing.Size(95, 13);
+            this.lbLocalizedCultures.TabIndex = 14;
+            this.lbLocalizedCultures.Text = "Localized cultures:";
+            // 
+            // listLocalizedCultures
+            // 
+            this.listLocalizedCultures.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listLocalizedCultures.FormattingEnabled = true;
+            this.listLocalizedCultures.Location = new System.Drawing.Point(595, 38);
+            this.listLocalizedCultures.Name = "listLocalizedCultures";
+            this.listLocalizedCultures.Size = new System.Drawing.Size(188, 329);
+            this.listLocalizedCultures.TabIndex = 15;
+            this.listLocalizedCultures.SelectedValueChanged += new System.EventHandler(this.listLocalizedCultures_SelectedValueChanged);
+            // 
+            // pbSearchForCulture
+            // 
+            this.pbSearchForCulture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbSearchForCulture.Image = global::VersionMaintenance.Properties.Resources.Find;
+            this.pbSearchForCulture.Location = new System.Drawing.Point(570, 64);
+            this.pbSearchForCulture.Margin = new System.Windows.Forms.Padding(0);
+            this.pbSearchForCulture.Name = "pbSearchForCulture";
+            this.pbSearchForCulture.Size = new System.Drawing.Size(21, 21);
+            this.pbSearchForCulture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbSearchForCulture.TabIndex = 17;
+            this.pbSearchForCulture.TabStop = false;
+            this.ttMain.SetToolTip(this.pbSearchForCulture, "Search a culture");
+            this.pbSearchForCulture.Click += new System.EventHandler(this.pbSearchForCulture_Click);
+            // 
+            // pbDeleteSelectedCulture
+            // 
+            this.pbDeleteSelectedCulture.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbDeleteSelectedCulture.Image = global::VersionMaintenance.Properties.Resources.edit_delete_6;
+            this.pbDeleteSelectedCulture.Location = new System.Drawing.Point(767, 12);
+            this.pbDeleteSelectedCulture.Margin = new System.Windows.Forms.Padding(0);
+            this.pbDeleteSelectedCulture.Name = "pbDeleteSelectedCulture";
+            this.pbDeleteSelectedCulture.Size = new System.Drawing.Size(16, 16);
+            this.pbDeleteSelectedCulture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbDeleteSelectedCulture.TabIndex = 16;
+            this.pbDeleteSelectedCulture.TabStop = false;
+            this.ttMain.SetToolTip(this.pbDeleteSelectedCulture, "Delete selected culture");
+            this.pbDeleteSelectedCulture.Click += new System.EventHandler(this.pbDeleteSelectedCulture_Click);
+            // 
+            // pbLocalizedIndicator
+            // 
+            this.pbLocalizedIndicator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbLocalizedIndicator.Image = global::VersionMaintenance.Properties.Resources.No_entry;
+            this.pbLocalizedIndicator.Location = new System.Drawing.Point(570, 116);
+            this.pbLocalizedIndicator.Margin = new System.Windows.Forms.Padding(0);
+            this.pbLocalizedIndicator.Name = "pbLocalizedIndicator";
+            this.pbLocalizedIndicator.Size = new System.Drawing.Size(16, 16);
+            this.pbLocalizedIndicator.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbLocalizedIndicator.TabIndex = 13;
+            this.pbLocalizedIndicator.TabStop = false;
+            this.ttMain.SetToolTip(this.pbLocalizedIndicator, "The selected culture is localized");
+            // 
             // FormDialogAddUpdateVersionChangeTextLocalized
             // 
             this.AcceptButton = this.btOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btCancel;
-            this.ClientSize = new System.Drawing.Size(598, 379);
+            this.ClientSize = new System.Drawing.Size(795, 379);
+            this.Controls.Add(this.pbSearchForCulture);
+            this.Controls.Add(this.pbDeleteSelectedCulture);
+            this.Controls.Add(this.listLocalizedCultures);
+            this.Controls.Add(this.lbLocalizedCultures);
+            this.Controls.Add(this.pbLocalizedIndicator);
             this.Controls.Add(this.tbChangesDescription);
             this.Controls.Add(this.lbChangeDescription);
             this.Controls.Add(this.btCancel);
@@ -199,6 +278,7 @@
             this.Controls.Add(this.cmbLocale);
             this.Controls.Add(this.lbLocale);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormDialogAddUpdateVersionChangeTextLocalized";
@@ -206,6 +286,10 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add or update localized version changes";
             this.Shown += new System.EventHandler(this.FormDialogAddUpdateVersionChangeTextLocalized_Shown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormDialogAddUpdateVersionChangeTextLocalized_KeyDown);
+            ((System.ComponentModel.ISupportInitialize)(this.pbSearchForCulture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDeleteSelectedCulture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLocalizedIndicator)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -226,5 +310,11 @@
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.Label lbChangeDescription;
         private System.Windows.Forms.TextBox tbChangesDescription;
+        private System.Windows.Forms.PictureBox pbLocalizedIndicator;
+        private System.Windows.Forms.Label lbLocalizedCultures;
+        private System.Windows.Forms.ListBox listLocalizedCultures;
+        private System.Windows.Forms.ToolTip ttMain;
+        private System.Windows.Forms.PictureBox pbDeleteSelectedCulture;
+        private System.Windows.Forms.PictureBox pbSearchForCulture;
     }
 }

@@ -69,6 +69,11 @@ namespace VPKSoft.VersionCheck
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the about dialog should display the download dialog after user clicks to update the software.
+        /// </summary>
+        public static bool AboutDialogDisplayDownloadDialog { get; set; }
+
+        /// <summary>
         /// Gets or sets the localized download percentage text for the download dialog. The default is: '%'.
         /// </summary>
         public static string LocalizedDownloadPercentageText
@@ -232,7 +237,7 @@ namespace VPKSoft.VersionCheck
         /// </summary>
         /// <param name="applicationId">The application identifier number.</param>
         /// <param name="versionString">The optional software version as a string.</param>
-        /// <param name="cultureName">The optional culture name in the format languagecode2-country/regioncode2. languagecode2. The languagecode2 is optional.</param>
+        /// <param name="cultureName">The optional culture name in the format languagecode2-country/regioncode2. The languagecode2 is optional.</param>
         /// <returns>A list of <see cref="LocalizeChangeHistoryResponse"/> class instances containing the localized version history entries for the application.</returns>/// 
         [SuppressMessage("ReSharper", "CommentTypo")]
         public static List<LocalizeChangeHistoryResponse> GetVersionDataLocalized(int applicationId,
@@ -471,7 +476,7 @@ namespace VPKSoft.VersionCheck
             try
             {
                 WebResponse webResponse = 
-                    GetResponse(PostMethod.ArchiveVersion, true, id, delete ? 1 : 0);
+                    GetResponse(PostMethod.ArchiveVersion, true, id, delete ? "1" : "0");
 
                 var result = SerializeResponse<GeneralResponse>(webResponse);
 

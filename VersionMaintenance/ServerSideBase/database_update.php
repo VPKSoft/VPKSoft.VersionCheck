@@ -37,7 +37,7 @@ function UpdateDatabase($postdata)
             return;
         }
 
-        if (!file_exists("version.sqlite"))
+        if (!file_exists(SQLiteDatabase()))
         {
             try
             {

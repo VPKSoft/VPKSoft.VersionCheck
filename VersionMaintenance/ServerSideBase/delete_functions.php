@@ -73,7 +73,7 @@ function DeleteVersionHistoryByApplicationId($postdata)
 {
     try
     {
-        // the format is APIKEY;ID
+        // the format is APIKEY;ID;[VERSIONSTRING]
         $software_data = explode(";", $postdata);		
 
         if (sizeof($software_data) != 2)

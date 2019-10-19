@@ -10,7 +10,7 @@
     <iconUrl>https://www.vpksoft.net/site/VPKSoft.ico</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Added a download counter for the API and for the database.</releaseNotes>
+    <releaseNotes>A release with localization support for the version history. The comparability on the server side is preserved with the previous version.</releaseNotes>
     <copyright>Copyright ® VPKSoft 2019</copyright>
     <tags>version check .NET assembly download</tags>
     <license type="expression">LGPL-3.0-or-later</license>

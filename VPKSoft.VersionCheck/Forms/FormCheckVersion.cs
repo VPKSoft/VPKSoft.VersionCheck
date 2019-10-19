@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using VPKSoft.VersionCheck.UtilityClasses;
 
 namespace VPKSoft.VersionCheck.Forms
 {
@@ -87,7 +88,7 @@ namespace VPKSoft.VersionCheck.Forms
                     checkVersion.lbReleaseNotes.Text = localization.GetMessage("txtReleaseChanges",
                         "Release changes:", localeString);
 
-                    checkVersion.tbReleaseNotes.Text = version.MetaData.Replace("* ", "• ").Replace("*", "•");
+                    checkVersion.tbReleaseNotes.Text = version.MetaDataLocalized.Replace("* ", "• ").Replace("*", "•");
 
                     if (!string.IsNullOrEmpty(version.MetaDataLocalized))
                     {

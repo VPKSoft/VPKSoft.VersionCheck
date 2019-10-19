@@ -1,4 +1,4 @@
-﻿namespace VPKSoft.VersionCheck
+﻿namespace VPKSoft.VersionCheck.CustomControls
 {
     sealed partial class SimpleLinkLabel
     {

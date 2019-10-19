@@ -75,13 +75,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SimpleLinkLabel.cs">
+    <Compile Include="CustomControls\SimpleLinkLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SimpleLinkLabel.designer.cs">
+    <Compile Include="CustomControls\SimpleLinkLabel.designer.cs">
       <DependentUpon>SimpleLinkLabel.cs</DependentUpon>
     </Compile>
-    <Compile Include="TabDeliLocalization.cs" />
+    <Compile Include="UtilityClasses\TabDeliLocalization.cs" />
     <Compile Include="VersionCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

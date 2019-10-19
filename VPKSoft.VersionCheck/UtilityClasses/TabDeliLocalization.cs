@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace VPKSoft.VersionCheck
+namespace VPKSoft.VersionCheck.UtilityClasses
 {
     /// <summary>
     /// A class for a simple localization using a text file embedded into a resource file.

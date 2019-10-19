@@ -52,9 +52,12 @@ namespace VersionMaintenance.FormDialogs
         /// </summary>
         /// <param name="fileName">Name of the file from which to get the base release date from.</param>
         /// <param name="assembly">The assembly to get the information from.</param>
+        /// <param name="archivePreviousEntry">A value indicating if the user wishes to archive the previous <see cref="VersionInfo"/> entry.</param>
         /// <returns>An instance to <see cref="VersionInfo"/> class if the operation was successful; otherwise null.</returns>
-        public static VersionInfo ShowDialog(string fileName, Assembly assembly)
+        public static VersionInfo ShowDialog(string fileName, Assembly assembly, out bool archivePreviousEntry)
         {
+            int applicationId = -1;
+
             var info = VersionCheck.GetVersion(assembly);
             if (info == null)
             {
@@ -63,8 +66,10 @@ namespace VersionMaintenance.FormDialogs
             else
             {
                 info.SoftwareVersion = assembly.GetName().Version.ToString();
+                applicationId = info.ID;
             }
 
+            archivePreviousEntry = false;
             var form = new FormDialogAddUpdateAssemblyVersion
             {
                 cbDirectDownload = {Checked = info.IsDirectDownload},
@@ -73,7 +78,8 @@ namespace VersionMaintenance.FormDialogs
                 tbDownloadLink = {Text = info.DownloadLink},
                 tbMetaData = {Text = info.MetaData},
                 dtpReleaseDate = {Value = info.ReleaseDate},
-                dtpReleaseTime = {Value = info.ReleaseDate}
+                dtpReleaseTime = {Value = info.ReleaseDate},
+                cbArchivePreviousVersion = { Enabled = applicationId != -1, Checked = applicationId != -1},
             };
 
 
@@ -85,9 +91,12 @@ namespace VersionMaintenance.FormDialogs
                 info.IsDirectDownload = form.cbDirectDownload.Checked;
                 info.DownloadLink = form.tbDownloadLink.Text;
                 info.ReleaseDate = new DateTime(dt1.Year, dt1.Month, dt1.Day, dt2.Hour, dt2.Minute, dt2.Second, DateTimeKind.Utc);
+                if (form.cbArchivePreviousVersion.Checked)
+                {
+                    archivePreviousEntry = applicationId != -1;
+                }
                 return info;
             }
-
             return null;
         }
 

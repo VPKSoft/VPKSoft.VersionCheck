@@ -28,16 +28,14 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck;
-using VPKSoft.VersionCheck.Forms;
 
-namespace AboutTest
+namespace AboutTestNuGet
 {
     public partial class FormMain : Form
     {
         public FormMain()
         {
             InitializeComponent();
-            VersionCheck.AboutDialogDisplayDownloadDialog = true; // I want to make it fancy..
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

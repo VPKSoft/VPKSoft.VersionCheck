@@ -55,15 +55,15 @@
             this.tsbDeleteSelectedEntry = new System.Windows.Forms.ToolStripButton();
             this.tsbUpdateEntry = new System.Windows.Forms.ToolStripButton();
             this.tsbRefreshEntries = new System.Windows.Forms.ToolStripButton();
+            this.tsbAddLocalizedData = new System.Windows.Forms.ToolStripButton();
             this.tbGenerateAPIKey = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.mnuAddUpdateAssembly = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuThisAssemblyVersion = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRefreshDatabaseEntries = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDeleteSelectedEntry = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuGenerateAPIKey = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuGenerateFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAddLocalizedData = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuGenerateFiles = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gvSoftwareVersions)).BeginInit();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
@@ -186,7 +186,7 @@
             this.tsbDeleteSelectedEntry,
             this.tsbUpdateEntry,
             this.tsbRefreshEntries,
-            this.toolStripButton1,
+            this.tsbAddLocalizedData,
             this.toolStripSeparator1,
             this.tslURIDescribtion,
             this.tstbLocationURI,
@@ -305,6 +305,16 @@
             this.tsbRefreshEntries.Text = "Refresh database entries";
             this.tsbRefreshEntries.Click += new System.EventHandler(this.MnuRefreshDatabaseEntries_Click);
             // 
+            // tsbAddLocalizedData
+            // 
+            this.tsbAddLocalizedData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbAddLocalizedData.Image = global::VersionMaintenance.Properties.Resources.education_languages;
+            this.tsbAddLocalizedData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbAddLocalizedData.Name = "tsbAddLocalizedData";
+            this.tsbAddLocalizedData.Size = new System.Drawing.Size(23, 22);
+            this.tsbAddLocalizedData.Text = "Add or update localized version changes";
+            this.tsbAddLocalizedData.Click += new System.EventHandler(this.mnuAddLocalizedData_Click);
+            // 
             // tbGenerateAPIKey
             // 
             this.tbGenerateAPIKey.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -314,16 +324,6 @@
             this.tbGenerateAPIKey.Size = new System.Drawing.Size(23, 22);
             this.tbGenerateAPIKey.Text = "Generate API key";
             this.tbGenerateAPIKey.Click += new System.EventHandler(this.TbGenerateAPIKey_Click);
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::VersionMaintenance.Properties.Resources.education_languages;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "Add or update localized version changes";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // mnuAddUpdateAssembly
             // 
@@ -339,7 +339,7 @@
             this.mnuThisAssemblyVersion.Name = "mnuThisAssemblyVersion";
             this.mnuThisAssemblyVersion.Size = new System.Drawing.Size(287, 22);
             this.mnuThisAssemblyVersion.Text = "This assembly version";
-            this.mnuThisAssemblyVersion.Click += new System.EventHandler(this.MnuThisAssemblyVersion_Click);
+            this.mnuThisAssemblyVersion.Click += new System.EventHandler(this.MnuAddUpdateAssembly_Click);
             // 
             // mnuRefreshDatabaseEntries
             // 
@@ -365,14 +365,6 @@
             this.mnuGenerateAPIKey.Text = "Generate API key";
             this.mnuGenerateAPIKey.Click += new System.EventHandler(this.TbGenerateAPIKey_Click);
             // 
-            // mnuGenerateFiles
-            // 
-            this.mnuGenerateFiles.Image = global::VersionMaintenance.Properties.Resources.run_build_install;
-            this.mnuGenerateFiles.Name = "mnuGenerateFiles";
-            this.mnuGenerateFiles.Size = new System.Drawing.Size(218, 22);
-            this.mnuGenerateFiles.Text = "Generate files for a web site";
-            this.mnuGenerateFiles.Click += new System.EventHandler(this.MnuGenerateFiles_Click);
-            // 
             // mnuAddLocalizedData
             // 
             this.mnuAddLocalizedData.Image = global::VersionMaintenance.Properties.Resources.education_languages;
@@ -380,6 +372,14 @@
             this.mnuAddLocalizedData.Size = new System.Drawing.Size(287, 22);
             this.mnuAddLocalizedData.Text = "Add or update localized version changes";
             this.mnuAddLocalizedData.Click += new System.EventHandler(this.mnuAddLocalizedData_Click);
+            // 
+            // mnuGenerateFiles
+            // 
+            this.mnuGenerateFiles.Image = global::VersionMaintenance.Properties.Resources.run_build_install;
+            this.mnuGenerateFiles.Name = "mnuGenerateFiles";
+            this.mnuGenerateFiles.Size = new System.Drawing.Size(218, 22);
+            this.mnuGenerateFiles.Text = "Generate files for a web site";
+            this.mnuGenerateFiles.Click += new System.EventHandler(this.MnuGenerateFiles_Click);
             // 
             // FormMain
             // 
@@ -442,7 +442,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colDirectDownload;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMetaData;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDownloadCount;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton tsbAddLocalizedData;
         private System.Windows.Forms.ToolStripMenuItem mnuAddLocalizedData;
     }
 }

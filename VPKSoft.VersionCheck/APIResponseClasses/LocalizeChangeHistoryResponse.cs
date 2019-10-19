@@ -24,6 +24,7 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 */
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace VPKSoft.VersionCheck.APIResponseClasses
@@ -79,9 +80,7 @@ namespace VPKSoft.VersionCheck.APIResponseClasses
             {
                 try
                 {
-                    string cultureString = CultureMain + (string.IsNullOrEmpty(CultureSpecific)
-                                               ? string.Empty
-                                               : "-" + CultureSpecific);
+                    string cultureString = CultureString;
 
                     return CultureInfo.CreateSpecificCulture(cultureString);
                 }
@@ -91,5 +90,24 @@ namespace VPKSoft.VersionCheck.APIResponseClasses
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the culture name, consisting of the language, the country/region, and the optional script, that the culture is set to display.
+        /// </summary>
+        public string CultureNativeName => Culture.NativeName;
+
+        /// <summary>
+        /// Gets the full localized culture name.
+        /// </summary>
+        public string CultureDisplayName => Culture.DisplayName;
+
+        /// <summary>
+        /// Gets the culture name in the format languagecode2-country/regioncode2. The languagecode2 is optional.
+        /// </summary>
+        [SuppressMessage("ReSharper", "CommentTypo")]
+        public string CultureString =>
+            CultureMain + (string.IsNullOrEmpty(CultureSpecific)
+                ? string.Empty
+                : "-" + CultureSpecific);
     }
 }
