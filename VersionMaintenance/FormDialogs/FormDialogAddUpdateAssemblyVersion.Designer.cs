@@ -45,10 +45,11 @@
             this.cbDirectDownload = new System.Windows.Forms.CheckBox();
             this.lbMetaData = new System.Windows.Forms.Label();
             this.tbMetaData = new System.Windows.Forms.TextBox();
+            this.cbArchivePreviousVersion = new System.Windows.Forms.CheckBox();
             this.btOK = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
             this.ttMain = new System.Windows.Forms.ToolTip(this.components);
-            this.cbArchivePreviousVersion = new System.Windows.Forms.CheckBox();
+            this.cbPreservePreviousVersionData = new System.Windows.Forms.CheckBox();
             this.tlpMain.SuspendLayout();
             this.tlpReleaseDateTime.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +74,7 @@
             this.tlpMain.Controls.Add(this.lbMetaData, 0, 5);
             this.tlpMain.Controls.Add(this.tbMetaData, 1, 5);
             this.tlpMain.Controls.Add(this.cbArchivePreviousVersion, 0, 6);
+            this.tlpMain.Controls.Add(this.cbPreservePreviousVersionData, 1, 6);
             this.tlpMain.Location = new System.Drawing.Point(12, 12);
             this.tlpMain.Name = "tlpMain";
             this.tlpMain.RowCount = 7;
@@ -241,6 +243,18 @@
             this.tbMetaData.TabIndex = 11;
             this.tbMetaData.WordWrap = false;
             // 
+            // cbArchivePreviousVersion
+            // 
+            this.cbArchivePreviousVersion.AutoSize = true;
+            this.cbArchivePreviousVersion.Checked = true;
+            this.cbArchivePreviousVersion.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbArchivePreviousVersion.Location = new System.Drawing.Point(3, 338);
+            this.cbArchivePreviousVersion.Name = "cbArchivePreviousVersion";
+            this.cbArchivePreviousVersion.Size = new System.Drawing.Size(142, 17);
+            this.cbArchivePreviousVersion.TabIndex = 12;
+            this.cbArchivePreviousVersion.Text = "Archive previous version";
+            this.cbArchivePreviousVersion.UseVisualStyleBackColor = true;
+            // 
             // btOK
             // 
             this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -263,18 +277,17 @@
             this.btCancel.Text = "Cancel";
             this.btCancel.UseVisualStyleBackColor = true;
             // 
-            // cbArchivePreviousVersion
+            // cbPreservePreviousVersionData
             // 
-            this.cbArchivePreviousVersion.AutoSize = true;
-            this.cbArchivePreviousVersion.Checked = true;
-            this.cbArchivePreviousVersion.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tlpMain.SetColumnSpan(this.cbArchivePreviousVersion, 2);
-            this.cbArchivePreviousVersion.Location = new System.Drawing.Point(3, 338);
-            this.cbArchivePreviousVersion.Name = "cbArchivePreviousVersion";
-            this.cbArchivePreviousVersion.Size = new System.Drawing.Size(142, 17);
-            this.cbArchivePreviousVersion.TabIndex = 12;
-            this.cbArchivePreviousVersion.Text = "Archive previous version";
-            this.cbArchivePreviousVersion.UseVisualStyleBackColor = true;
+            this.cbPreservePreviousVersionData.AutoSize = true;
+            this.cbPreservePreviousVersionData.Checked = true;
+            this.cbPreservePreviousVersionData.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbPreservePreviousVersionData.Location = new System.Drawing.Point(163, 338);
+            this.cbPreservePreviousVersionData.Name = "cbPreservePreviousVersionData";
+            this.cbPreservePreviousVersionData.Size = new System.Drawing.Size(376, 17);
+            this.cbPreservePreviousVersionData.TabIndex = 13;
+            this.cbPreservePreviousVersionData.Text = "Preserve the previous localized version data as a base for the new version";
+            this.cbPreservePreviousVersionData.UseVisualStyleBackColor = true;
             // 
             // FormDialogAddUpdateAssemblyVersion
             // 
@@ -320,5 +333,6 @@
         private System.Windows.Forms.Button btToUTC;
         private System.Windows.Forms.ToolTip ttMain;
         private System.Windows.Forms.CheckBox cbArchivePreviousVersion;
+        private System.Windows.Forms.CheckBox cbPreservePreviousVersionData;
     }
 }

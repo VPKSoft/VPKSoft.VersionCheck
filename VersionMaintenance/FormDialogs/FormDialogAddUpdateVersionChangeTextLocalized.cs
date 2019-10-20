@@ -81,32 +81,41 @@ namespace VersionMaintenance.FormDialogs
 
         private void cmbLocale_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var comboBox = (ComboBox) sender;
-
-            if (saveEntry)
+            try
             {
-                SaveHistoryChanges(previousSelectedCulture);
-                ListLocalizedCultures();
+                var comboBox = (ComboBox) sender;
+
+                if (saveEntry)
+                {
+                    SaveHistoryChanges(previousSelectedCulture);
+                    ListLocalizedCultures();
+                }
+
+                lbCultureISOValue.Text = comboBox.SelectedItem.ToString();
+
+                previousSelectedCulture = comboBox.SelectedItem as CultureInfo;
+
+                var localizedResults =
+                    VersionCheck.GetVersionDataLocalized(applicationId, tbVersionValue.Text, lbCultureISOValue.Text);
+                var localizedResult = localizedResults.FirstOrDefault(f =>
+                    f.Culture.Equals(previousSelectedCulture));
+
+                tbChangesDescription.Text = localizedResult != null ? localizedResult.MetaData : string.Empty;
+
+                ttMain.SetToolTip(pbLocalizedIndicator,
+                    string.IsNullOrWhiteSpace(tbChangesDescription.Text)
+                        ? "The selected culture is NOT localized"
+                        : "The selected culture is localized");
+
+                pbLocalizedIndicator.Image = string.IsNullOrWhiteSpace(tbChangesDescription.Text)
+                    ? Properties.Resources.No_entry
+                    : Properties.Resources.Apply;
             }
-
-            lbCultureISOValue.Text = comboBox.SelectedItem.ToString();
-
-            previousSelectedCulture = comboBox.SelectedItem as CultureInfo;
-
-            var localizedResults = VersionCheck.GetVersionDataLocalized(applicationId, tbVersionValue.Text, lbCultureISOValue.Text);
-            var localizedResult = localizedResults.FirstOrDefault(f =>
-                f.Culture.Equals(previousSelectedCulture));
-
-            tbChangesDescription.Text = localizedResult != null ? localizedResult.MetaData : string.Empty;
-
-            ttMain.SetToolTip(pbLocalizedIndicator,
-                string.IsNullOrWhiteSpace(tbChangesDescription.Text)
-                    ? "The selected culture is NOT localized"
-                    : "The selected culture is localized");
-
-            pbLocalizedIndicator.Image = string.IsNullOrWhiteSpace(tbChangesDescription.Text)
-                ? Properties.Resources.No_entry
-                : Properties.Resources.Apply;
+            catch (Exception ex)
+            {
+                MessageBox.Show($@"An error occurred: '{ex.Message}'.", @"Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
         }
 
         /// <summary>
@@ -181,9 +190,22 @@ namespace VersionMaintenance.FormDialogs
         {
             var listBox = (ListBox) sender;
 
-            var localizeEntry = (LocalizeChangeHistoryResponse) listBox.SelectedItem;
+            if (listBox.SelectedItem == null)
+            {
+                return;
+            }
 
-            cmbLocale.SelectedItem = localizeEntry.Culture;
+            try
+            {
+                var localizeEntry = (LocalizeChangeHistoryResponse) listBox.SelectedItem;
+
+                cmbLocale.SelectedItem = localizeEntry.Culture;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($@"An error occurred: '{ex.Message}'.", @"Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
         }
 
         private void pbDeleteSelectedCulture_Click(object sender, EventArgs e)

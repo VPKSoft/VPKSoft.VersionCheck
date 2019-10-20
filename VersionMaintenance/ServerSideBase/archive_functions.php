@@ -84,23 +84,29 @@ function ArchiveVersion($postdata)
     }    
 }
 
-function ArchiveVersionHistoryByApplicationId($postdata)
+function ArchiveVersionHistoryByApplicationId($postdata, $echoResult = true)
 {
-    // the format is APIKEY;VERSION_ENTRY_ID;DELETE(1 / 0)..
+    // the format is APIKEY;APPLICATIONID;DELETE(1 / 0)..
     try
     {
         $software_data = explode(";", $postdata);
 
         if (sizeof($software_data) != 3)
         {
-            echo CreateGeneralResult("Fail: Invalid POST value, required 3 values, got: " . sizeof($software_data) . "!", "4", "True");
+            if ($echoResult)
+            {    
+                echo CreateGeneralResult("Fail: Invalid POST value, required 3 values, got: " . sizeof($software_data) . "!", "4", "True");
+            }
             return;
         }	            
 
         // validate the right to access the version database..
         if (!APIKeyCorrect($software_data[0]))
         {
-            echo CreateGeneralResult("Fail: Invalid API key!", "3", "True");
+            if ($echoResult)
+            {    
+                echo CreateGeneralResult("Fail: Invalid API key!", "3", "True");
+            }
             return;
         }
         
@@ -133,12 +139,19 @@ function ArchiveVersionHistoryByApplicationId($postdata)
         $sentence = null;
 
         $version_db = null; // release the database connection..
-        echo CreateGeneralResult();
+        
+        if ($echoResult)
+        {            
+            echo CreateGeneralResult();
+        }
         return;        
     }
     catch (Exception $e) // just exit with an error..
     {
-        echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+        if ($echoResult)
+        {    
+            echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+        }
         return;
     }            
 }

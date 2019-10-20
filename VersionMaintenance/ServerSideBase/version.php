@@ -115,6 +115,12 @@
         DeleteVersionHistoryByApplicationId($_POST["DeleteVersionHistoryByApplicationId"]);
         return;
 	}           
+	// use the previous version data for the new version..
+	elseif (isset($_POST["PreservePreviousVersionData"]))
+	{
+        PreservePreviousVersionData($_POST["PreservePreviousVersionData"]);
+        return;
+	}               
     else
     {
         // something could done with this but for now silence seems better..

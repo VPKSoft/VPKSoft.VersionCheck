@@ -95,5 +95,10 @@ namespace VPKSoft.VersionCheck.Enumerations
         /// The DeleteVersionHistoryByApplicationId POST method.
         /// </summary>
         DeleteVersionHistoryByApplicationId,
+
+        /// <summary>
+        /// The PreservePreviousVersionData POST method.
+        /// </summary>
+        PreservePreviousVersionData,
     }
 }

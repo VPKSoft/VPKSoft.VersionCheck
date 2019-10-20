@@ -80,7 +80,8 @@ namespace VersionMaintenance
         // settings for this piece of software..
         private readonly Settings settings;
 
-        private static bool overrideDebugCheck = true;
+        // toggle this to override the Debugger.IsAttached check..
+        private static bool overrideDebugCheck = false;
 
         /// <summary>
         /// Lists the versions in a remote SQLite database if one exists and is accessible.
@@ -127,7 +128,9 @@ namespace VersionMaintenance
             if (assembly != null)
             {
                 var info = FormDialogAddUpdateAssemblyVersion.ShowDialog(assembly.Location, assembly,
-                    out bool archivePreviousEntry);
+                    out bool archivePreviousEntry, out bool previousLocalizedData);
+
+                var version = gvSoftwareVersions.CurrentRow?.Cells[colVersion.Index].Value.ToString();
 
                 if (info != null)
                 {
@@ -136,7 +139,14 @@ namespace VersionMaintenance
                         if (archivePreviousEntry)
                         {
                             VersionCheck.ArchiveVersion(info.ID);
-                            VersionCheck.ArchiveVersionHistoryByApplicationId(info.ID, true);
+                            if (previousLocalizedData && version != null)
+                            {
+                                VersionCheck.PreservePreviousVersionData(version, info.SoftwareVersion, info.ID);
+                            }
+                            else
+                            {
+                                VersionCheck.ArchiveVersionHistoryByApplicationId(info.ID, true);
+                            }
                         }
                         else
                         {

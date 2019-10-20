@@ -24,6 +24,7 @@
 	*/
 
 include_once "functions.php";
+include_once "archive_functions.php";
 
 function IncreaseDownloadCount($postdata)
 {
@@ -66,6 +67,58 @@ function IncreaseDownloadCount($postdata)
         echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
         return;
     }
+}
+
+function PreservePreviousVersionData($postdata)
+{
+    try 
+    {
+        // the format is APIKEY;APPLICATIONID;VERSION_PREVIOUS;VERSION_NEW..
+        $software_data = explode(";", $postdata);
+
+        if (sizeof($software_data) != 4)
+        {
+            echo CreateGeneralResult("Fail: Invalid POST value, required 4 values, got: " . sizeof($software_data) . "!", "4", "True");
+            return;
+        }	            
+
+        // validate the right to access the version database..
+        if (!APIKeyCorrect($software_data[0]))
+        {
+            echo CreateGeneralResult("Fail: Invalid API key!", "3", "True");
+            return;
+        }
+        
+        $id = $software_data[1];        
+        $version = $software_data[3];
+        $oldversion = $software_data[2];
+                
+        $array = array($software_data[0], $id, "0");
+        
+        // the format is APIKEY;APPLICATIONID;DELETE(1 / 0)..
+        ArchiveVersionHistoryByApplicationId(join(";", $array), false);
+        
+                // create a database connection..
+        $version_db = CreateDBConnection();        
+     
+        $sentence = 
+            "UPDATE CHANGEHISTORY SET VERSIONSTRING = :version \r\n" .
+            "WHERE VERSIONSTRING = :oldversion AND APP_ID = :id;\r\n";
+                
+        $stmt = $version_db->prepare($sentence);
+        $stmt->execute(array(":id" => $id, ":version" => $version, ":oldversion" => $oldversion));
+        $stmp = null;
+        $sentence = null;
+
+        $version_db = null; // release the database connection..
+        echo CreateGeneralResult();
+        return;                    
+    }
+    catch (Exception $e) // just exit with an error..
+    {
+        echo CreateGeneralResult("Fail: " . $e->getMessage(), "2", "True");
+        return;
+    }    
 }
 
 function UpdateInsertVersion($postdata)

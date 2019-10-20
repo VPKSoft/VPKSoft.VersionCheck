@@ -135,6 +135,7 @@ namespace VPKSoft.VersionCheck
                     new KeyValuePair<PostMethod, string>(PostMethod.ArchiveVersionHistory, "ArchiveVersionHistory"),
                     new KeyValuePair<PostMethod, string>(PostMethod.ArchiveVersionHistoryByApplicationId, "ArchiveVersionHistoryByApplicationId"),
                     new KeyValuePair<PostMethod, string>(PostMethod.DeleteVersionHistoryByApplicationId, "DeleteVersionHistoryByApplicationId"),
+                    new KeyValuePair<PostMethod, string>(PostMethod.PreservePreviousVersionData, "PreservePreviousVersionData"),
                 }
             );
 
@@ -582,7 +583,33 @@ namespace VPKSoft.VersionCheck
         public static GeneralResponse ArchiveVersionHistoryByApplicationId(VersionInfo versionInfo, bool delete = false)
         {
             return ArchiveVersionHistoryByApplicationId(versionInfo.ID, delete);
+        }
 
+        /// <summary>
+        /// Preserves the previous localized version data as a base for the new version.
+        /// </summary>
+        /// <param name="previousVersion">A string representing the previous version.</param>
+        /// <param name="newVersion">A string representing the new version.</param>
+        /// <param name="applicationId">The application identifier.</param>
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse PreservePreviousVersionData(string previousVersion, string newVersion, int applicationId)
+        {
+            try
+            {
+                WebResponse webResponse =
+                    GetResponse(PostMethod.PreservePreviousVersionData, true,
+                        applicationId, previousVersion, newVersion);
+
+                var result = SerializeResponse<GeneralResponse>(webResponse);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
+            }
         }
 
         /// <summary>

@@ -53,8 +53,10 @@ namespace VersionMaintenance.FormDialogs
         /// <param name="fileName">Name of the file from which to get the base release date from.</param>
         /// <param name="assembly">The assembly to get the information from.</param>
         /// <param name="archivePreviousEntry">A value indicating if the user wishes to archive the previous <see cref="VersionInfo"/> entry.</param>
+        /// <param name="usePreviousLocalizedData">A value indicating whether to use previous localized version data as a base for the new version.</param>
         /// <returns>An instance to <see cref="VersionInfo"/> class if the operation was successful; otherwise null.</returns>
-        public static VersionInfo ShowDialog(string fileName, Assembly assembly, out bool archivePreviousEntry)
+        public static VersionInfo ShowDialog(string fileName, Assembly assembly, out bool archivePreviousEntry,
+            out bool usePreviousLocalizedData)
         {
             int applicationId = -1;
 
@@ -70,6 +72,7 @@ namespace VersionMaintenance.FormDialogs
             }
 
             archivePreviousEntry = false;
+            usePreviousLocalizedData = false;
             var form = new FormDialogAddUpdateAssemblyVersion
             {
                 cbDirectDownload = {Checked = info.IsDirectDownload},
@@ -80,6 +83,7 @@ namespace VersionMaintenance.FormDialogs
                 dtpReleaseDate = {Value = info.ReleaseDate},
                 dtpReleaseTime = {Value = info.ReleaseDate},
                 cbArchivePreviousVersion = { Enabled = applicationId != -1, Checked = applicationId != -1},
+                cbPreservePreviousVersionData = { Enabled = applicationId != -1, Checked = applicationId != -1},
             };
 
 
@@ -94,6 +98,10 @@ namespace VersionMaintenance.FormDialogs
                 if (form.cbArchivePreviousVersion.Checked)
                 {
                     archivePreviousEntry = applicationId != -1;
+                }
+                if (form.cbPreservePreviousVersionData.Checked)
+                {
+                    usePreviousLocalizedData = applicationId != -1;
                 }
                 return info;
             }
