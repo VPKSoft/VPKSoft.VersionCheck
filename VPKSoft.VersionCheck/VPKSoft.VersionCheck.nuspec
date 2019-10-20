@@ -10,7 +10,7 @@
     <iconUrl>https://www.vpksoft.net/site/VPKSoft.ico</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>A release with localization support for the version history. The comparability on the server side is preserved with the previous version.</releaseNotes>
+    <releaseNotes>Added possiblity to use previous localized version data as a base data for a new version. Todo: Update the NuGet to include the actual maintenance software.</releaseNotes>
     <copyright>Copyright ® VPKSoft 2019</copyright>
     <tags>version check .NET assembly download</tags>
     <license type="expression">LGPL-3.0-or-later</license>
