@@ -55,9 +55,10 @@ namespace VersionMaintenance.FormDialogs
         public static (DialogResult dialogResult, bool archive, bool archiveHistory) ShowDialog(IWin32Window owner,
             string softwareName)
         {
-            var form = new FormDialogQueryDeleteArchiveEntry {tbEntryName = {Text = softwareName}};
-
-            return (form.ShowDialog(owner), form.cbArchiveData.Checked, form.cbArchiveDataChangeHistory.Checked);
+            using (var form = new FormDialogQueryDeleteArchiveEntry {tbEntryName = {Text = softwareName}})
+            {
+                return (form.ShowDialog(owner), form.cbArchiveData.Checked, form.cbArchiveDataChangeHistory.Checked);
+            }
         }
 
         private void cbArchiveData_CheckedChanged(object sender, EventArgs e)

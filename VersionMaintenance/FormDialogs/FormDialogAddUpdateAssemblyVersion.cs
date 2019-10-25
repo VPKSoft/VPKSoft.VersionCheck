@@ -73,39 +73,42 @@ namespace VersionMaintenance.FormDialogs
 
             archivePreviousEntry = false;
             usePreviousLocalizedData = false;
-            var form = new FormDialogAddUpdateAssemblyVersion
-            {
-                cbDirectDownload = {Checked = info.IsDirectDownload},
-                tbSoftwareName = {Text = info.SoftwareName},
-                tbSoftwareVersion = {Text = info.SoftwareVersion},
-                tbDownloadLink = {Text = info.DownloadLink},
-                tbMetaData = {Text = info.MetaData},
-                dtpReleaseDate = {Value = info.ReleaseDate},
-                dtpReleaseTime = {Value = info.ReleaseDate},
-                cbArchivePreviousVersion = { Enabled = applicationId != -1, Checked = applicationId != -1},
-                cbPreservePreviousVersionData = { Enabled = applicationId != -1, Checked = applicationId != -1},
-            };
-
-
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                info.MetaData = form.tbMetaData.Text;
-                var dt1 = form.dtpReleaseDate.Value;
-                var dt2 = form.dtpReleaseTime.Value;
-                info.IsDirectDownload = form.cbDirectDownload.Checked;
-                info.DownloadLink = form.tbDownloadLink.Text;
-                info.ReleaseDate = new DateTime(dt1.Year, dt1.Month, dt1.Day, dt2.Hour, dt2.Minute, dt2.Second, DateTimeKind.Utc);
-                if (form.cbArchivePreviousVersion.Checked)
+            using (
+                var form = new FormDialogAddUpdateAssemblyVersion
                 {
-                    archivePreviousEntry = applicationId != -1;
-                }
-                if (form.cbPreservePreviousVersionData.Checked)
+                    cbDirectDownload = {Checked = info.IsDirectDownload},
+                    tbSoftwareName = {Text = info.SoftwareName},
+                    tbSoftwareVersion = {Text = info.SoftwareVersion},
+                    tbDownloadLink = {Text = info.DownloadLink},
+                    tbMetaData = {Text = info.MetaData},
+                    dtpReleaseDate = {Value = info.ReleaseDate},
+                    dtpReleaseTime = {Value = info.ReleaseDate},
+                    cbArchivePreviousVersion = {Enabled = applicationId != -1, Checked = applicationId != -1},
+                    cbPreservePreviousVersionData = {Enabled = applicationId != -1, Checked = applicationId != -1},
+                })
+            {
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    usePreviousLocalizedData = applicationId != -1;
+                    info.MetaData = form.tbMetaData.Text;
+                    var dt1 = form.dtpReleaseDate.Value;
+                    var dt2 = form.dtpReleaseTime.Value;
+                    info.IsDirectDownload = form.cbDirectDownload.Checked;
+                    info.DownloadLink = form.tbDownloadLink.Text;
+                    info.ReleaseDate = new DateTime(dt1.Year, dt1.Month, dt1.Day, dt2.Hour, dt2.Minute, dt2.Second,
+                        DateTimeKind.Utc);
+                    if (form.cbArchivePreviousVersion.Checked)
+                    {
+                        archivePreviousEntry = applicationId != -1;
+                    }
+
+                    if (form.cbPreservePreviousVersionData.Checked)
+                    {
+                        usePreviousLocalizedData = applicationId != -1;
+                    }
                 }
+
                 return info;
             }
-            return null;
         }
 
         private void BtToUTC_Click(object sender, EventArgs e)

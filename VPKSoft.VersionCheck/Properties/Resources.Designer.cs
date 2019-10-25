@@ -61,6 +61,54 @@ namespace VPKSoft.VersionCheck.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is the simple tab-delimited localization file.
+        ///As you can see only the &quot;[]&quot; tags and tab delimited key-value pairs matter for the localization.
+        ///The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
+        ///[en-US]
+        ///txtText	About - {0}
+        ///txtOK	OK
+        ///txtDescription	Description:
+        ///txtCompanyName	Company name:
+        ///txtCopyright	Copyright:
+        ///txtProductName	Product name:
+        ///txtVersion	Version:
+        ///txtLicense	License:
+        ///txtCheck	Check version:
+        ///txtClickCheck	click to check
+        ///txtCheckNA	N/A
+        ///t [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string about_dialog_localization_txt {
+            get {
+                return ResourceManager.GetString("about_dialog_localization.txt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the simple tab-delimited localization file.
+        ///As you can see only the &quot;[]&quot; tags and tab delimited key-value pairs matter for the localization.
+        ///The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
+        ///[en-US]
+        ///txtDownload	Download:
+        ///txtPercentageSymbol	%
+        ///txtMegabytes	MB
+        ///txtMegabytesPerSeconds	Speed (MB/s):
+        ///txtCancel	Cancel
+        ///[fi-FI]
+        ///txtDownload	Lataus:
+        ///txtPercentageSymbol	%
+        ///txtMegabytes	MB
+        ///txtMegabytesPerSeconds	Nopeus (MT/s):
+        ///txtCancel	Peruuta
+        ///.
+        /// </summary>
+        internal static string download_dialog_localization {
+            get {
+                return ResourceManager.GetString("download_dialog_localization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap OK {
@@ -86,46 +134,6 @@ namespace VPKSoft.VersionCheck.Properties {
         internal static string tab_deli_localization {
             get {
                 return ResourceManager.GetString("tab_deli_localization", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Text=About - {0}
-        ///OK=OK
-        ///Description=Description:
-        ///CompanyName=Company name:
-        ///Copyright=Copyright:
-        ///ProductName=Product name:
-        ///Version=Version:
-        ///License=License:
-        ///Check=Check version:
-        ///ClickCheck=click to check
-        ///CheckNA=N/A
-        ///CheckDownload=Download ({0}).
-        /// </summary>
-        internal static string texts_en_US {
-            get {
-                return ResourceManager.GetString("texts_en_US", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Text=Tietoja - {0}
-        ///OK=OK
-        ///Description=Kuvaus:
-        ///CompanyName=Tekijän nimi:
-        ///Copyright=Tekijänoikeus:
-        ///ProductName=Tuotteen nimi:
-        ///Version=Versio:
-        ///License=Lisenssi:
-        ///Check=Tarkista versio:
-        ///ClickCheck=klikkaa tarkistaaksesi
-        ///CheckNA=ei saatavilla
-        ///CheckDownload=Lataa ({0}).
-        /// </summary>
-        internal static string texts_fi_FI {
-            get {
-                return ResourceManager.GetString("texts_fi_FI", resourceCulture);
             }
         }
         

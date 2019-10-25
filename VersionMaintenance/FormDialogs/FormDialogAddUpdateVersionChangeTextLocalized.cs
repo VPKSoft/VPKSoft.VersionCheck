@@ -137,14 +137,17 @@ namespace VersionMaintenance.FormDialogs
 
             //form.SaveHistoryChanges(CultureInfo.CurrentCulture);
 
-            form.CreateLocaleCombo();
-            form.ListLocalizedCultures();
-            form.saveEntry = true;
-
-            if (form.ShowDialog(owner) == DialogResult.OK)
+            using (form)
             {
-                form.SaveHistoryChanges(null);
-                return DialogResult.OK;
+                form.CreateLocaleCombo();
+                form.ListLocalizedCultures();
+                form.saveEntry = true;
+
+                if (form.ShowDialog(owner) == DialogResult.OK)
+                {
+                    form.SaveHistoryChanges(null);
+                    return DialogResult.OK;
+                }
             }
 
             return DialogResult.Cancel;

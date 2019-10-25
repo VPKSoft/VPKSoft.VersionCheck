@@ -25,13 +25,11 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Reflection;
-using System.Resources;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck.APIResponseClasses;
+using VPKSoft.VersionCheck.UtilityClasses;
+using static VPKSoft.VersionCheck.VersionCheck;
 
 namespace VPKSoft.VersionCheck.Forms
 {
@@ -73,11 +71,11 @@ namespace VPKSoft.VersionCheck.Forms
                 sllLinkVersion.SoftwareName = aboutAssembly.GetName().Name;
             }
 
-            VersionCheck.CheckUri = checkUrl;
-            VersionCheck.TimeOutMs = timeOut;
-            pbLogo.SizeMode = VersionCheck.AboutDialogImageSizeMode;
-            pbLogo.Image = VersionCheck.AboutDialogImage;
-            ShowDialog();
+            CheckUri = checkUrl;
+            TimeOutMs = timeOut;
+            pbLogo.SizeMode = AboutDialogImageSizeMode;
+            pbLogo.Image = AboutDialogImage;
+            ShowDialog(parent);
         }
 
         /// <summary>
@@ -98,17 +96,12 @@ namespace VPKSoft.VersionCheck.Forms
             lbLinkLicense.Text = license;
             lbLinkLicense.Tag = licenseUrl;
             sllLinkVersion.SoftwareName = aboutAssembly.GetName().Name;
-            VersionCheck.CheckUri = checkUrl;
-            VersionCheck.TimeOutMs = timeOut;
-            pbLogo.SizeMode = VersionCheck.AboutDialogImageSizeMode;
-            pbLogo.Image = VersionCheck.AboutDialogImage;
-            ShowDialog();
+            CheckUri = checkUrl;
+            TimeOutMs = timeOut;
+            pbLogo.SizeMode = AboutDialogImageSizeMode;
+            pbLogo.Image = AboutDialogImage;
+            ShowDialog(parent);
         }
-
-        /// <summary>
-        /// A overridden culture for the localization.
-        /// </summary>
-        public static string OverrideCultureString { get; set; } = CultureInfo.CurrentCulture.ToString();
 
         /// <summary>
         /// This method is called by the constructors. Localizes the dialog and sets the assembly information fields contents.
@@ -117,127 +110,38 @@ namespace VPKSoft.VersionCheck.Forms
         {
             try // about dialog shouldn't crash the application
             {
-                ResourceSet rs = Properties.Resources.ResourceManager.GetResourceSet(CultureInfo.InvariantCulture, false, false);
+                var localization = new TabDeliLocalization();
+                localization.GetLocalizedTexts(Properties.Resources.about_dialog_localization_txt);
 
-                string langStr = null;
-                foreach (DictionaryEntry entry in rs)
+                btOK.Text = localization.GetMessage("txtOK", "OK", OverrideCultureString);
+
+                try
                 {
-                    if (entry.Key.ToString() == "texts_" + OverrideCultureString.Replace('-', '_'))
-                    {
-                        langStr = entry.Value as string;
-                    }
+                    Text = localization.GetMessage("txtText", "About - {0}", OverrideCultureString, AssemblyTitle);
+                }
+                catch
+                {
+                    Text = localization.GetMessage("txtText", "About - {0}", OverrideCultureString); // no title in about box title
                 }
 
-                // lower the standard to a language not tied to a location..
-                if (langStr == null)
-                {
-                    foreach (DictionaryEntry entry in rs)
-                    {
-                        if (entry.Key.ToString() == "texts_" + OverrideCultureString.Replace('-', '_').Split('_')[0])
-                        {
-                            langStr = entry.Value as string;
-                        }
-                    }
-                }
-
-                if (langStr == null)
-                {
-                    foreach (DictionaryEntry entry in rs)
-                    {
-                        if (entry.Key.ToString() == "texts_en_US")
-                        {
-                            langStr = entry.Value as string;
-                        }
-                    }
-                }
-
-                if (langStr != null)
-                {
-                    List<KeyValuePair<string, string>> langPairs = new List<KeyValuePair<string, string>>();
-
-                    List<string> langStrings = new List<string>();
-
-                    try
-                    {
-                        langStrings = new List<string>(langStr.Split(Environment.NewLine.ToCharArray()));
-                    }
-                    catch
-                    {
-                        // ignored..
-                    }
-
-                    foreach (string str in langStrings)
-                    {
-                        try
-                        {
-                            langPairs.Add(new KeyValuePair<string, string>(str.Split('=')[0], str.Split('=')[1]));
-                        }
-                        catch
-                        {
-                            // ignored..
-                        }
-                    }
-
-                    foreach (KeyValuePair<string, string> langPair in langPairs)
-                    {
-                        if (langPair.Key == "OK")
-                        {
-                            btOK.Text = langPair.Value;
-                        }
-                        else if (langPair.Key == "Text")
-                        {
-                            try
-                            {
-                                Text = string.Format(langPair.Value, AssemblyTitle);
-                            }
-                            catch
-                            {
-                                Text = langPair.Value; // no title in about box title
-                            }
-                        }
-                        else if (langPair.Key == "Check")
-                        {
-                            lbCheckVersionText.Text = langPair.Value;
-                        }
-                        else if (langPair.Key == "ClickCheck")
-                        {
-                            sllLinkVersion.Text = langPair.Value;
-                        }
-                        else if (langPair.Key == "CheckNA")
-                        {
-                            na = langPair.Value;
-                        }
-                        else if (langPair.Key == "Description")
-                        {
-                            lbBoxDescriptionText.Text = langPair.Value;
-                        }
-                        else if (langPair.Key == "CompanyName")
-                        {
-                            lbCompanyNameText.Text = langPair.Value;
-                        }
-                        else if (langPair.Key == "Copyright")
-                        {
-                            lbCopyrightText.Text = langPair.Value;
-                        }
-                        else if (langPair.Key == "ProductName")
-                        {
-                            lbProductNameText.Text = langPair.Value;
-                        }
-                        else if (langPair.Key == "Version")
-                        {
-                            lbVersionText.Text = langPair.Value;
-                        }
-                        else if (langPair.Key == "License")
-                        {
-                            lbLicenseText.Text = langPair.Value;
-                        }
-                    }
-                }
+                lbCheckVersionText.Text = localization.GetMessage("txtCheck", "Check version:", OverrideCultureString);
+                sllLinkVersion.Text = localization.GetMessage("txtClickCheck", "click to check", OverrideCultureString);
+                na = localization.GetMessage("txtCheckNA", "N/A", OverrideCultureString);
+                lbBoxDescriptionText.Text =
+                    localization.GetMessage("txtDescription", "Description:", OverrideCultureString);
+                lbCompanyNameText.Text =
+                    localization.GetMessage("txtCompanyName", "Company name:", OverrideCultureString);
+                lbCopyrightText.Text = localization.GetMessage("txtCopyright", "Copyright:", OverrideCultureString);
+                lbProductNameText.Text =
+                    localization.GetMessage("txtProductName", "Product name:", OverrideCultureString);
+                lbVersionText.Text = localization.GetMessage("txtVersion", "Version:", OverrideCultureString);
+                lbLicenseText.Text = localization.GetMessage("txtLicense", "License:", OverrideCultureString);
             }
             catch
             {
-                // do nothing..
+                // ignored..
             }
+
             lbProductName.Text = AssemblyProduct;
             lbVersion.Text = AssemblyVersion;
             lbCopyright.Text = AssemblyCopyright;
@@ -337,13 +241,14 @@ namespace VPKSoft.VersionCheck.Forms
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
             }
         }
+
         #endregion
 
         private void pbLogo_Click(object sender, EventArgs e)
         {
             try
             {
-                System.Diagnostics.Process.Start(VersionCheck.AboutDialogPublisherWebSiteUrl);
+                System.Diagnostics.Process.Start(AboutDialogPublisherWebSiteUrl);
             }
             catch
             {
@@ -353,7 +258,7 @@ namespace VPKSoft.VersionCheck.Forms
 
         private void sslLinkVersion_Click(object sender, EventArgs e)
         {
-            info = VersionCheck.GetVersion(aboutAssembly, OverrideCultureString);
+            info = GetVersion(aboutAssembly, OverrideCultureString);
 
             if (info != null && info.IsLargerVersion(aboutAssembly))
             {

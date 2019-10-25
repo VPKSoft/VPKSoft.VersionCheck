@@ -25,6 +25,7 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
 using System;
+using System.Globalization;
 using System.Reflection;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck;
@@ -38,20 +39,26 @@ namespace AboutTest
         {
             InitializeComponent();
             VersionCheck.AboutDialogDisplayDownloadDialog = true; // I want to make it fancy..
+            VersionCheck.OverrideCultureString = CultureInfo.CurrentUICulture.Name; // I want it localized..
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // ReSharper disable once ObjectCreationAsStatement
             // ReSharper disable once StringLiteralTypo
-            new FormAbout(this, Assembly.GetEntryAssembly(), "LGPL",
-                "http://www.gnu.org/licenses/gpl-3.0.txt", "http://192.168.1.131/admin/ServerSideBase/version.php", 3000);
+
+            using (new FormAbout(this, Assembly.GetEntryAssembly(), "LGPL",
+                "http://www.gnu.org/licenses/gpl-3.0.txt", "http://192.168.1.131/admin/ServerSideBase/version.php",
+                3000))
+            {
+                // to dispose of the IDisposable..
+            }
         }
 
         private void MnuCheckNewVersion_Click(object sender, EventArgs e)
         {
             FormCheckVersion.CheckForNewVersion("http://192.168.1.131/admin/ServerSideBase/version.php",
-                Assembly.GetEntryAssembly(), "fi");
+                Assembly.GetEntryAssembly());
         }
     }
 }

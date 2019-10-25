@@ -10,9 +10,12 @@
     <iconUrl>https://www.vpksoft.net/site/VPKSoft.ico</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Added possiblity to use previous localized version data as a base data for a new version. Todo: Update the NuGet to include the actual maintenance software.</releaseNotes>
+    <releaseNotes>Applied heavy refactoring. Unified the localization of the dialogs within the library. Added the installer of the version management software to the NuGet package. The IDisposable dialogs are now always be disposed of. No updates on the server side programming.</releaseNotes>
     <copyright>Copyright ® VPKSoft 2019</copyright>
     <tags>version check .NET assembly download</tags>
     <license type="expression">LGPL-3.0-or-later</license>
   </metadata>
+  <files>
+    <file src="..\VersionMaintenance\Installer\setup_version_maintenance.exe" target="VersionMaintenance\setup_version_maintenance.exe" />
+  </files>
 </package>

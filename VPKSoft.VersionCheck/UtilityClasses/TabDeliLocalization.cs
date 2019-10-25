@@ -57,6 +57,11 @@ namespace VPKSoft.VersionCheck.UtilityClasses
             {
                 value = LocalizationTexts.FirstOrDefault(f => f.CultureName == locale.Split('-')[0] && f.MessageName == messageName);
             }
+            else if (value.Message == null) // fall back to a generic culture..
+            {
+                value = LocalizationTexts.FirstOrDefault(f =>
+                    f.CultureName.StartsWith(locale.Split('-')[0]) && f.MessageName == messageName);
+            }
 
             return value.Message ?? defaultMessage;
         }
@@ -76,6 +81,11 @@ namespace VPKSoft.VersionCheck.UtilityClasses
             if (value.Message == null && locale.Split('-').Length == 2)
             {
                 value = LocalizationTexts.FirstOrDefault(f => f.CultureName == locale.Split('-')[0] && f.MessageName == messageName);
+            }
+            else if (value.Message == null) // fall back to a generic culture..
+            {
+                value = LocalizationTexts.FirstOrDefault(f =>
+                    f.CultureName.StartsWith(locale.Split('-')[0]) && f.MessageName == messageName);
             }
 
             string msg = value.Message ?? defaultMessage;

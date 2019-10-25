@@ -88,10 +88,12 @@ namespace VersionMaintenance.FormDialogs
         /// <returns>A user selected <see cref="CultureInfo"/> culture if the dialog was accepted; otherwise null.</returns>
         public new static CultureInfo ShowDialog(IWin32Window owner)
         {
-            var form = new FormDialogFindSelectCulture();
-            if (((Form)form).ShowDialog(owner) == DialogResult.OK)
+            using (var form = new FormDialogFindSelectCulture())
             {
-                return form.lbCultures.SelectedItem as CultureInfo;
+                if (((Form) form).ShowDialog(owner) == DialogResult.OK)
+                {
+                    return form.lbCultures.SelectedItem as CultureInfo;
+                }
             }
 
             return null;

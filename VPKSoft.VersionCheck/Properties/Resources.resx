@@ -118,41 +118,17 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="about_dialog_localization.txt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\about_dialog_localization.txt.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="download_dialog_localization" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\download_dialog_localization.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="OK" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OK.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tab_deli_localization" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tab_deli_localization.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="texts_en_US" xml:space="preserve">
-    <value>Text=About - {0}
-OK=OK
-Description=Description:
-CompanyName=Company name:
-Copyright=Copyright:
-ProductName=Product name:
-Version=Version:
-License=License:
-Check=Check version:
-ClickCheck=click to check
-CheckNA=N/A
-CheckDownload=Download ({0})</value>
-    <comment>en_US as the default language</comment>
-  </data>
-  <data name="texts_fi_FI" xml:space="preserve">
-    <value>Text=Tietoja - {0}
-OK=OK
-Description=Kuvaus:
-CompanyName=Tekijän nimi:
-Copyright=Tekijänoikeus:
-ProductName=Tuotteen nimi:
-Version=Versio:
-License=Lisenssi:
-Check=Tarkista versio:
-ClickCheck=klikkaa tarkistaaksesi
-CheckNA=ei saatavilla
-CheckDownload=Lataa ({0})</value>
-    <comment>en_FI as my own language</comment>
   </data>
   <data name="VPKSoftLogo_App" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\VPKSoftLogo_App.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

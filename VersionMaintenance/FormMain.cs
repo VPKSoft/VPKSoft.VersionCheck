@@ -50,7 +50,6 @@ namespace VersionMaintenance
             InitializeComponent();
             settings = new Settings();
 
-
             if (Debugger.IsAttached && !overrideDebugCheck) // different settings when debugging..
             {
                 VersionCheck.ApiKey = settings.ApiKeyTest; // a random string and a random file on the server...
@@ -81,7 +80,7 @@ namespace VersionMaintenance
         private readonly Settings settings;
 
         // toggle this to override the Debugger.IsAttached check..
-        private static bool overrideDebugCheck = false;
+        private static readonly bool overrideDebugCheck = false;
 
         /// <summary>
         /// Lists the versions in a remote SQLite database if one exists and is accessible.
@@ -167,16 +166,16 @@ namespace VersionMaintenance
             if (gvSoftwareVersions.CurrentRow != null)
             {
                 // verify that the user wants to delete a software entry from the server's database..
-                var result = FormDialogQueryDeleteArchiveEntry.ShowDialog(this,
+                var (dialogResult, archive, archiveHistory) = FormDialogQueryDeleteArchiveEntry.ShowDialog(this,
                     gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value.ToString());
 
                 var name = gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value.ToString();
 
                 var id = Convert.ToInt32(gvSoftwareVersions.CurrentRow.Cells[colID.Index].Value);
 
-                if (result.dialogResult == DialogResult.OK)
+                if (dialogResult == DialogResult.OK)
                 {
-                    if (result.archive)
+                    if (archive)
                     {
                         VersionCheck.ArchiveVersion(id, true);
                     }
@@ -185,7 +184,7 @@ namespace VersionMaintenance
                         VersionCheck.DeleteSoftwareEntry(name);
                     }
 
-                    if (result.archiveHistory)
+                    if (archiveHistory)
                     {
                         VersionCheck.ArchiveVersionHistoryByApplicationId(id, true);
                     }
@@ -236,26 +235,10 @@ namespace VersionMaintenance
             tstbAPIKey.Text = apiKey;
         }
 
-        // the form closed, so do save the settings..
+
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            using (settings)
-            {
-                // save the settings..
-                if (Debugger.IsAttached && !overrideDebugCheck)
-                {
-                    settings.CheckUriTest = tstbLocationURI.Text;
-                    settings.ApiKeyTest = tstbAPIKey.Text;
-                }
-                else
-                {
-                    settings.CheckUri = tstbLocationURI.Text;
-                    settings.ApiKey = tstbAPIKey.Text;
-                }
 
-                settings.TimeOutMs = (int)nudTimeOutMS.Value;
-                // ..and dispose of class instance..
-            }
         }
 
         // the user is not allowed to write some "stupid" non-random API key..
@@ -354,6 +337,32 @@ namespace VersionMaintenance
                     gvSoftwareVersions.CurrentRow.Cells[colApp.Index].Value.ToString(),
                     gvSoftwareVersions.CurrentRow.Cells[colVersion.Index].Value.ToString(),
                     Convert.ToInt32(gvSoftwareVersions.CurrentRow.Cells[colID.Index].Value));
+            }
+        }
+
+        // the form is about to close, so do save the settings..
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            using (settings)
+            {
+                // save the settings..
+                if (Debugger.IsAttached && !overrideDebugCheck)
+                {
+                    settings.CheckUriTest = tstbLocationURI.Text;
+                    settings.ApiKeyTest = tstbAPIKey.Text;
+                }
+                else
+                {
+                    settings.CheckUri = tstbLocationURI.Text;
+                    settings.ApiKey = tstbAPIKey.Text;
+                }
+
+                settings.TimeOutMs = (int)nudTimeOutMS.Value;
+
+                using (settings)
+                {
+                    // ..and dispose of class instance..
+                }
             }
         }
     }

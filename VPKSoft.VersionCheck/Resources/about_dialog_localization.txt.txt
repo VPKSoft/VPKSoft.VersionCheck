@@ -1,0 +1,29 @@
+This is the simple tab-delimited localization file.
+As you can see only the "[]" tags and tab delimited key-value pairs matter for the localization.
+The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
+[en-US]
+txtText	About - {0}
+txtOK	OK
+txtDescription	Description:
+txtCompanyName	Company name:
+txtCopyright	Copyright:
+txtProductName	Product name:
+txtVersion	Version:
+txtLicense	License:
+txtCheck	Check version:
+txtClickCheck	click to check
+txtCheckNA	N/A
+txtCheckDownload	Download ({0})
+[fi-FI]
+txtText	Tietoja - {0}
+txtOK	OK
+txtDescription	Kuvaus:
+txtCompanyName	Tekijän nimi:
+txtCopyright	Tekijänoikeus:
+txtProductName	Tuotteen nimi:
+txtVersion	Versio:
+txtLicense	Lisenssi:
+txtCheck	Tarkista versio:
+txtClickCheck	Klikkaa tarkistaaksesi
+txtCheckNA	ei saatavilla
+txtCheckDownload	Lataa ({0})

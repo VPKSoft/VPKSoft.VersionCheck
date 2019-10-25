@@ -136,6 +136,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Installer\DotNetChecker.nsh" />
+    <None Include="Installer\make_installer.bat" />
+    <None Include="Installer\setup_version_maintenance.nsi" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -172,6 +175,7 @@
     <None Include="Resources\Apply.png" />
     <None Include="Resources\No-entry.png" />
     <None Include="Resources\Find.png" />
+    <Content Include="Installer\uninstall.ico" />
     <Content Include="ServerSideBase\addupdate_functions.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

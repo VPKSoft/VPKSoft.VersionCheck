@@ -80,11 +80,13 @@ namespace VersionMaintenance.FormDialogs
         /// <returns>A user given or randomized file name for a SQLite database file if successful; otherwise null.</returns>
         public static string ShowDialogQueryFilename(IWin32Window owner)
         {
-            var form = new FormDialogGenerateRandomFilename();
-            var result = form.ShowDialog(owner);
-            if (result == DialogResult.OK)
+            using (var form = new FormDialogGenerateRandomFilename())
             {
-                return form.tbRandomFileNameValue.Text;
+                var result = form.ShowDialog(owner);
+                if (result == DialogResult.OK)
+                {
+                    return form.tbRandomFileNameValue.Text;
+                }
             }
 
             return null;

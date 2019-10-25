@@ -26,9 +26,12 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
+using VPKSoft.VersionCheck.UtilityClasses;
+using static VPKSoft.VersionCheck.VersionCheck;
 
 namespace VPKSoft.VersionCheck.Forms
 {
@@ -50,23 +53,27 @@ namespace VPKSoft.VersionCheck.Forms
         /// <summary>
         /// Gets or sets the localized download text. The default is: 'Download:'.
         /// </summary>
-        public static string LocalizedDownloadText { get; set; } = "Download:";
+        [Obsolete("The localization method has been changed to VPKSoft.VersionCheck.VersionCheck.OverrideCultureString property.")]
+        public static string LocalizedDownloadText { get; set; }
 
         /// <summary>
         /// Gets or sets the localized download percentage text. The default is: '%'.
         /// </summary>
-        public static string LocalizedDownloadPercentageText { get; set; } = "%";
+        [Obsolete("The localization method has been changed to VPKSoft.VersionCheck.VersionCheck.OverrideCultureString property.")]
+        public static string LocalizedDownloadPercentageText { get; set; }
 
         /// <summary>
         /// The localized short text for megabytes (MB). The default is: 'MB'.
         /// </summary>
+        [Obsolete("The localization method has been changed to VPKSoft.VersionCheck.VersionCheck.OverrideCultureString property.")]
         // ReSharper disable once InconsistentNaming
-        public static string LocalizedMBShortText = "MB";
+        public static string LocalizedMBShortText { get; set; }
 
         /// <summary>
         /// Gets or sets the localized download speed text in megabytes per seconds. The default is: 'Speed (MB/s):'.
         /// </summary>
-        public static string LocalizedDownloadSpeedMBs { get; set; } = "Speed (MB/s):";
+        [Obsolete("The localization method has been changed.")]
+        public static string LocalizedDownloadSpeedMBs { get; set; }
 
         /// <summary>
         /// Gets or sets the download URI.
@@ -89,13 +96,19 @@ namespace VPKSoft.VersionCheck.Forms
         private DateTime downloadSpeedTime;
 
         /// <summary>
-        /// Shows the dialog and starts a file download from the internet.
+        /// Shows the dialog and starts a file download from the internet. This uses the <see cref="VPKSoft.VersionCheck.VersionCheck.OverrideCultureString"/> to be used for localization.
         /// </summary>
         /// <param name="downloadUri">The download URI of the file.</param>
         /// <param name="pathToDownload">The path to witch to save the file to download.</param>
+        /// <param name="owner">Any object that implements <see cref="T:System.Windows.Forms.IWin32Window" /> that represents the top-level window that will own the modal dialog box.</param>
         /// <returns><c>true</c> if the file was downloaded successfully, <c>false</c> otherwise.</returns>
-        public static bool ShowDialog(string downloadUri, string pathToDownload)
+        [SuppressMessage("ReSharper", "CommentTypo")]
+        public static bool ShowDialog(string downloadUri, string pathToDownload, IWin32Window owner = null)
         {
+            var localization = new TabDeliLocalization();
+            localization.GetLocalizedTexts(Properties.Resources.download_dialog_localization);
+
+
             var form = new FormDialogDownloadFile
             {
                 DownloadUri = downloadUri,
@@ -105,14 +118,36 @@ namespace VPKSoft.VersionCheck.Forms
                 lbDownloadFileNameValue = {Text = Path.GetFileName(new Uri(downloadUri).LocalPath)},
 
                 // localize..
-                lbDownloadFileNameDescription = {Text = LocalizedDownloadText},
-                lbPercentageText = {Text = LocalizedDownloadPercentageText},
-                lbMBOfMBText = {Text = LocalizedMBShortText},
-                lbSpeedMBsText = {Text = LocalizedDownloadSpeedMBs},
+                lbDownloadFileNameDescription =
+                {
+#pragma warning disable 618
+                    Text = LocalizedDownloadText ??
+                           localization.GetMessage("txtDownload", "Download:", OverrideCultureString)
+                },
+                lbPercentageText =
+                {
+                    Text = LocalizedDownloadPercentageText ??
+                           localization.GetMessage("txtPercentageSymbol", "%", OverrideCultureString)
+                },
+                lbMBOfMBText =
+                {
+                    Text = LocalizedMBShortText ?? localization.GetMessage("txtMegabytes", "MB", OverrideCultureString)
+                },
+                lbSpeedMBsText =
+                {
+                    Text = LocalizedDownloadSpeedMBs ?? localization.GetMessage("txtMegabytesPerSeconds",
+                               "Speed (MB/s):", OverrideCultureString)
+                },
+#pragma warning restore 618
+                btCancel =
+                    {Text = localization.GetMessage("txtCancel", "Cancel", OverrideCultureString)},
             };
 
-            // set the return value based on the DialogResult value..
-            return form.ShowDialog() == DialogResult.OK;
+            using (form)
+            {
+                // set the return value based on the DialogResult value..
+                return owner == null ? form.ShowDialog() == DialogResult.OK : form.ShowDialog(owner) == DialogResult.OK;
+            }
         }
 
         // the form is shown, so do start the download..

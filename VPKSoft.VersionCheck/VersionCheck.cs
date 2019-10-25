@@ -40,6 +40,7 @@ using System.Windows.Forms;
 using VPKSoft.VersionCheck.APIResponseClasses;
 using VPKSoft.VersionCheck.Enumerations;
 using VPKSoft.VersionCheck.Forms;
+using VPKSoft.VersionCheck.Properties;
 
 namespace VPKSoft.VersionCheck
 {
@@ -49,6 +50,11 @@ namespace VPKSoft.VersionCheck
     public class VersionCheck
     {
         /// <summary>
+        /// A overridden culture for the localization.
+        /// </summary>
+        public static string OverrideCultureString { get; set; } = CultureInfo.CurrentCulture.ToString();
+
+        /// <summary>
         /// Downloads a file from the internet showing a dialog box with a progress.
         /// </summary>
         /// <param name="downloadUri">The download URI of the file.</param>
@@ -56,12 +62,14 @@ namespace VPKSoft.VersionCheck
         /// <returns><c>true</c> if the file was downloaded successfully, <c>false</c> otherwise.</returns>
         public static bool DownloadFile(string downloadUri, string pathToDownload)
         {
-            return FormDialogDownloadFile.ShowDialog(downloadUri, pathToDownload);
+            return FormDialogDownloadFile.ShowDialog(downloadUri, pathToDownload, null);
         }
 
+#pragma warning disable 618
         /// <summary>
         /// Gets or sets the localized download text for the download dialog. The default is: 'Download:'.
         /// </summary>
+        [Obsolete("The localization method has been changed to VPKSoft.VersionCheck.VersionCheck.OverrideCultureString property.")]
         public static string LocalizedDownloadText
         {
             get => FormDialogDownloadFile.LocalizedDownloadText;
@@ -69,23 +77,48 @@ namespace VPKSoft.VersionCheck
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the about dialog should display the download dialog after user clicks to update the software.
+        /// The localized short text for megabytes (MB) for the download dialog. The default is: 'MB'.
         /// </summary>
-        public static bool AboutDialogDisplayDownloadDialog { get; set; }
+        // ReSharper disable once InconsistentNaming
+        [Obsolete("The localization method has been changed to VPKSoft.VersionCheck.VersionCheck.OverrideCultureString property.")]
+        public static string LocalizedMBShortText
+        {
+            get => FormDialogDownloadFile.LocalizedMBShortText;
+            set => FormDialogDownloadFile.LocalizedMBShortText = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the localized download speed text in megabytes per seconds for the download dialog. The default is: 'Speed (MB/s):'.
+        /// </summary>
+        [Obsolete("The localization method has been changed to VPKSoft.VersionCheck.VersionCheck.OverrideCultureString property.")]
+        public static string LocalizedDownloadSpeedMBs
+        {
+            get => FormDialogDownloadFile.LocalizedDownloadSpeedMBs;
+            set => FormDialogDownloadFile.LocalizedDownloadSpeedMBs = value;
+        }
 
         /// <summary>
         /// Gets or sets the localized download percentage text for the download dialog. The default is: '%'.
         /// </summary>
+        [Obsolete("The localization method has been changed to VPKSoft.VersionCheck.VersionCheck.OverrideCultureString property.")]
         public static string LocalizedDownloadPercentageText
         {
             get => FormDialogDownloadFile.LocalizedDownloadPercentageText;
             set => FormDialogDownloadFile.LocalizedDownloadPercentageText = value;
         }
+#pragma warning restore 618
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the about dialog should display the download dialog after user clicks to update the software.
+        /// </summary>
+        public static bool AboutDialogDisplayDownloadDialog { get; set; }
+
+
 
         /// <summary>
         /// Gets or sets the image for the about dialog. The default size is 310x70 pixels and the image is centered on the picture box.
         /// </summary>
-        public static Image AboutDialogImage { get; set; } = Properties.Resources.VPKSoftLogo_App;
+        public static Image AboutDialogImage { get; set; } = Resources.VPKSoftLogo_App;
 
         /// <summary>
         /// Gets or sets the publisher web site URL which is navigated to when the user clicks the <see cref="AboutDialogImage"/>.
@@ -97,24 +130,7 @@ namespace VPKSoft.VersionCheck
         /// </summary>
         public static PictureBoxSizeMode AboutDialogImageSizeMode { get; set; } = PictureBoxSizeMode.CenterImage;
 
-        /// <summary>
-        /// The localized short text for megabytes (MB) for the download dialog. The default is: 'MB'.
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        public static string LocalizedMBShortText
-        {
-            get => FormDialogDownloadFile.LocalizedMBShortText;
-            set => FormDialogDownloadFile.LocalizedMBShortText = value;
-        }
 
-        /// <summary>
-        /// Gets or sets the localized download speed text in megabytes per seconds for the download dialog. The default is: 'Speed (MB/s):'.
-        /// </summary>
-        public static string LocalizedDownloadSpeedMBs
-        {
-            get => FormDialogDownloadFile.LocalizedDownloadSpeedMBs;
-            set => FormDialogDownloadFile.LocalizedDownloadSpeedMBs = value;
-        }
 
         /// <summary>
         /// Gets or sets the post methods with their combined <see cref="PostMethod"/> enumeration value.
@@ -183,7 +199,19 @@ namespace VPKSoft.VersionCheck
         /// <returns>A VersionInfo class instance if the operation was successful, otherwise null.</returns>
         public static VersionInfo GetVersion(Assembly assembly, string localeString)
         {
-            return GetVersion(assembly.GetName().Name);
+            CultureInfo culture = CultureInfo.CurrentCulture;
+
+            try
+            {
+                culture = CultureInfo.GetCultureInfo(localeString);
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+            }
+
+            return GetVersion(assembly.GetName().Name, culture);
         }
 
         /// <summary>
@@ -537,7 +565,7 @@ namespace VPKSoft.VersionCheck
         {
             try
             {
-                return ArchiveVersionHistory(int.Parse(changeHistory.ID), delete);
+                return ArchiveVersionHistory(Int32.Parse(changeHistory.ID), delete);
             }
             catch (Exception ex)
             {
@@ -658,16 +686,16 @@ namespace VPKSoft.VersionCheck
 
             request.Method = "POST";
 
-            var recordData = apiKeyRequired ? ApiKey : string.Empty;
+            var recordData = apiKeyRequired ? ApiKey : String.Empty;
 
             if (arguments != null && arguments.Length > 0)
             {
-                recordData += (recordData == string.Empty ? "" : ";") + string.Join(";", arguments);
+                recordData += (recordData == String.Empty ? "" : ";") + String.Join(";", arguments);
             }
 
             // no empty values because dev doesn't know or wishes to test whether
             // PHP: isset($_POST["xxx"]) is true when empty data is given..
-            if (recordData == string.Empty)
+            if (recordData == String.Empty)
             {
                 recordData = "1";
             }
