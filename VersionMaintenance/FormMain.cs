@@ -114,7 +114,8 @@ namespace VersionMaintenance
         private void MnuAddUpdateAssembly_Click(object sender, EventArgs e)
         {
             Assembly assembly = null;
-            if (sender.Equals(mnuAddUpdateAssembly) && odAssembly.ShowDialog() == DialogResult.OK)
+            if ((sender.Equals(mnuAddUpdateAssembly) || sender.Equals(tsbUpdateEntry)) 
+                && odAssembly.ShowDialog() == DialogResult.OK)
             {
                 assembly = Assembly.LoadFile(odAssembly.FileName);
             }
