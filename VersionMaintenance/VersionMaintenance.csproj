@@ -175,6 +175,7 @@
     <None Include="Resources\Apply.png" />
     <None Include="Resources\No-entry.png" />
     <None Include="Resources\Find.png" />
+    <Content Include="Installer\setup_version_maintenance.exe" />
     <Content Include="Installer\uninstall.ico" />
     <Content Include="ServerSideBase\addupdate_functions.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

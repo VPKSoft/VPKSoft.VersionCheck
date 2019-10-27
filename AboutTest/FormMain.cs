@@ -30,6 +30,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck;
 using VPKSoft.VersionCheck.Forms;
+using VPKSoft.VersionCheck.UtilityClasses;
 
 namespace AboutTest
 {
@@ -40,6 +41,8 @@ namespace AboutTest
             InitializeComponent();
             VersionCheck.AboutDialogDisplayDownloadDialog = true; // I want to make it fancy..
             VersionCheck.OverrideCultureString = CultureInfo.CurrentUICulture.Name; // I want it localized..
+            //VersionCheck.OverrideCultureString = "fi";
+            VersionCheck.CacheUpdateHistory = true;
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

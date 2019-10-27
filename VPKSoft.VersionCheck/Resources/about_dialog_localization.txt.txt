@@ -14,6 +14,7 @@ txtCheck	Check version:
 txtClickCheck	click to check
 txtCheckNA	N/A
 txtCheckDownload	Download ({0})
+txtVersionHistory	Version history
 [fi-FI]
 txtText	Tietoja - {0}
 txtOK	OK
@@ -27,3 +28,4 @@ txtCheck	Tarkista versio:
 txtClickCheck	Klikkaa tarkistaaksesi
 txtCheckNA	ei saatavilla
 txtCheckDownload	Lataa ({0})
+txtVersionHistory	Versiohistoria

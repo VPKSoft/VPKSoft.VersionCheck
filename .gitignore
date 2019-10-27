@@ -329,3 +329,5 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 /VersionMaintenance/ServerSideBase/nbproject/private/
+VersionMaintenance/Installer/setup_version_maintenance.exe
+VersionMaintenance/Installer/setup_version_maintenance.exe

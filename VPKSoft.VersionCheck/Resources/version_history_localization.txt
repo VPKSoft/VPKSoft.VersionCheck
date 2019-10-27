@@ -1,0 +1,13 @@
+This is the simple tab-delimited localization file.
+As you can see only the "[]" tags and tab delimited key-value pairs matter for the localization.
+The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
+[en-US]
+txtSelectVersion	Select a version:
+txtCaption	Version history for the '{0}' application
+txtOK	OK
+txtAllVersions	All versions
+[fi-FI]
+txtSelectVersion	Valitse versio:
+txtCaption	Versiohistoria sovellukselle '{0}'
+txtOK	OK
+txtAllVersions	Kaikki versiot

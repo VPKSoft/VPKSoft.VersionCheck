@@ -31,7 +31,7 @@ namespace VPKSoft.VersionCheck.Forms
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAbout));
             this.tlpProductInfo = new System.Windows.Forms.TableLayoutPanel();
-            this.sllLinkVersion = new SimpleLinkLabel();
+            this.sllLinkVersion = new VPKSoft.VersionCheck.CustomControls.SimpleLinkLabel();
             this.lbVersionText = new System.Windows.Forms.Label();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.lbProductNameText = new System.Windows.Forms.Label();
@@ -47,6 +47,7 @@ namespace VPKSoft.VersionCheck.Forms
             this.lbCheckVersionText = new System.Windows.Forms.Label();
             this.lbLinkLicense = new System.Windows.Forms.Label();
             this.btOK = new System.Windows.Forms.Button();
+            this.btViewVersionHistory = new System.Windows.Forms.Button();
             this.tlpProductInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.SuspendLayout();
@@ -90,6 +91,7 @@ namespace VPKSoft.VersionCheck.Forms
             // 
             // sllLinkVersion
             // 
+            this.sllLinkVersion.AboutAssembly = null;
             this.sllLinkVersion.AutoSize = true;
             this.sllLinkVersion.Cursor = System.Windows.Forms.Cursors.Hand;
             this.sllLinkVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline);
@@ -98,6 +100,7 @@ namespace VPKSoft.VersionCheck.Forms
             this.sllLinkVersion.Location = new System.Drawing.Point(164, 112);
             this.sllLinkVersion.Name = "sllLinkVersion";
             this.sllLinkVersion.Size = new System.Drawing.Size(74, 13);
+            this.sllLinkVersion.SoftwareName = "";
             this.sllLinkVersion.TabIndex = 15;
             this.sllLinkVersion.Text = "click to check";
             this.sllLinkVersion.UseDownloadDialogOnBinaries = true;
@@ -259,6 +262,19 @@ namespace VPKSoft.VersionCheck.Forms
             this.btOK.Text = "OK";
             this.btOK.UseVisualStyleBackColor = true;
             // 
+            // btViewVersionHistory
+            // 
+            this.btViewVersionHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btViewVersionHistory.Image = global::VPKSoft.VersionCheck.Properties.Resources.History;
+            this.btViewVersionHistory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btViewVersionHistory.Location = new System.Drawing.Point(12, 223);
+            this.btViewVersionHistory.Name = "btViewVersionHistory";
+            this.btViewVersionHistory.Size = new System.Drawing.Size(174, 26);
+            this.btViewVersionHistory.TabIndex = 12;
+            this.btViewVersionHistory.Text = "Version history";
+            this.btViewVersionHistory.UseVisualStyleBackColor = true;
+            this.btViewVersionHistory.Click += new System.EventHandler(this.btViewVersionHistory_Click);
+            // 
             // FormAbout
             // 
             this.AcceptButton = this.btOK;
@@ -266,6 +282,7 @@ namespace VPKSoft.VersionCheck.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btOK;
             this.ClientSize = new System.Drawing.Size(347, 261);
+            this.Controls.Add(this.btViewVersionHistory);
             this.Controls.Add(this.btOK);
             this.Controls.Add(this.tlpProductInfo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -304,5 +321,6 @@ namespace VPKSoft.VersionCheck.Forms
         private System.Windows.Forms.Label lbCheckVersionText;
         private SimpleLinkLabel sllLinkVersion;
         private System.Windows.Forms.Label lbLinkLicense;
+        private System.Windows.Forms.Button btViewVersionHistory;
     }
 }

@@ -70,10 +70,11 @@
     <Compile Include="Forms\FormDialogDownloadFile.Designer.cs">
       <DependentUpon>FormDialogDownloadFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+    <Compile Include="Forms\FormDialogVersionHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormDialogVersionHistory.Designer.cs">
+      <DependentUpon>FormDialogVersionHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\SimpleLinkLabel.cs">
       <SubType>Component</SubType>
@@ -81,7 +82,13 @@
     <Compile Include="CustomControls\SimpleLinkLabel.designer.cs">
       <DependentUpon>SimpleLinkLabel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UtilityClasses\TabDeliLocalization.cs" />
+    <Compile Include="UtilityClasses\VersionDataCache.cs" />
     <Compile Include="VersionCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -103,9 +110,13 @@
     <EmbeddedResource Include="Forms\FormDialogDownloadFile.resx">
       <DependentUpon>FormDialogDownloadFile.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormDialogVersionHistory.resx">
+      <DependentUpon>FormDialogVersionHistory.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +129,8 @@
     <None Include="Resources\tab_deli_localization.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\version_history_localization.txt" />
+    <None Include="Resources\History.png" />
     <None Include="Resources\about_dialog_localization.txt.txt" />
     <Content Include="Resources\download_dialog_localization.txt" />
   </ItemGroup>

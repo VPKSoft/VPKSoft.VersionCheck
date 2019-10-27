@@ -10,7 +10,7 @@
     <iconUrl>https://www.vpksoft.net/site/VPKSoft.ico</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Added possiblity to use previous localized version data as a base data for a new version. Todo: Update the NuGet to include the actual maintenance software.</releaseNotes>
+    <releaseNotes>Added possibility to cache previous version change history texts.</releaseNotes>
     <copyright>Copyright ® VPKSoft 2019</copyright>
     <tags>version check .NET assembly download</tags>
     <license type="expression">LGPL-3.0-or-later</license>

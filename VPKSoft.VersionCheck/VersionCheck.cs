@@ -41,6 +41,7 @@ using VPKSoft.VersionCheck.APIResponseClasses;
 using VPKSoft.VersionCheck.Enumerations;
 using VPKSoft.VersionCheck.Forms;
 using VPKSoft.VersionCheck.Properties;
+using VPKSoft.VersionCheck.UtilityClasses;
 
 namespace VPKSoft.VersionCheck
 {
@@ -113,6 +114,10 @@ namespace VPKSoft.VersionCheck
         /// </summary>
         public static bool AboutDialogDisplayDownloadDialog { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to cache the update history of the application to a file for viewing purpose.
+        /// </summary>
+        public static bool CacheUpdateHistory { get; set; } = false;
 
 
         /// <summary>
@@ -250,6 +255,11 @@ namespace VPKSoft.VersionCheck
                     GetResponse(PostMethod.QueryVersion, false, programName, localeString);
 
                 var result =  SerializeResponse<VersionInfo>(webResponse);
+
+                if (result != null && result.ID != -1 && CacheUpdateHistory)
+                {
+                    VersionDataCache.CacheVersionData(programName, result);
+                }
 
                 return result;
             }

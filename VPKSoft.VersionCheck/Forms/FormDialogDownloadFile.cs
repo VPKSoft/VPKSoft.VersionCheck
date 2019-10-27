@@ -72,7 +72,7 @@ namespace VPKSoft.VersionCheck.Forms
         /// <summary>
         /// Gets or sets the localized download speed text in megabytes per seconds. The default is: 'Speed (MB/s):'.
         /// </summary>
-        [Obsolete("The localization method has been changed.")]
+        [Obsolete("The localization method has been changed to VPKSoft.VersionCheck.VersionCheck.OverrideCultureString property.")]
         public static string LocalizedDownloadSpeedMBs { get; set; }
 
         /// <summary>

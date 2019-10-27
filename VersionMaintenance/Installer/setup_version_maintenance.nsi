@@ -1,4 +1,4 @@
-# VPKSoft.VersionCheck
+﻿# VPKSoft.VersionCheck
 # 
 # A version checker for VPKSoft products.
 # Copyright © 2019 VPKSoft, Petteri Kautonen
@@ -27,7 +27,7 @@ Name "VersionMaintenance"
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 1.0.1.3
+!define VERSION 1.0.1.4
 !define COMPANY VPKSoft
 !define URL http://www.vpksoft.net
 
@@ -85,7 +85,7 @@ InstallDir "$PROGRAMFILES64\VersionMaintenance"
 CRCCheck on
 XPStyle on
 ShowInstDetails hide
-VIProductVersion 1.0.1.3
+VIProductVersion 1.0.1.4
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductName "VersionMaintenance installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} ProductVersion "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyName "${COMPANY}"

@@ -111,6 +111,16 @@ namespace VPKSoft.VersionCheck.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap History {
+            get {
+                object obj = ResourceManager.GetObject("History", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap OK {
             get {
                 object obj = ResourceManager.GetObject("OK", resourceCulture);
@@ -134,6 +144,27 @@ namespace VPKSoft.VersionCheck.Properties {
         internal static string tab_deli_localization {
             get {
                 return ResourceManager.GetString("tab_deli_localization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the simple tab-delimited localization file.
+        ///As you can see only the &quot;[]&quot; tags and tab delimited key-value pairs matter for the localization.
+        ///The tab-delimited text can also include comments, etc. by adding a new tab-delimited field.
+        ///[en-US]
+        ///txtSelectVersion	Select a version:
+        ///txtCaption	Version history for the &apos;{0}&apos; application
+        ///txtOK	OK
+        ///txtAllVersions	All versions
+        ///[fi-FI]
+        ///txtSelectVersion	Valitse versio:
+        ///txtCaption	Versiohistoria sovellukselle &apos;{0}&apos;
+        ///txtOK	OK
+        ///txtAllVersions	Kaikki versiot        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string version_history_localization {
+            get {
+                return ResourceManager.GetString("version_history_localization", resourceCulture);
             }
         }
         

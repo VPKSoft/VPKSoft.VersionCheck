@@ -25,6 +25,7 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
 using System;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck.APIResponseClasses;
@@ -136,11 +137,18 @@ namespace VPKSoft.VersionCheck.Forms
                     localization.GetMessage("txtProductName", "Product name:", OverrideCultureString);
                 lbVersionText.Text = localization.GetMessage("txtVersion", "Version:", OverrideCultureString);
                 lbLicenseText.Text = localization.GetMessage("txtLicense", "License:", OverrideCultureString);
+
+                btViewVersionHistory.Text = localization.GetMessage("txtVersionHistory", "Version history", OverrideCultureString);
+
+                Icon.ExtractAssociatedIcon(aboutAssembly.Location);
             }
             catch
             {
                 // ignored..
             }
+
+            btViewVersionHistory.Enabled = 
+                !VersionDataCache.VersionHistoryCacheIsEmpty(AssemblyProduct);
 
             lbProductName.Text = AssemblyProduct;
             lbVersion.Text = AssemblyVersion;
@@ -287,6 +295,13 @@ namespace VPKSoft.VersionCheck.Forms
             {
                 // ignored..
             }
+        }
+
+        private void btViewVersionHistory_Click(object sender, EventArgs e)
+        {
+            var programName = aboutAssembly.GetName().Name;
+
+            FormDialogVersionHistory.ShowDialog(this, programName, Icon);
         }
     }
 }
