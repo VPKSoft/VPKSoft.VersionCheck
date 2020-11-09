@@ -3,7 +3,7 @@
 VPKSoft.VersionCheck
 
 A version checker for VPKSoft products.
-Copyright © 2019 VPKSoft, Petteri Kautonen
+Copyright © 2020 VPKSoft, Petteri Kautonen
 
 Contact: vpksoft@vpksoft.net
 

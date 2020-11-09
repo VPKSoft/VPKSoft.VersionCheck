@@ -1,98 +1,82 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0C0FD7A4-C360-4700-870A-5DC08CEDEBA3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VPKSoft.VersionCheck</RootNamespace>
-    <AssemblyName>VPKSoft.VersionCheck</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net47</TargetFramework>
+    <AssemblyTitle>VPKSoft.VersionCheck</AssemblyTitle>
+    <Company>VPKSoft</Company>
+    <Product>VPKSoft.VersionCheck</Product>
+    <Description>A version checker for an application</Description>
+    <Copyright>Copyright © VPKSoft 2019</Copyright>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DocumentationFile>bin\$(Configuration)\VPKSoft.VersionCheck.xml</DocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>1.0.2</Version>
+    <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/VPKSoft/VPKSoft.VersionCheck</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/VPKSoft/VPKSoft.VersionCheck</RepositoryUrl>
+    <PackageReleaseNotes>See: https://github.com/VPKSoft/VPKSoft.VersionCheck</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>vpksoft_logo.png</PackageIcon>
+    <PackageTags>version check .NET assembly download</PackageTags>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\VPKSoft.VersionCheck.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\VPKSoft.VersionCheck.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="APIResponseClasses\GeneralResponse.cs" />
-    <Compile Include="APIResponseClasses\LocalizeChangeHistoryResponse.cs" />
-    <Compile Include="APIResponseClasses\VersionInfo.cs" />
-    <Compile Include="APIResponseClasses\VersionResponse.cs" />
-    <Compile Include="Enumerations\PostMethodEnum.cs" />
-    <Compile Include="Forms\FormAbout.cs">
+    <Compile Update="Forms\FormAbout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormAbout.designer.cs">
+    <Compile Update="Forms\FormAbout.designer.cs">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormCheckVersion.cs">
+    <Compile Update="Forms\FormCheckVersion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormCheckVersion.Designer.cs">
+    <Compile Update="Forms\FormCheckVersion.Designer.cs">
       <DependentUpon>FormCheckVersion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormDialogDownloadFile.cs">
+    <Compile Update="Forms\FormDialogDownloadFile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormDialogDownloadFile.Designer.cs">
+    <Compile Update="Forms\FormDialogDownloadFile.Designer.cs">
       <DependentUpon>FormDialogDownloadFile.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormDialogVersionHistory.cs">
+    <Compile Update="Forms\FormDialogVersionHistory.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormDialogVersionHistory.Designer.cs">
+    <Compile Update="Forms\FormDialogVersionHistory.Designer.cs">
       <DependentUpon>FormDialogVersionHistory.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\SimpleLinkLabel.cs">
+    <Compile Update="CustomControls\SimpleLinkLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomControls\SimpleLinkLabel.designer.cs">
+    <Compile Update="CustomControls\SimpleLinkLabel.designer.cs">
       <DependentUpon>SimpleLinkLabel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UtilityClasses\TabDeliLocalization.cs" />
-    <Compile Include="UtilityClasses\VersionDataCache.cs" />
-    <Compile Include="VersionCheck.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\VPKSoft.SearchText\vpksoft_logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <None Include="COPYING">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -101,19 +85,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\FormAbout.resx">
+    <EmbeddedResource Update="Forms\FormAbout.resx">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormCheckVersion.resx">
+    <EmbeddedResource Update="Forms\FormCheckVersion.resx">
       <DependentUpon>FormCheckVersion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormDialogDownloadFile.resx">
+    <EmbeddedResource Update="Forms\FormDialogDownloadFile.resx">
       <DependentUpon>FormDialogDownloadFile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormDialogVersionHistory.resx">
+    <EmbeddedResource Update="Forms\FormDialogVersionHistory.resx">
       <DependentUpon>FormDialogVersionHistory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -134,12 +118,4 @@
     <None Include="Resources\about_dialog_localization.txt.txt" />
     <Content Include="Resources\download_dialog_localization.txt" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

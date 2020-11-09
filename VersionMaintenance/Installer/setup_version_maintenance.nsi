@@ -1,4 +1,4 @@
-﻿# VPKSoft.VersionCheck
+# VPKSoft.VersionCheck
 # 
 # A version checker for VPKSoft products.
 # Copyright © 2019 VPKSoft, Petteri Kautonen
@@ -64,8 +64,8 @@ BrandingText "VersionMaintenance"
 
 # Variables
 Var StartMenuGroup
-
-# Installer pages
+  
+# Installer pages       
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE ..\..\COPYING # the GNU Lesser General Public License still needs the whole license..
 !insertmacro MUI_PAGE_DIRECTORY
@@ -74,7 +74,7 @@ Var StartMenuGroup
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
-
+  
 # Installer languages
 !insertmacro MUI_LANGUAGE English
 !insertmacro MUI_LANGUAGE Finnish
@@ -110,7 +110,7 @@ Section -Main SEC0000
     ${If} $R0 == 0
 		${nsProcess::CloseProcess} "VersionMaintenance.exe" $R0
 	${EndIf}
-	
+	 
 	${nsProcess::Unload} # dispose..
 	    
     File /r ..\bin\Release\*.* # assume that all the required files are there..

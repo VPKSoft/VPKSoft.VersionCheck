@@ -3,7 +3,7 @@
 VPKSoft.VersionCheck
 
 A version checker for VPKSoft products.
-Copyright © 2019 VPKSoft, Petteri Kautonen
+Copyright © 2020 VPKSoft, Petteri Kautonen
 
 Contact: vpksoft@vpksoft.net
 
@@ -26,6 +26,7 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck.APIResponseClasses;
@@ -102,7 +103,11 @@ namespace VPKSoft.VersionCheck.Forms
             pbLogo.SizeMode = AboutDialogImageSizeMode;
             pbLogo.Image = AboutDialogImage;
             ShowDialog(parent);
+
+            MessageBox.Show(aboutAssembly.GetBuildDateTime().ToString());
         }
+
+        
 
         /// <summary>
         /// This method is called by the constructors. Localizes the dialog and sets the assembly information fields contents.

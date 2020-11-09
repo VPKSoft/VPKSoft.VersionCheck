@@ -5,7 +5,7 @@ extensions: .cs .cpp .h
 VPKSoft.VersionCheck
 
 A version checker for VPKSoft products.
-Copyright © 2019 VPKSoft, Petteri Kautonen
+Copyright © %CurrentYear% VPKSoft, Petteri Kautonen
 
 Contact: vpksoft@vpksoft.net
 
