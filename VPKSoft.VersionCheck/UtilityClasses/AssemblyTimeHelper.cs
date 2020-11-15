@@ -34,20 +34,64 @@ using System.Threading.Tasks;
 
 namespace VPKSoft.VersionCheck.UtilityClasses
 {
+    /// <summary>
+    /// A class for some assembly-related extension methods.
+    /// </summary>
     public static class ReflectionExtension
     {
-        public static DateTimeOffset? GetBuildDateTime(this Assembly assembly)
+        /// <summary>
+        /// Gets the build date time <see cref="DateTimeOffset"/> offset.
+        /// </summary>
+        /// <param name="assembly">The assembly to inspect.</param>
+        /// <returns>System.Nullable&lt;DateTimeOffset&gt;.</returns>
+        public static DateTimeOffset? GetBuildDateTimeOffset(this Assembly assembly)
         {
-            var path = assembly.GetName().CodeBase;
-
-            if (path.StartsWith(@"file:///"))
+            try
             {
-                path = path.Substring(8);
+                var path = assembly.GetName().CodeBase;
+
+                if (path.StartsWith(@"file:///"))
+                {
+                    path = path.Substring(8);
+                }
+
+                if (File.Exists(path))
+                {
+                    return new DateTimeOffset(File.GetCreationTimeUtc(path));
+                }
+            }
+            catch
+            {
+                // null is returned..
             }
 
-            if (File.Exists(path))
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the build date time of a specified assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly which build date and time to get.</param>
+        /// <returns>System.Nullable&lt;DateTime&gt;.</returns>
+        public static DateTime? GetBuildDateTime(this Assembly assembly)
+        {
+            try
             {
-                return new DateTimeOffset(File.GetCreationTimeUtc(path));
+                var path = assembly.GetName().CodeBase;
+
+                if (path.StartsWith(@"file:///"))
+                {
+                    path = path.Substring(8);
+                }
+
+                if (File.Exists(path))
+                {
+                    return File.GetCreationTimeUtc(path);
+                }
+            }
+            catch
+            {
+                // null is returned..
             }
 
             return null;

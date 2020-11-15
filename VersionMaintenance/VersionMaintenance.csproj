@@ -7,9 +7,9 @@
     <Company>VPKSoft</Company>
     <Product>VersionMaintenance</Product>
     <Description>An application to maintain a software version database on your web site.</Description>
-    <Copyright>Copyright © VPKSoft 2019</Copyright>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
+    <Copyright>Copyright © VPKSoft 2020</Copyright>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <DocumentationFile>bin\$(Configuration)\VersionMaintenance.xml</DocumentationFile>
   </PropertyGroup>
@@ -22,7 +22,7 @@
   <PropertyGroup>
     <ApplicationIcon>version-icon-10.ico</ApplicationIcon>
     <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Fody" Version="6.3.0">

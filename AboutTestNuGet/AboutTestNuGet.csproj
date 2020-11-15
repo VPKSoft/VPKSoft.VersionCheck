@@ -19,7 +19,7 @@
   <PropertyGroup>
     <ApplicationIcon>VPKSoft.ico</ApplicationIcon>
     <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.1.4" />

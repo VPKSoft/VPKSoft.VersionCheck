@@ -103,8 +103,6 @@ namespace VPKSoft.VersionCheck.Forms
             pbLogo.SizeMode = AboutDialogImageSizeMode;
             pbLogo.Image = AboutDialogImage;
             ShowDialog(parent);
-
-            MessageBox.Show(aboutAssembly.GetBuildDateTime().ToString());
         }
 
         
@@ -129,6 +127,9 @@ namespace VPKSoft.VersionCheck.Forms
                 {
                     Text = localization.GetMessage("txtText", "About - {0}", OverrideCultureString); // no title in about box title
                 }
+
+                lbBuildDateAndTimeValue.Text =
+                    aboutAssembly.GetBuildDateTime()?.ToString("G") ?? "-";
 
                 lbCheckVersionText.Text = localization.GetMessage("txtCheck", "Check version:", OverrideCultureString);
                 sllLinkVersion.Text = localization.GetMessage("txtClickCheck", "click to check", OverrideCultureString);

@@ -48,6 +48,8 @@ namespace VPKSoft.VersionCheck.Forms
             this.lbLinkLicense = new System.Windows.Forms.Label();
             this.btOK = new System.Windows.Forms.Button();
             this.btViewVersionHistory = new System.Windows.Forms.Button();
+            this.lbBuildDateTime = new System.Windows.Forms.Label();
+            this.lbBuildDateAndTimeValue = new System.Windows.Forms.Label();
             this.tlpProductInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.SuspendLayout();
@@ -60,9 +62,9 @@ namespace VPKSoft.VersionCheck.Forms
             this.tlpProductInfo.ColumnCount = 2;
             this.tlpProductInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpProductInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpProductInfo.Controls.Add(this.sllLinkVersion, 1, 6);
+            this.tlpProductInfo.Controls.Add(this.sllLinkVersion, 1, 7);
             this.tlpProductInfo.Controls.Add(this.lbVersionText, 0, 1);
-            this.tlpProductInfo.Controls.Add(this.pbLogo, 0, 7);
+            this.tlpProductInfo.Controls.Add(this.pbLogo, 0, 8);
             this.tlpProductInfo.Controls.Add(this.lbProductNameText, 0, 0);
             this.tlpProductInfo.Controls.Add(this.lbProductName, 1, 0);
             this.tlpProductInfo.Controls.Add(this.lbVersion, 1, 1);
@@ -70,14 +72,17 @@ namespace VPKSoft.VersionCheck.Forms
             this.tlpProductInfo.Controls.Add(this.lbCopyright, 1, 2);
             this.tlpProductInfo.Controls.Add(this.lbCompanyNameText, 0, 3);
             this.tlpProductInfo.Controls.Add(this.lbCompanyName, 1, 3);
-            this.tlpProductInfo.Controls.Add(this.lbBoxDescriptionText, 0, 4);
-            this.tlpProductInfo.Controls.Add(this.tbBoxDescription, 1, 4);
-            this.tlpProductInfo.Controls.Add(this.lbLicenseText, 0, 5);
-            this.tlpProductInfo.Controls.Add(this.lbCheckVersionText, 0, 6);
-            this.tlpProductInfo.Controls.Add(this.lbLinkLicense, 1, 5);
+            this.tlpProductInfo.Controls.Add(this.lbBoxDescriptionText, 0, 5);
+            this.tlpProductInfo.Controls.Add(this.tbBoxDescription, 1, 5);
+            this.tlpProductInfo.Controls.Add(this.lbLicenseText, 0, 6);
+            this.tlpProductInfo.Controls.Add(this.lbCheckVersionText, 0, 7);
+            this.tlpProductInfo.Controls.Add(this.lbLinkLicense, 1, 6);
+            this.tlpProductInfo.Controls.Add(this.lbBuildDateTime, 0, 4);
+            this.tlpProductInfo.Controls.Add(this.lbBuildDateAndTimeValue, 1, 4);
             this.tlpProductInfo.Location = new System.Drawing.Point(12, 12);
             this.tlpProductInfo.Name = "tlpProductInfo";
-            this.tlpProductInfo.RowCount = 8;
+            this.tlpProductInfo.RowCount = 9;
+            this.tlpProductInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpProductInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpProductInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpProductInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -86,7 +91,7 @@ namespace VPKSoft.VersionCheck.Forms
             this.tlpProductInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpProductInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpProductInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpProductInfo.Size = new System.Drawing.Size(323, 202);
+            this.tlpProductInfo.Size = new System.Drawing.Size(323, 220);
             this.tlpProductInfo.TabIndex = 2;
             // 
             // sllLinkVersion
@@ -97,7 +102,7 @@ namespace VPKSoft.VersionCheck.Forms
             this.sllLinkVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline);
             this.sllLinkVersion.ForeColor = System.Drawing.Color.Navy;
             this.sllLinkVersion.LinkUrl = null;
-            this.sllLinkVersion.Location = new System.Drawing.Point(164, 112);
+            this.sllLinkVersion.Location = new System.Drawing.Point(164, 130);
             this.sllLinkVersion.Name = "sllLinkVersion";
             this.sllLinkVersion.Size = new System.Drawing.Size(74, 13);
             this.sllLinkVersion.SoftwareName = "";
@@ -124,7 +129,7 @@ namespace VPKSoft.VersionCheck.Forms
             this.tlpProductInfo.SetColumnSpan(this.pbLogo, 2);
             this.pbLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbLogo.Image = global::VPKSoft.VersionCheck.Properties.Resources.VPKSoftLogo_App;
-            this.pbLogo.Location = new System.Drawing.Point(3, 128);
+            this.pbLogo.Location = new System.Drawing.Point(3, 146);
             this.pbLogo.Name = "pbLogo";
             this.pbLogo.Size = new System.Drawing.Size(317, 71);
             this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -198,7 +203,7 @@ namespace VPKSoft.VersionCheck.Forms
             // lbBoxDescriptionText
             // 
             this.lbBoxDescriptionText.AutoSize = true;
-            this.lbBoxDescriptionText.Location = new System.Drawing.Point(3, 52);
+            this.lbBoxDescriptionText.Location = new System.Drawing.Point(3, 65);
             this.lbBoxDescriptionText.Name = "lbBoxDescriptionText";
             this.lbBoxDescriptionText.Size = new System.Drawing.Size(63, 13);
             this.lbBoxDescriptionText.TabIndex = 9;
@@ -209,19 +214,19 @@ namespace VPKSoft.VersionCheck.Forms
             this.tbBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbBoxDescription.Location = new System.Drawing.Point(164, 55);
+            this.tbBoxDescription.Location = new System.Drawing.Point(164, 68);
             this.tbBoxDescription.Multiline = true;
             this.tbBoxDescription.Name = "tbBoxDescription";
             this.tbBoxDescription.ReadOnly = true;
             this.tbBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbBoxDescription.Size = new System.Drawing.Size(156, 41);
+            this.tbBoxDescription.Size = new System.Drawing.Size(156, 46);
             this.tbBoxDescription.TabIndex = 10;
             this.tbBoxDescription.TabStop = false;
             // 
             // lbLicenseText
             // 
             this.lbLicenseText.AutoSize = true;
-            this.lbLicenseText.Location = new System.Drawing.Point(3, 99);
+            this.lbLicenseText.Location = new System.Drawing.Point(3, 117);
             this.lbLicenseText.Name = "lbLicenseText";
             this.lbLicenseText.Size = new System.Drawing.Size(47, 13);
             this.lbLicenseText.TabIndex = 11;
@@ -230,7 +235,7 @@ namespace VPKSoft.VersionCheck.Forms
             // lbCheckVersionText
             // 
             this.lbCheckVersionText.AutoSize = true;
-            this.lbCheckVersionText.Location = new System.Drawing.Point(3, 112);
+            this.lbCheckVersionText.Location = new System.Drawing.Point(3, 130);
             this.lbCheckVersionText.Name = "lbCheckVersionText";
             this.lbCheckVersionText.Size = new System.Drawing.Size(78, 13);
             this.lbCheckVersionText.TabIndex = 13;
@@ -242,7 +247,7 @@ namespace VPKSoft.VersionCheck.Forms
             this.lbLinkLicense.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbLinkLicense.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbLinkLicense.ForeColor = System.Drawing.Color.Navy;
-            this.lbLinkLicense.Location = new System.Drawing.Point(164, 99);
+            this.lbLinkLicense.Location = new System.Drawing.Point(164, 117);
             this.lbLinkLicense.Name = "lbLinkLicense";
             this.lbLinkLicense.Size = new System.Drawing.Size(10, 13);
             this.lbLinkLicense.TabIndex = 16;
@@ -255,7 +260,7 @@ namespace VPKSoft.VersionCheck.Forms
             this.btOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btOK.Image = global::VPKSoft.VersionCheck.Properties.Resources.OK;
             this.btOK.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btOK.Location = new System.Drawing.Point(249, 223);
+            this.btOK.Location = new System.Drawing.Point(249, 241);
             this.btOK.Name = "btOK";
             this.btOK.Size = new System.Drawing.Size(86, 26);
             this.btOK.TabIndex = 11;
@@ -267,7 +272,7 @@ namespace VPKSoft.VersionCheck.Forms
             this.btViewVersionHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btViewVersionHistory.Image = global::VPKSoft.VersionCheck.Properties.Resources.History;
             this.btViewVersionHistory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btViewVersionHistory.Location = new System.Drawing.Point(12, 223);
+            this.btViewVersionHistory.Location = new System.Drawing.Point(12, 241);
             this.btViewVersionHistory.Name = "btViewVersionHistory";
             this.btViewVersionHistory.Size = new System.Drawing.Size(174, 26);
             this.btViewVersionHistory.TabIndex = 12;
@@ -275,13 +280,31 @@ namespace VPKSoft.VersionCheck.Forms
             this.btViewVersionHistory.UseVisualStyleBackColor = true;
             this.btViewVersionHistory.Click += new System.EventHandler(this.btViewVersionHistory_Click);
             // 
+            // lbBuildDateTime
+            // 
+            this.lbBuildDateTime.AutoSize = true;
+            this.lbBuildDateTime.Location = new System.Drawing.Point(3, 52);
+            this.lbBuildDateTime.Name = "lbBuildDateTime";
+            this.lbBuildDateTime.Size = new System.Drawing.Size(100, 13);
+            this.lbBuildDateTime.TabIndex = 17;
+            this.lbBuildDateTime.Text = "Build date and time:";
+            // 
+            // lbBuildDateAndTimeValue
+            // 
+            this.lbBuildDateAndTimeValue.AutoSize = true;
+            this.lbBuildDateAndTimeValue.Location = new System.Drawing.Point(164, 52);
+            this.lbBuildDateAndTimeValue.Name = "lbBuildDateAndTimeValue";
+            this.lbBuildDateAndTimeValue.Size = new System.Drawing.Size(130, 13);
+            this.lbBuildDateAndTimeValue.TabIndex = 18;
+            this.lbBuildDateAndTimeValue.Text = "lbBuildDateAndTimeValue";
+            // 
             // FormAbout
             // 
             this.AcceptButton = this.btOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btOK;
-            this.ClientSize = new System.Drawing.Size(347, 261);
+            this.ClientSize = new System.Drawing.Size(347, 279);
             this.Controls.Add(this.btViewVersionHistory);
             this.Controls.Add(this.btOK);
             this.Controls.Add(this.tlpProductInfo);
@@ -322,5 +345,7 @@ namespace VPKSoft.VersionCheck.Forms
         private SimpleLinkLabel sllLinkVersion;
         private System.Windows.Forms.Label lbLinkLicense;
         private System.Windows.Forms.Button btViewVersionHistory;
+        private System.Windows.Forms.Label lbBuildDateTime;
+        private System.Windows.Forms.Label lbBuildDateAndTimeValue;
     }
 }
