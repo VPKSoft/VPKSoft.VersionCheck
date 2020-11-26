@@ -28,7 +28,7 @@
     <PackageReference Include="Fody" Version="6.3.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.1.0" />
+    <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.2.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.3.1" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.6" />
     <PackageReference Include="VPKSoft.ConfLib" Version="1.0.3" />
