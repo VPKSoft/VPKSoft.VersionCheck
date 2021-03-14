@@ -28,6 +28,7 @@ using System;
 using System.Reflection;
 using System.Windows.Forms;
 using VPKSoft.VersionCheck;
+using VPKSoft.VersionCheck.Forms;
 
 namespace AboutTestNuGet
 {

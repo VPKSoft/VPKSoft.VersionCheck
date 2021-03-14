@@ -183,7 +183,7 @@ namespace VPKSoft.VersionCheck.Forms
                         return titleAttribute.Title;
                     }
                 }
-                return System.IO.Path.GetFileNameWithoutExtension(aboutAssembly.CodeBase);
+                return System.IO.Path.GetFileNameWithoutExtension(aboutAssembly.Location);
             }
         }
 

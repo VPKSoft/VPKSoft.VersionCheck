@@ -33,10 +33,10 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web.Script.Serialization;
 using System.Reflection;
 using System.Web;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using VPKSoft.VersionCheck.APIResponseClasses;
 using VPKSoft.VersionCheck.Enumerations;
 using VPKSoft.VersionCheck.Forms;
@@ -688,8 +688,13 @@ namespace VPKSoft.VersionCheck
             ServicePointManager.Expect100Continue = true;
 
             // set all the security protocols..
+            #if NET47
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 |
                                                    SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            #else
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 |
+                                                   SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+            #endif
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(CheckUri);
             request.Timeout = TimeOutMs;
@@ -744,9 +749,10 @@ namespace VPKSoft.VersionCheck
                     {
                         using (StreamReader sr = new StreamReader(stream, Encoding.UTF8))
                         {
-                            JavaScriptSerializer js = new JavaScriptSerializer();
+
                             string json = sr.ReadToEnd();
-                            T result = (T) js.Deserialize(json, typeof(T));
+                            var result = (T) JsonConvert.DeserializeObject(json, typeof(T));
+                            
 
                             if (result != null && result.GetType() == typeof(VersionResponse)) // special case with this one..
                             {

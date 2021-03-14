@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net5.0-windows;net47</TargetFrameworks>
     <AssemblyTitle>VPKSoft.VersionCheck</AssemblyTitle>
     <Company>VPKSoft</Company>
     <Product>VPKSoft.VersionCheck</Product>
     <Description>A version checker for an application</Description>
     <Copyright>Copyright © VPKSoft 2020</Copyright>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <DocumentationFile>bin\$(Configuration)\VPKSoft.VersionCheck.xml</DocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/VPKSoft/VPKSoft.VersionCheck</PackageProjectUrl>
     <RepositoryUrl>https://github.com/VPKSoft/VPKSoft.VersionCheck</RepositoryUrl>
@@ -20,6 +20,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>vpksoft_logo.png</PackageIcon>
     <PackageTags>version check .NET assembly download</PackageTags>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -27,7 +28,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <Reference Include="System" />
     <Reference Include="System.Net" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -117,5 +119,8 @@
     <None Include="Resources\History.png" />
     <None Include="Resources\about_dialog_localization.txt.txt" />
     <Content Include="Resources\download_dialog_localization.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 </Project>
