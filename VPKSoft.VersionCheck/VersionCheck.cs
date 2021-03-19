@@ -482,6 +482,46 @@ namespace VPKSoft.VersionCheck
         }
 
         /// <summary>
+        /// Inserts or updates the software version into the remote database.
+        /// </summary>
+        /// <param name="assemblyName">The name of the assembly to get the software data from.</param>
+        /// <param name="version">The version of the assembly to get the software data from.</param>
+        /// <param name="downloadLink">The download link for the software.</param>
+        /// <param name="isDirectDownload">if set to <c>true</c> the <paramref name="downloadLink"/> is a link to a binary file or to an installer executable.</param>
+        /// <param name="releaseDateTime">The release date and time of the software.</param>
+        /// <param name="metaDataText">The meta data text. I.e. version changes with the software.</param>Delete_Version
+        /// <returns>A <see cref="GeneralResponse"/> class instance containing data of the API call.</returns>
+        public static GeneralResponse UpdateVersion(string assemblyName, Version version, string downloadLink, bool isDirectDownload,
+            DateTime releaseDateTime, string metaDataText = "")
+        {
+            try
+            {
+                WebResponse webResponse =
+                    GetResponse(
+                        PostMethod.UpdateInsertVersion,
+                        false,
+                        assemblyName,
+                        version,
+                        downloadLink,
+                        releaseDateTime.ToString("yyyy-MM-dd HH':'mm':'ss", CultureInfo.InvariantCulture),
+                        isDirectDownload.ToString(),
+                        metaDataText,
+                        ApiKey);
+
+
+                var result = SerializeResponse<GeneralResponse>(webResponse);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // log the exception..
+                ExceptionAction?.Invoke(ex);
+                return new GeneralResponse {Error = true, ErrorCode = -1, Message = ex.Message};
+            }
+        }
+
+        /// <summary>
         /// Increases the download count of a given application name.
         /// </summary>
         /// <param name="applicationName">Name of the application which download count to increase.</param>

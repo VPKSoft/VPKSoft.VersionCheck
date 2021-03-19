@@ -43,6 +43,9 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="FormDialogs\FormDialogAddUpdateAssemblyVersion - Copy.Designer.cs">
+      <DependentUpon>FormDialogAddUpdateAssemblyVersion.cs</DependentUpon>
+    </Compile>
     <Compile Update="FormDialogs\FormDialogAddUpdateAssemblyVersion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,12 +76,21 @@
     <Compile Update="FormDialogs\FormDialogFindSelectCulture.Designer.cs">
       <DependentUpon>FormDialogFindSelectCulture.cs</DependentUpon>
     </Compile>
+    <Compile Update="FormDialogs\FormDialogUpdateVersion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormDialogs\FormDialogUpdateVersion.Designer.cs">
+      <DependentUpon>FormDialogUpdateVersion.cs</DependentUpon>
+    </Compile>
     <Compile Update="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Update="FormDialogs\FormDialogAddUpdateAssemblyVersion - Copy.resx">
+      <DependentUpon>FormDialogAddUpdateAssemblyVersion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Update="FormDialogs\FormDialogAddUpdateAssemblyVersion.resx">
       <DependentUpon>FormDialogAddUpdateAssemblyVersion.cs</DependentUpon>
     </EmbeddedResource>

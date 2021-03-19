@@ -259,5 +259,20 @@ namespace VPKSoft.VersionCheck.APIResponseClasses
                     ReleaseDate = new FileInfo(fileName).LastWriteTimeUtc, DownloadLink = "INSERT A LINK",
                 };
             }
+
+        /// <summary>
+        /// Creates a new <see cref="VersionInfo"/> class instance of a given assembly name and a given <see cref="Version"/>.
+        /// </summary>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="version">The version of the assembly.</param>
+        /// <returns>A new <see cref="VersionInfo"/> class instance created with the given parameters.</returns>
+        public static VersionInfo FromVersion(string assemblyName, Version version)
+            {
+                return new VersionInfo
+                {
+                    SoftwareName = assemblyName, SoftwareVersion = version.ToString(),
+                    ReleaseDate = DateTime.UtcNow, DownloadLink = "INSERT A LINK",
+                };
+            }
         }
 }

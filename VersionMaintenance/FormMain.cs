@@ -366,5 +366,45 @@ namespace VersionMaintenance
                 }
             }
         }
+
+        private void mnuUpdateVersionManually_Click(object sender, EventArgs e)
+        {
+            var assemblyName = gvSoftwareVersions.CurrentRow?.Cells[colApp.Index].Value.ToString();
+
+            var versionNew = FormDialogUpdateVersion.ShowDialog();
+
+            var info = FormDialogAddUpdateAssemblyVersion.ShowDialog(assemblyName, versionNew,
+                out bool archivePreviousEntry, out bool previousLocalizedData);
+
+            var version = gvSoftwareVersions.CurrentRow?.Cells[colVersion.Index].Value.ToString();
+
+            if (info != null)
+            {
+                if (info.ID != -1)
+                {
+                    if (archivePreviousEntry)
+                    {
+                        VersionCheck.ArchiveVersion(info.ID);
+                        if (previousLocalizedData && version != null)
+                        {
+                            VersionCheck.PreservePreviousVersionData(version, info.SoftwareVersion, info.ID);
+                        }
+                        else
+                        {
+                            VersionCheck.ArchiveVersionHistoryByApplicationId(info.ID, true);
+                        }
+                    }
+                    else
+                    {
+                        VersionCheck.DeleteVersionHistoryByApplicationId(info.ID);
+                    }
+                }
+
+                VersionCheck.UpdateVersion(assemblyName, versionNew, info.DownloadLink, info.IsDirectDownload,
+                    info.ReleaseDate,
+                    info.MetaData);
+                ListVersions();
+            }
+        }
     }
 }
