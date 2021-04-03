@@ -144,6 +144,8 @@ namespace VPKSoft.VersionCheck.Forms
                 lbVersionText.Text = localization.GetMessage("txtVersion", "Version:", OverrideCultureString);
                 lbLicenseText.Text = localization.GetMessage("txtLicense", "License:", OverrideCultureString);
 
+                lbBuildDateTime.Text = localization.GetMessage("txtBuildDateTime", "Build date and time:", OverrideCultureString);
+
                 btViewVersionHistory.Text = localization.GetMessage("txtVersionHistory", "Version history", OverrideCultureString);
 
                 Icon.ExtractAssociatedIcon(aboutAssembly.Location);

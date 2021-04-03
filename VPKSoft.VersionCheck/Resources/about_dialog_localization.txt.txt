@@ -15,12 +15,13 @@ txtClickCheck	click to check
 txtCheckNA	N/A
 txtCheckDownload	Download ({0})
 txtVersionHistory	Version history
+txtBuildDateTime	Build date and time:
 [fi-FI]
 txtText	Tietoja - {0}
 txtOK	OK
 txtDescription	Kuvaus:
-txtCompanyName	Tekij�n nimi:
-txtCopyright	Tekij�noikeus:
+txtCompanyName	Tekijän nimi:
+txtCopyright	Tekijänoikeus:
 txtProductName	Tuotteen nimi:
 txtVersion	Versio:
 txtLicense	Lisenssi:
@@ -29,3 +30,4 @@ txtClickCheck	Klikkaa tarkistaaksesi
 txtCheckNA	ei saatavilla
 txtCheckDownload	Lataa ({0})
 txtVersionHistory	Versiohistoria
+txtBuildDateTime	Käännöksen päiväys ja aika:

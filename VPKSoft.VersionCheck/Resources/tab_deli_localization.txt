@@ -13,7 +13,7 @@ txtCancel	Cancel
 txtNewVersionTitle	Uusi versio ohjelmasta '{0}' on saatavilla!
 txtCurrentVersion	Nykyinen versio:
 txtNewVersion	Uusi versio:
-txtReleaseDateTime	Julkaisuaika ja p‰iv‰ys:
+txtReleaseDateTime	Julkaisuaika ja p√§iv√§ys:
 txtReleaseChanges	Versiomuutokset:
-txtUpdateSoftware	P‰ivit‰ ohjelmisto
+txtUpdateSoftware	P√§ivit√§ ohjelmisto
 txtCancel	Peruuta

@@ -791,8 +791,8 @@ namespace VPKSoft.VersionCheck
                         {
 
                             string json = sr.ReadToEnd();
+
                             var result = (T) JsonConvert.DeserializeObject(json, typeof(T));
-                            
 
                             if (result != null && result.GetType() == typeof(VersionResponse)) // special case with this one..
                             {

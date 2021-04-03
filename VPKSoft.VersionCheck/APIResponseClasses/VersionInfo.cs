@@ -119,7 +119,8 @@ namespace VPKSoft.VersionCheck.APIResponseClasses
                 {
                     Version version = new Version(SoftwareVersion);
                     Version versionAssembly = assembly.GetName().Version;
-                    return version.CompareTo(versionAssembly) > 0;
+                    var result = version.CompareTo(versionAssembly) > 0;
+                    return result;
                 }
                 catch (Exception ex)
                 {

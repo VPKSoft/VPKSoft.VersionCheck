@@ -32,6 +32,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using VersionMaintenance.FormDialogs;
 using VPKSoft.VersionCheck;
+using VPKSoft.VersionCheck.Forms;
 
 namespace VersionMaintenance
 {
@@ -311,7 +312,7 @@ namespace VersionMaintenance
 
                     // create an empty SQLite database..
                     using (SQLiteConnection connection = new SQLiteConnection(
-                        "Data Source=" + Path.Combine(fbdDirectory.SelectedPath,
+                        "Data Source=" + Path.Combine(fbdDirectory.SelectedPath.Replace("\\\\", "\\\\\\\\"),
                             // ReSharper disable once StringLiteralTypo
                             databaseFilename) + ";Pooling=true;FailIfMissing=false;")) 
                     {
@@ -405,6 +406,14 @@ namespace VersionMaintenance
                     info.MetaData);
                 ListVersions();
             }
+        }
+
+        private void mnuAbout_Click(object sender, EventArgs e)
+        {
+            // ReSharper disable once ObjectCreationAsStatement
+            new FormAbout(this, "MIT",
+                "https://raw.githubusercontent.com/VPKSoft/ScriptNotepad/master/LICENSE",
+                "http://DESKTOP-HFNM7V1/version_check/version.php");
         }
     }
 }
