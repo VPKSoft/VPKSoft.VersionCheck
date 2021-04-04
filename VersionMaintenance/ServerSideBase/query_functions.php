@@ -220,7 +220,7 @@ function GetSoftwareList($postdata)
         if (sizeof($software_data) == 2) // to support the previous version, do a range check..
         {
             // an invalid POST value was given..
-            $sofware_lang = $array_result[1];
+            $sofware_lang = $software_data[1];
         }            
 
         $lang_split = explode("-", $sofware_lang);
