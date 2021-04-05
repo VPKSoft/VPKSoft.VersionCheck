@@ -22,7 +22,7 @@
     <Version>1.0.3</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.4" />
+    <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.5" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
