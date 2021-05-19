@@ -152,8 +152,19 @@ namespace VPKSoft.VersionCheck.Forms
                                     {
                                         IncreaseDownloadCount(version.SoftwareName);
 
-                                        Process.Start(Path.Combine(tempPath,
-                                            Path.GetFileName(new Uri(version.DownloadLink).LocalPath)));
+                                        var path = new Uri(version.DownloadLink).LocalPath;
+
+                                        if (Path.GetExtension(path).ToLowerInvariant() == ".msi")
+                                        {
+                                            Process.Start(new ProcessStartInfo
+                                                {FileName = Path.Combine(tempPath,
+                                                    Path.GetFileName(path)), UseShellExecute = true});
+                                        }
+                                        else
+                                        {
+                                            Process.Start(Path.Combine(tempPath,
+                                                Path.GetFileName(path)));
+                                        }
 
                                         return true;
                                     }
