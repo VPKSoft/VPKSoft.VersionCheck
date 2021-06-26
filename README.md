@@ -2,6 +2,7 @@
 An utility for an application to check if a newer version of the application exists. You can also maintain your own releases within the web site.
 
 [![Nuget](https://img.shields.io/nuget/v/VPKSoft.VersionCheck)](https://www.nuget.org/packages/VPKSoft.VersionCheck/)
+[![.NET Core Desktop](https://github.com/VPKSoft/VPKSoft.VersionCheck/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/VPKSoft/VPKSoft.VersionCheck/actions/workflows/dotnet-desktop.yml)
 
 ## Screenshots
 
@@ -23,7 +24,6 @@ VersionCheck.DownloadFile("https://www.vpksoft.net/phocadownload/installers/setu
 
 ### Thanks to
 * [JetBrains](https://www.jetbrains.com/?from=VPKSoft.VersionCheck) for their open source license(s).
-* [![VPKSoft](https://circleci.com/gh/VPKSoft/VPKSoft.VersionCheck.svg?style=shield)](https://app.circleci.com/pipelines/github/VPKSoft/VPKSoft.VersionCheck) 
 
 
 [![JetBrains](http://www.vpksoft.net/site/External/JetBrains/jetbrains.svg)](https://www.jetbrains.com/?from=VPKSoft.VersionCheck)
