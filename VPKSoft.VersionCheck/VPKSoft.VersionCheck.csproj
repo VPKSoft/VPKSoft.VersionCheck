@@ -6,13 +6,11 @@
     <Product>VPKSoft.VersionCheck</Product>
     <Description>A version checker for an application</Description>
     <Copyright>Copyright © VPKSoft 2021</Copyright>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <DocumentationFile>bin\$(Configuration)\VPKSoft.VersionCheck.xml</DocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/VPKSoft/VPKSoft.VersionCheck</PackageProjectUrl>
     <RepositoryUrl>https://github.com/VPKSoft/VPKSoft.VersionCheck</RepositoryUrl>

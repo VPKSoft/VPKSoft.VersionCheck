@@ -26,6 +26,7 @@ along with VPKSoft.VersionCheck.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -122,7 +123,16 @@ namespace VPKSoft.VersionCheck.CustomControls
                     {
                         VersionCheck.IncreaseDownloadCount(SoftwareName);
 
-                        System.Diagnostics.Process.Start(Path.Combine(TempPath, Path.GetFileName(new Uri(LinkUrl).LocalPath)));
+                        var processCommand = Path.Combine(TempPath, Path.GetFileName(new Uri(LinkUrl).LocalPath));
+                        if (Path.GetExtension(processCommand)
+                            ?.Equals(".msi", StringComparison.InvariantCultureIgnoreCase) == true)
+                        {
+                            System.Diagnostics.Process.Start(new ProcessStartInfo(processCommand) {UseShellExecute = true});
+                        }
+                        else
+                        {
+                            System.Diagnostics.Process.Start(processCommand);
+                        }
                     }
                     else
                     {
