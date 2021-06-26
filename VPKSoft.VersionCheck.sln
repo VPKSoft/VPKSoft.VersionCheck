@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VPKSoft.VersionCheck", "VPKSoft.VersionCheck\VPKSoft.VersionCheck.csproj", "{0C0FD7A4-C360-4700-870A-5DC08CEDEBA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VPKSoft.VersionCheck", "VPKSoft.VersionCheck\VPKSoft.VersionCheck.csproj", "{0C0FD7A4-C360-4700-870A-5DC08CEDEBA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VersionMaintenance", "VersionMaintenance\VersionMaintenance.csproj", "{6D06B180-1AFD-4AF0-825E-8D797BA4AE7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VersionMaintenance", "VersionMaintenance\VersionMaintenance.csproj", "{6D06B180-1AFD-4AF0-825E-8D797BA4AE7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboutTest", "AboutTest\AboutTest.csproj", "{16C8B6AE-55CC-4DB0-B575-716EA0B02C59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AboutTest", "AboutTest\AboutTest.csproj", "{16C8B6AE-55CC-4DB0-B575-716EA0B02C59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboutTestNuGet", "AboutTestNuGet\AboutTestNuGet.csproj", "{FFCA0092-5B9A-4521-B51B-75BAA271B69B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AboutTestNuGet", "AboutTestNuGet\AboutTestNuGet.csproj", "{FFCA0092-5B9A-4521-B51B-75BAA271B69B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA008E2A-7823-491D-92B4-565972BB7845}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
