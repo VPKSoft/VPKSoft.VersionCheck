@@ -56,6 +56,12 @@ namespace VPKSoft.VersionCheck
         public static string OverrideCultureString { get; set; } = CultureInfo.CurrentCulture.ToString();
 
         /// <summary>
+        /// Gets the file extension list to use shell execute for.
+        /// </summary>
+        /// <value>The file extension list to use shell execute for.</value>
+        public static List<string> ShellExecuteFileExtensions { get; } = new List<string>(new[] {".msi"});
+
+        /// <summary>
         /// Downloads a file from the internet showing a dialog box with a progress.
         /// </summary>
         /// <param name="downloadUri">The download URI of the file.</param>
