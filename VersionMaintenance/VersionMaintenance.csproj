@@ -31,7 +31,7 @@
     </PackageReference>
     <PackageReference Include="Ookii.Dialogs.WinForms" Version="1.2.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115" />
     <PackageReference Include="VPKSoft.ConfLib" Version="1.0.4" />
   </ItemGroup>
   <ItemGroup>
