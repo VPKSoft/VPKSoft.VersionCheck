@@ -22,6 +22,7 @@
     <Version>1.0.3</Version>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="VPKSoft.VersionCheck" Version="1.0.8" />
   </ItemGroup>
   <ItemGroup>
